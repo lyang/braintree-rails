@@ -1,0 +1,4 @@
+---
+merchant_id: 'merchant_id'
+public_key: 'public_key'
+private_key: 'private_key'
