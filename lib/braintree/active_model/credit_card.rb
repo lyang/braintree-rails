@@ -1,4 +1,3 @@
-require 'delegate'
 module Braintree
   module ActiveModel
     class CreditCard < SimpleDelegator
@@ -8,10 +7,10 @@ module Braintree
 
       validates :customer_id, :presence => true, :length => {:maximum => 36}, :if => :new_record?
       validates :number, :presence => true, :numericality => { :only_integer => true }, :length => {:minimum => 12, :maximum => 19}, :if => :new_record?
-      validates :cvv, :presence => true, :numericality => { :only_integer => true }, :length => {:minimum => 3, :maximum => 4}
-      validates :cardholder_name, :presence => true, :length => {:maximum => 255}
-      validates :expiration_month, :presence => true, :inclusion => { :in => ('1'..'12').to_a + (1..12).to_a }
-      validates :expiration_year,  :presence => true, :inclusion => { :in => ('1976'..'2200').to_a + (1976..2200).to_a }
+      validates :cvv, :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 100, :less_than_or_equal_to => 9999 }
+      validates :cardholder_name, :length => {:maximum => 255}
+      validates :expiration_month, :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 1, :less_than_or_equal_to => 12 }
+      validates :expiration_year,  :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 1976, :less_than_or_equal_to => 2200 }
       validates_each :billing_address do |record, attribute, value|
         record.errors.add(attribute, "is not valid. #{value.errors.full_messages.join("\n")}") unless value.try(:valid?)
       end
