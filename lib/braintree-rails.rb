@@ -5,4 +5,6 @@ require 'delegate'
 
 require 'braintree'
 require 'braintree_model'
+require 'address'
+require 'addresses'
 require 'customer'

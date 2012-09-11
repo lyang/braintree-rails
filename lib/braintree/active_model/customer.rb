@@ -7,9 +7,12 @@ module Braintree
       validates :id, :format => {:with => /^[-_a-z0-9]+$/i}, :length => {:maximum => 36}, :exclusion => {:in => %w(all new)}
       validates :first_name, :last_name, :company, :website, :phone, :fax, :length => {:maximum => 255}
 
-      def initialize(customer)
+      attr_reader :addresses
+      
+      def initialize(customer = {})
         customer = ensure_customer(customer)
         write_attributes(extract_values(customer))
+        @addresses = Addresses.new(self, customer.addresses)
         super
       end
 
@@ -24,7 +27,10 @@ module Braintree
           customer
         when Hash
           @persisted = false
-          OpenStruct.new(customer)
+          OpenStruct.new(customer.reverse_merge(:addresses => []))
+        else
+          @persisted = customer.respond_to?(:persisted?) ? customer.persisted? : false
+          customer
         end
       end
     end

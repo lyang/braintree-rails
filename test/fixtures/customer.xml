@@ -14,5 +14,42 @@
   <custom-fields>
   </custom-fields>
   <credit-cards type="array"/>
-  <addresses type="array"/>
+  <addresses type="array">
+    <address>
+      <id>wx</id>
+      <customer-id>customer_id</customer-id>
+      <first-name>Brain</first-name>
+      <last-name>Tree</last-name>
+      <company>Braintree</company>
+      <street-address>1134 Crane Avenue</street-address>
+      <extended-address>Suite 200</extended-address>
+      <locality>Menlo Park</locality>
+      <region>California</region>
+      <postal-code>94025</postal-code>
+      <country-code-alpha2>US</country-code-alpha2>
+      <country-code-alpha3>USA</country-code-alpha3>
+      <country-code-numeric>840</country-code-numeric>
+      <country-name>United States of America</country-name>
+      <created-at type="datetime">2012-09-11T06:05:30Z</created-at>
+      <updated-at type="datetime">2012-09-11T06:05:30Z</updated-at>
+    </address>
+    <address>
+      <id>cy</id>
+      <customer-id>customer_id</customer-id>
+      <first-name>Brain</first-name>
+      <last-name>Tree</last-name>
+      <company>Braintree</company>
+      <street-address>111 N Canal St</street-address>
+      <extended-address>Suite 455</extended-address>
+      <locality>Chicago</locality>
+      <region>Illinois</region>
+      <postal-code>60606</postal-code>
+      <country-code-alpha2>US</country-code-alpha2>
+      <country-code-alpha3>USA</country-code-alpha3>
+      <country-code-numeric>840</country-code-numeric>
+      <country-name>United States of America</country-name>
+      <created-at type="datetime">2012-09-11T06:05:38Z</created-at>
+      <updated-at type="datetime">2012-09-11T06:05:38Z</updated-at>
+    </address>
+  </addresses>
 </customer>
