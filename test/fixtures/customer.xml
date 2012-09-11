@@ -13,7 +13,42 @@
   <updated-at type="datetime">2012-09-10T06:03:00Z</updated-at>
   <custom-fields>
   </custom-fields>
-  <credit-cards type="array"/>
+  <credit-cards type="array">
+    <credit-card>
+      <token>credit_card_id</token>
+      <unique-number-identifier>fe41071c3dc6a91f1dc0a95e64ff98d3</unique-number-identifier>
+      <customer-id>customer_id</customer-id>
+      <cardholder-name>Brain Tree</cardholder-name>
+      <customer-location>US</customer-location>
+      <card-type>MasterCard</card-type>
+      <bin>555555</bin>
+      <last-4>4444</last-4>
+      <expiration-month>05</expiration-month>
+      <expiration-year>2037</expiration-year>
+      <default type="boolean">true</default>
+      <expired type="boolean">false</expired>
+      <subscriptions type="array"/>
+      <created-at type="datetime">2012-09-11T06:05:30Z</created-at>
+      <updated-at type="datetime">2012-09-11T06:05:30Z</updated-at>
+    </credit-card>
+    <credit-card>
+      <token>fydb</token>
+      <unique-number-identifier>112489a39c1a16fa5ca277543731ec99</unique-number-identifier>
+      <customer-id>customer_id</customer-id>
+      <cardholder-name>Brain Tree</cardholder-name>
+      <customer-location>US</customer-location>
+      <card-type>Visa</card-type>
+      <bin>411111</bin>
+      <last-4>1111</last-4>
+      <expiration-month>05</expiration-month>
+      <expiration-year>2037</expiration-year>
+      <default type="boolean">false</default>
+      <expired type="boolean">false</expired>
+      <subscriptions type="array"/>
+      <created-at type="datetime">2012-09-11T06:05:30Z</created-at>
+      <updated-at type="datetime">2012-09-11T06:05:30Z</updated-at>
+    </credit-card>
+  </credit-cards>
   <addresses type="array">
     <address>
       <id>wx</id>

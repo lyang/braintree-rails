@@ -13,8 +13,8 @@ describe Braintree::ActiveModel::Addresses do
       
       addresses.size.must_equal braintree_addresses.size
 
-      addresses.each do |address|
-        braintree_address = braintree_addresses.find { |a| a.id == address.id }
+      braintree_addresses.each do |braintree_address|
+        address = addresses.find(braintree_address.id)
         Braintree::ActiveModel::Address::Attributes.each do |attribute|
           address.send(attribute).must_equal braintree_address.send(attribute)
         end

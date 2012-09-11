@@ -55,4 +55,14 @@ describe Braintree::ActiveModel::Customer do
       customer.addresses.size.must_equal braintree_customer.addresses.size
     end
   end
+
+  describe '#credit_cards' do
+    it 'behaves like enumerable' do
+      braintree_customer = Braintree::Customer.find('customer_id')
+      customer = Braintree::ActiveModel::Customer.new(braintree_customer)
+
+      customer.credit_cards.must_be_kind_of(Enumerable)
+      customer.credit_cards.size.must_equal braintree_customer.credit_cards.size
+    end
+  end
 end
