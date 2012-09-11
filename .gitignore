@@ -17,4 +17,6 @@ tmp
 _yardoc
 doc/
 
+*.DS_Store
+.rvmrc
 test/config/braintree_auth.yml

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<customer>
+  <id>customer_id</id>
+  <merchant-id>merchant_id</merchant-id>
+  <first-name>Brain</first-name>
+  <last-name>Tree</last-name>
+  <company>Braintree</company>
+  <email>braintree@example.com</email>
+  <phone>877.434.2894</phone>
+  <fax>888.781.6495</fax>
+  <website>www.braintreepayments.com</website>
+  <created-at type="datetime">2012-09-10T06:03:00Z</created-at>
+  <updated-at type="datetime">2012-09-10T06:03:00Z</updated-at>
+  <custom-fields>
+  </custom-fields>
+  <credit-cards type="array"/>
+  <addresses type="array"/>
+</customer>
