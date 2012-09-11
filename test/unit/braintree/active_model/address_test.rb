@@ -35,4 +35,49 @@ describe Braintree::ActiveModel::Address do
       address.persisted?.must_equal false
     end
   end
+
+  describe 'country_code_alpha2' do
+    it 'should always convert to country_code_alpha2' do
+      {:country_name => 'United States of America', :country_code_alpha3 => 'USA', :country_code_numeric => '840'}.each_pair do |key, value|
+        address = Braintree::ActiveModel::Address.new(key => value)
+        address.country_code_alpha2.must_equal 'US'
+      end
+    end
+  end
+
+  describe 'validations' do
+    [:first_name, :last_name, :company, :street_address, :extended_address, :locality, :region].each do |attribute|
+      it "should validate length of #{attribute}" do
+        address = Braintree::ActiveModel::Address.new(attribute => 'foo')
+        address.valid?
+        address.errors[attribute].must_be :blank?
+
+        address = Braintree::ActiveModel::Address.new(attribute => 'foo' * 100)
+        address.valid?
+        address.errors[attribute].wont_be :blank?
+      end
+    end
+
+    [:street_address, :postal_code].each do |attribute|
+      it "should validate presence of #{attribute}" do
+        address = Braintree::ActiveModel::Address.new(attribute => 'foo')
+        address.valid?
+        address.errors[attribute].must_be :blank?
+
+        address = Braintree::ActiveModel::Address.new({})
+        address.valid?
+        address.errors[attribute].wont_be :blank?
+      end
+    end
+
+    it 'should validate format of postal_code' do
+      address = Braintree::ActiveModel::Address.new({:postal_code => 'CA 94025'})
+      address.valid?
+      address.errors[:postal_code].must_be :blank?
+
+      address = Braintree::ActiveModel::Address.new({:postal_code => '^$'})
+      address.valid?
+      address.errors[:postal_code].wont_be :blank?
+    end
+  end
 end
