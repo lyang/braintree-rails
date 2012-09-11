@@ -65,4 +65,52 @@ describe Braintree::ActiveModel::Customer do
       customer.credit_cards.size.must_equal braintree_customer.credit_cards.size
     end
   end
+
+  describe 'validations' do
+    it 'should validate id' do
+      customer = Braintree::ActiveModel::Customer.new({})
+      customer.valid?
+      customer.errors[:id].wont_be :blank?
+
+      customer = Braintree::ActiveModel::Customer.new({:id => '%'})
+      customer.valid?
+      customer.errors[:id].wont_be :blank?
+
+      customer = Braintree::ActiveModel::Customer.new({:id => 'all'})
+      customer.valid?
+      customer.errors[:id].wont_be :blank?
+
+      customer = Braintree::ActiveModel::Customer.new({:id => 'new'})
+      customer.valid?
+      customer.errors[:id].wont_be :blank?
+
+      customer = Braintree::ActiveModel::Customer.new({:id => 'f' * 37})
+      customer.valid?
+      customer.errors[:id].wont_be :blank?
+
+      customer = Braintree::ActiveModel::Customer.new({:id => 'f'})
+      customer.valid?
+      customer.errors[:id].must_be :blank?
+
+      customer = Braintree::ActiveModel::Customer.new({:id => 'f' * 36})
+      customer.valid?
+      customer.errors[:id].must_be :blank?
+    end
+
+    [:first_name, :last_name, :company, :website, :phone, :fax].each do |attribute|
+      it "should validate length of #{attribute}" do
+        address = Braintree::ActiveModel::Customer.new(attribute => 'f')
+        address.valid?
+        address.errors[attribute].must_be :blank?
+
+        address = Braintree::ActiveModel::Customer.new(attribute => 'f' * 255)
+        address.valid?
+        address.errors[attribute].must_be :blank?
+
+        address = Braintree::ActiveModel::Customer.new(attribute => 'foo' * 256)
+        address.valid?
+        address.errors[attribute].wont_be :blank?
+      end
+    end
+  end
 end

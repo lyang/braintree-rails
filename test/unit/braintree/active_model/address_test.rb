@@ -48,11 +48,15 @@ describe Braintree::ActiveModel::Address do
   describe 'validations' do
     [:first_name, :last_name, :company, :street_address, :extended_address, :locality, :region].each do |attribute|
       it "should validate length of #{attribute}" do
-        address = Braintree::ActiveModel::Address.new(attribute => 'foo')
+        address = Braintree::ActiveModel::Address.new(attribute => 'f')
         address.valid?
         address.errors[attribute].must_be :blank?
 
-        address = Braintree::ActiveModel::Address.new(attribute => 'foo' * 100)
+        address = Braintree::ActiveModel::Address.new(attribute => 'f' * 255)
+        address.valid?
+        address.errors[attribute].must_be :blank?
+
+        address = Braintree::ActiveModel::Address.new(attribute => 'foo' * 256)
         address.valid?
         address.errors[attribute].wont_be :blank?
       end
