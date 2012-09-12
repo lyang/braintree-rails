@@ -7,7 +7,6 @@ module BraintreeRails
           include ::ActiveModel::Validations
           include ::ActiveModel::Serialization
           attr_accessor(*self::Attributes)
-          delegate :each, :each_pair, :keys, :values, :[], :to => :attributes
 
           class << receiver
             alias :build :new
