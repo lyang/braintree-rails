@@ -119,10 +119,21 @@ module BraintreeRails
         end
       end
 
+      def add_errors(validation_errors)
+        validation_errors.each do |error|
+          if respond_to?(error.attribute)
+            self.errors.add error.attribute, error.message
+          else
+            self.error.add :base, error.message
+          end
+        end
+      end
+
       def with_update_braintree
         raise RecordInvalid unless valid?
         result = yield
         if result.respond_to?(:success?) && !result.success?
+          add_errors(result.errors)
           false
         else
           new_record = result.respond_to?(self.class.braintree_model_name) ? result.send(self.class.braintree_model_name) : result
