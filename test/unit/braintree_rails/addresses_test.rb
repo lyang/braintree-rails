@@ -1,6 +1,6 @@
-require File.expand_path(File.join(File.dirname(__FILE__), '../../unit_test_helper'))
+require File.expand_path(File.join(File.dirname(__FILE__), '../unit_test_helper'))
 
-describe Braintree::ActiveModel::Addresses do
+describe BraintreeRails::Addresses do
   before do
     stub_braintree_request(:get, '/customers/customer_id', :body => fixture('customer.xml'))
   end
@@ -9,13 +9,13 @@ describe Braintree::ActiveModel::Addresses do
     it 'should wrap an array of Braintree::Address' do
       braintree_customer = Braintree::Customer.find('customer_id')
       braintree_addresses = braintree_customer.addresses
-      addresses = Braintree::ActiveModel::Addresses.new(braintree_customer, braintree_addresses)
+      addresses = BraintreeRails::Addresses.new(braintree_customer, braintree_addresses)
       
       addresses.size.must_equal braintree_addresses.size
 
       braintree_addresses.each do |braintree_address|
         address = addresses.find(braintree_address.id)
-        Braintree::ActiveModel::Address::Attributes.each do |attribute|
+        BraintreeRails::Address::Attributes.each do |attribute|
           address.send(attribute).must_equal braintree_address.send(attribute)
         end
       end
@@ -26,7 +26,7 @@ describe Braintree::ActiveModel::Addresses do
     it 'should build new Address object with customer_id and params' do
       braintree_customer = Braintree::Customer.find('customer_id')
       braintree_addresses = braintree_customer.addresses
-      addresses = Braintree::ActiveModel::Addresses.new(braintree_customer, braintree_addresses)
+      addresses = BraintreeRails::Addresses.new(braintree_customer, braintree_addresses)
       address = addresses.build({:first_name => 'foo', :last_name => 'bar'})
 
       address.persisted?.must_equal false

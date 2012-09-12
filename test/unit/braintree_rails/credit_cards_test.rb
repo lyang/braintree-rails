@@ -1,6 +1,6 @@
-require File.expand_path(File.join(File.dirname(__FILE__), '../../unit_test_helper'))
+require File.expand_path(File.join(File.dirname(__FILE__), '../unit_test_helper'))
 
-describe Braintree::ActiveModel::CreditCards do
+describe BraintreeRails::CreditCards do
   before do
     stub_braintree_request(:get, '/customers/customer_id', :body => fixture('customer.xml'))
   end
@@ -9,13 +9,13 @@ describe Braintree::ActiveModel::CreditCards do
     it 'should wrap an array of Braintree::CreditCard' do
       braintree_customer = Braintree::Customer.find('customer_id')
       braintree_credit_cards = braintree_customer.credit_cards
-      credit_cards = Braintree::ActiveModel::CreditCards.new(braintree_customer, braintree_credit_cards)
+      credit_cards = BraintreeRails::CreditCards.new(braintree_customer, braintree_credit_cards)
       
       credit_cards.size.must_equal braintree_credit_cards.size
 
       braintree_credit_cards.each do |braintree_credit_card|
         credit_card = credit_cards.find(braintree_credit_card.token)
-        Braintree::ActiveModel::CreditCard::Attributes.each do |attribute|
+        BraintreeRails::CreditCard::Attributes.each do |attribute|
           credit_card.send(attribute).must_equal braintree_credit_card.send(attribute) if braintree_credit_card.respond_to?(attribute)
         end
       end
@@ -26,7 +26,7 @@ describe Braintree::ActiveModel::CreditCards do
     it 'should build new CreditCard object with customer_id and params' do
       braintree_customer = Braintree::Customer.find('customer_id')
       braintree_credit_cards = braintree_customer.credit_cards
-      credit_cards = Braintree::ActiveModel::CreditCards.new(braintree_customer, braintree_credit_cards)
+      credit_cards = BraintreeRails::CreditCards.new(braintree_customer, braintree_credit_cards)
       credit_card = credit_cards.build({:first_name => 'foo', :last_name => 'bar'})
 
       credit_card.persisted?.must_equal false
