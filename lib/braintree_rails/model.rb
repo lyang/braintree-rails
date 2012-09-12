@@ -77,6 +77,22 @@ module BraintreeRails
         save!
       end
 
+      def attributes_for_update
+        attributes.except(*attributes_to_exclude_from_update).tap do |hash|
+          hash.each_pair do |key, value|
+            hash[key] = value.attributes_for_update if value.respond_to?(:attributes_for_update)
+          end
+        end.tap {|h| puts h.inspect}
+      end
+
+      def attributes_for_create
+        attributes.except(*attributes_to_exclude_from_create).tap do |hash|
+          hash.each_pair do |key, value|
+            hash[key] = value.attributes_for_create if value.respond_to?(:attributes_for_create)
+          end
+        end
+      end
+
       private
       def create_or_update
         !!(new_record? ? create : update)
@@ -84,26 +100,34 @@ module BraintreeRails
 
       def create
         with_update_braintree do
-          self.class.braintree_model_class.create(attributes)
+          self.class.braintree_model_class.create(attributes_for_create)
         end
       end
 
       def create!
         with_update_braintree do
-          self.class.braintree_model_class.create!(attributes)
+          self.class.braintree_model_class.create!(attributes_for_create)
         end
       end
 
       def update
         with_update_braintree do
-          self.class.braintree_model_class.update(self.id, self.attributes.except(:id))
+          self.class.braintree_model_class.update(id, attributes_for_update)
         end
       end
 
       def update!
         with_update_braintree do
-          self.class.braintree_model_class.update!(self.id, self.attributes.except(:id))
+          self.class.braintree_model_class.update!(id, attributes_for_update)
         end
+      end
+
+      def attributes_to_exclude_from_update
+        [:id]
+      end
+
+      def attributes_to_exclude_from_create
+        []
       end
 
       def extract_values(obj)

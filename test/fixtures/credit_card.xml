@@ -15,4 +15,22 @@
   <subscriptions type="array"/>
   <created-at type="datetime">2012-09-11T06:05:30Z</created-at>
   <updated-at type="datetime">2012-09-11T06:05:30Z</updated-at>
+  <billing-address>
+    <id>address_id</id>
+    <customer-id>8404776</customer-id>
+    <first-name>Brain</first-name>
+    <last-name>Tree</last-name>
+    <company>Braintree</company>
+    <street-address>1134 Crane Avenue</street-address>
+    <extended-address>Suite 200</extended-address>
+    <locality>Menlo Park</locality>
+    <region>California</region>
+    <postal-code>94025</postal-code>
+    <country-code-alpha2>US</country-code-alpha2>
+    <country-code-alpha3>USA</country-code-alpha3>
+    <country-code-numeric>840</country-code-numeric>
+    <country-name>United States of America</country-name>
+    <created-at type="datetime">2012-09-11T06:05:30Z</created-at>
+    <updated-at type="datetime">2012-09-11T06:05:30Z</updated-at>
+  </billing-address>
 </credit-card>

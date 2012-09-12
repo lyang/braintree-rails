@@ -29,14 +29,6 @@ module BraintreeRails
       @country_code_numeric = val
     end
 
-    def attributes
-      (self.class::Attributes - [:country_name, :country_code_alpha3, :country_code_numeric]).inject({}) do |hash, attribute|
-        value = self.send(attribute)
-        hash[attribute] =  value if value.present?
-        hash
-      end
-    end
-
     protected
     def ensure_address(address)
       case address
@@ -62,6 +54,14 @@ module BraintreeRails
       with_update_braintree do
         self.class.braintree_model_class.update!(self.customer_id, self.id, self.attributes.except(:id, :customer_id))
       end
+    end
+
+    def attributes_to_exclude_from_update
+      [:id, :customer_id, :country_name, :country_code_alpha3, :country_code_numeric]
+    end
+
+    def attributes_to_exclude_from_create
+      [:country_name, :country_code_alpha3, :country_code_numeric]
     end
   end
 end

@@ -41,7 +41,7 @@ describe BraintreeRails::Customer do
       customer.first_name.must_equal 'Foo'
       customer.last_name.must_equal 'Bar'
 
-      customer = BraintreeRails::Customer.new(OpenStruct.new())
+      customer = BraintreeRails::Customer.new(OpenStruct.new)
       customer.persisted?.must_equal false
     end
   end
@@ -122,7 +122,7 @@ describe BraintreeRails::Customer do
 
     describe 'save, save!' do
       it 'should return true when saved' do
-        customer = BraintreeRails::Customer.new()
+        customer = BraintreeRails::Customer.new
         customer.save.must_equal true
         customer.persisted?.must_equal true
       end
@@ -134,7 +134,7 @@ describe BraintreeRails::Customer do
       end
 
       it 'should return true when saved with bang' do
-        customer = BraintreeRails::Customer.new()
+        customer = BraintreeRails::Customer.new
         customer.save!.must_equal true
         customer.persisted?.must_equal true
       end

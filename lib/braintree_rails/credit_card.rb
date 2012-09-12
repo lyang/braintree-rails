@@ -1,6 +1,6 @@
 module BraintreeRails
   class CreditCard < SimpleDelegator
-    Attributes = [:customer_id, :number, :token, :cvv, :cardholder_name, :expiration_month, :expiration_year, :billing_address].freeze
+    Attributes = [:customer_id, :number, :token, :cvv, :cardholder_name, :expiration_date, :expiration_month, :expiration_year, :billing_address].freeze
     
     include Model
 
@@ -11,7 +11,7 @@ module BraintreeRails
     validates :expiration_month, :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 1, :less_than_or_equal_to => 12 }
     validates :expiration_year,  :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 1976, :less_than_or_equal_to => 2200 }
     validates_each :billing_address do |record, attribute, value|
-      record.errors.add(attribute, "is not valid. #{value.errors.full_messages.join("\n")}") unless value.try(:valid?)
+      record.errors.add(attribute, "is not valid. #{value.errors.full_messages.join("\n")}") unless value.valid?
     end
 
     def initialize(credit_card = {})
@@ -30,8 +30,12 @@ module BraintreeRails
       self.expiration_year = expiration_year.gsub(/^(\d\d)$/, '20\1')
     end
 
+    def expiration_date
+      expiration_month.present? ? "#{expiration_month}/#{expiration_year}" : nil
+    end
+
     def billing_address=(val)
-      @billing_address = val.is_a?(Address) ? val : Address.new(val)
+      @billing_address = Address.new(val)
     end
 
     protected
@@ -50,6 +54,14 @@ module BraintreeRails
         @persisted = credit_card.respond_to?(:persisted?) ? credit_card.persisted? : false
         credit_card
       end
+    end
+
+    def attributes_to_exclude_from_update
+      [:token, :customer_id, :expiration_date]
+    end
+
+    def attributes_to_exclude_from_create
+      [:expiration_date]
     end
   end
 end

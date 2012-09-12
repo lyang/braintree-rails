@@ -222,9 +222,19 @@ describe BraintreeRails::CreditCard do
       credit_card.valid?
       credit_card.errors[:billing_address].wont_be :blank?
 
-      credit_card = BraintreeRails::CreditCard.new(:billing_address => OpenStruct.new(:valid? => true))
+      braintree_credit_card = Braintree::CreditCard.find('credit_card_id')
+      credit_card = BraintreeRails::CreditCard.new(:billing_address => braintree_credit_card.billing_address)
       credit_card.valid?
       credit_card.errors[:billing_address].must_be :blank?
+    end
+  end
+
+  describe 'persistence' do
+    it 'should add validation errors returned from Braintree' do
+      stub_braintree_request(:put, '/payment_methods/credit_card_id', :status => 422, :body => fixture('credit_card_validation_error.xml'))
+      credit_card = BraintreeRails::CreditCard.new('credit_card_id')
+      credit_card.update_attributes(:number => '1' * 15, :cvv => '111')
+      credit_card.errors[:number].wont_be :blank?
     end
   end
 end
