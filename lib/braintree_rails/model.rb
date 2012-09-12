@@ -8,6 +8,26 @@ module BraintreeRails
           include ::ActiveModel::Serialization
           attr_accessor(*self::Attributes)
           delegate :each, :each_pair, :keys, :values, :[], :to => :attributes
+
+          class << receiver
+            alias :build :new
+            
+            def create(params)
+              new(params).save
+            end
+
+            def create!(params)
+              new(params).save!
+            end
+
+            def braintree_model_class
+              "braintree/#{braintree_model_name}".camelize.constantize
+            end
+
+            def braintree_model_name
+              name.demodulize.underscore
+            end
+          end
         end
       end   
     end
@@ -37,6 +57,55 @@ module BraintreeRails
         end
       end
 
+      def save
+        create_or_update
+      rescue RecordInvalid
+        false
+      end
+
+      def save!
+        create_or_update || raise(RecordNotSaved)
+      end
+
+      def update_attributes(attributes)
+        assign_attributes(attributes)
+        save
+      end
+
+      def update_attributes!(attributes)
+        assign_attributes(attributes)
+        save!
+      end
+
+      private
+      def create_or_update
+        !!(new_record? ? create : update)
+      end
+
+      def create
+        with_update_braintree do
+          self.class.braintree_model_class.create(attributes)
+        end
+      end
+
+      def create!
+        with_update_braintree do
+          self.class.braintree_model_class.create!(attributes)
+        end
+      end
+
+      def update
+        with_update_braintree do
+          self.class.braintree_model_class.update(self.id, self.attributes.except(:id))
+        end
+      end
+
+      def update!
+        with_update_braintree do
+          self.class.braintree_model_class.update!(self.id, self.attributes.except(:id))
+        end
+      end
+
       def extract_values(obj)
         self.class::Attributes.inject({}) do |hash, attr|
           hash[attr] = obj.send(attr) if obj.respond_to?(attr)
@@ -54,7 +123,6 @@ module BraintreeRails
         raise RecordInvalid unless valid?
         result = yield
         if result.respond_to?(:success?) && !result.success?
-          add_errors(result.errors)
           false
         else
           new_record = result.respond_to?(self.class.braintree_model_name) ? result.send(self.class.braintree_model_name) : result

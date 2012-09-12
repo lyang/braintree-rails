@@ -51,5 +51,17 @@ module BraintreeRails
         address
       end
     end
+
+    def update
+      with_update_braintree do
+        self.class.braintree_model_class.update(self.customer_id, self.id, self.attributes.except(:id, :customer_id))
+      end
+    end
+
+    def update!
+      with_update_braintree do
+        self.class.braintree_model_class.update!(self.customer_id, self.id, self.attributes.except(:id, :customer_id))
+      end
+    end
   end
 end
