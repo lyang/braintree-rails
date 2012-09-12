@@ -12,5 +12,13 @@ module BraintreeRails
     def build(params)
       Address.new(params.merge(:customer_id => @customer.id))
     end
+
+    def create(params)
+      build(params).tap { |address| address.save }
+    end
+
+    def create!(params)
+      build(params).tap { |address| address.save! }
+    end
   end
 end

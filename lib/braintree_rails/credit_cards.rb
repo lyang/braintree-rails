@@ -12,5 +12,13 @@ module BraintreeRails
     def build(params)
       CreditCard.new(params.merge(:customer_id => @customer.id))
     end
+
+    def create(params)
+      build(params).tap { |credit_card| credit_card.save }
+    end
+
+    def create!(params)
+      build(params).tap { |credit_card| credit_card.save! }
+    end
   end
 end
