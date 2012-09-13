@@ -1,6 +1,6 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '../integration_test_helper'))
 
-describe 'Customer Integration' do
+describe 'Credit Card Integration' do
   before do
     Braintree::Customer.all.each { |c| Braintree::Customer.delete c.id }
   end
