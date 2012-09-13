@@ -10,7 +10,6 @@ Braintree::Configuration.private_key = 'private_key'
 Braintree::Configuration.logger = Logger.new(File.join(ROOT_PATH, 'log/braintree_test.log'))
 BraintreeBaseUri = "https://#{Braintree::Configuration.public_key}:#{Braintree::Configuration.private_key}@#{Braintree::Configuration.environment}.braintreegateway.com/merchants/#{Braintree::Configuration.merchant_id}"
 
-
 MiniTest::Unit::TestCase.class_eval do
   def fixture(name)
     File.read(File.join(FIXTURE_PATH, name)).gzip

@@ -13,9 +13,6 @@ namespace :test do
     t.verbose = true
   end
 
-  Rake::TestTask.new(:all) do |t|
-    t.libs << 'minitest/autorun'
-    t.pattern = 'test/**/*_test.rb'
-    t.verbose = true
-  end
+  desc "Run all tests"
+  task :all => [:unit, :integration]
 end

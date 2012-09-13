@@ -12,11 +12,11 @@ module BraintreeRails
             alias :build :new
             
             def create(params)
-              new(params).save
+              new(params).tap { |new_record| new_record.save }
             end
 
             def create!(params)
-              new(params).save!
+              new(params).tap { |new_record| new_record.save! }
             end
 
             def braintree_model_class
