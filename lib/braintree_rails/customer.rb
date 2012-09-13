@@ -1,6 +1,6 @@
 module BraintreeRails
   class Customer < SimpleDelegator
-    Attributes = [:id, :first_name, :last_name, :email, :company, :website, :phone, :fax].freeze
+    Attributes = [:id, :first_name, :last_name, :email, :company, :website, :phone, :fax, :created_at, :updated_at].freeze
     include Model
 
     validates :id, :format => {:with => /^[-_a-z0-9]*$/i}, :length => {:maximum => 36}, :exclusion => {:in => %w(all new)}
@@ -32,6 +32,14 @@ module BraintreeRails
         @persisted = customer.respond_to?(:persisted?) ? customer.persisted? : false
         customer
       end
+    end
+
+    def attributes_to_exclude_from_update
+      [:created_at, :updated_at]
+    end
+
+    def attributes_to_exclude_from_create
+      [:created_at, :updated_at]
     end
   end
 end

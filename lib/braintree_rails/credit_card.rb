@@ -1,6 +1,6 @@
 module BraintreeRails
   class CreditCard < SimpleDelegator
-    Attributes = [:customer_id, :number, :token, :cvv, :cardholder_name, :expiration_date, :expiration_month, :expiration_year, :billing_address].freeze
+    Attributes = [:customer_id, :number, :token, :cvv, :cardholder_name, :expiration_date, :expiration_month, :expiration_year, :billing_address, :created_at, :updated_at].freeze
     
     include Model
 
@@ -57,11 +57,11 @@ module BraintreeRails
     end
 
     def attributes_to_exclude_from_update
-      [:token, :customer_id, :expiration_date]
+      [:token, :customer_id, :expiration_date, :created_at, :updated_at]
     end
 
     def attributes_to_exclude_from_create
-      [:expiration_date]
+      [:expiration_date, :created_at, :updated_at]
     end
   end
 end
