@@ -76,6 +76,23 @@ module BraintreeRails
         save!
       end
 
+      def destroy
+        destroy!
+      rescue Braintree::NotFoundError
+        @persisted = false
+        freeze
+      end
+      alias :delete :destroy
+
+      def destroy!
+        if persisted?
+          self.class.braintree_model_class.delete(id)
+        end
+        @persisted = false
+        freeze
+      end
+      alias :delete! :destroy!
+
       def attributes_for_update
         attributes.except(*attributes_to_exclude_from_update).tap do |hash|
           hash.each_pair do |key, value|

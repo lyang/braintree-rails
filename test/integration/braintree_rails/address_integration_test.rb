@@ -48,4 +48,25 @@ describe 'Address Integration' do
     braintree_address.first_name.must_equal 'Foo'
     braintree_address.last_name.must_equal 'Bar'
   end
+
+  it 'should be able to destroy existing address' do
+    customer = BraintreeRails::Customer.create!(:first_name => 'Brain', :last_name => 'Tree')
+    address_hash = {
+      :first_name => 'Brain',
+      :last_name => 'Tree',
+      :company => 'Braintree',
+      :street_address => '1134 Crane Avenue',
+      :extended_address => 'Suite 200',
+      :locality => 'Menlo Park',
+      :region => 'California',
+      :postal_code => '94025',
+      :country_name => 'United States of America'
+    }
+    address = customer.addresses.create!(address_hash)
+    address.destroy!
+    lambda{ Braintree::Address.find(customer.id, address.id) }.must_raise Braintree::NotFoundError
+    address.persisted?.must_equal false
+    address.frozen?.must_equal true
+  end
+
 end

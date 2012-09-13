@@ -30,4 +30,12 @@ describe 'Customer Integration' do
     braintree_customer.first_name.must_equal 'Foo'
     braintree_customer.last_name.must_equal 'Bar'
   end
+
+  it 'should be able to destroy existing customer' do
+    customer = BraintreeRails::Customer.create!(:first_name => 'Brain', :last_name => 'Tree')
+    customer.destroy!
+    lambda{ Braintree::Customer.find(customer.id) }.must_raise Braintree::NotFoundError
+    customer.persisted?.must_equal false
+    customer.frozen?.must_equal true
+  end
 end

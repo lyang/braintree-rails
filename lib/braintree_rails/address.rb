@@ -29,6 +29,14 @@ module BraintreeRails
       @country_code_numeric = val
     end
 
+    def destroy!
+      if persisted?
+        self.class.braintree_model_class.delete(customer_id, id)
+      end
+      @persisted = false
+      freeze
+    end
+
     protected
     def ensure_address(address)
       case address
