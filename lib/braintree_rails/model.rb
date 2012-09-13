@@ -81,7 +81,7 @@ module BraintreeRails
           hash.each_pair do |key, value|
             hash[key] = value.attributes_for_update if value.respond_to?(:attributes_for_update)
           end
-        end.tap {|h| puts h.inspect}
+        end
       end
 
       def attributes_for_create
