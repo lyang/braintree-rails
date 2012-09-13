@@ -8,6 +8,10 @@ module BraintreeRails
     validates :postal_code, :street_address, :presence => true
     validates :postal_code, :format => { :with => /^[- a-z0-9]+$/i}
 
+    def self.find(customer_id, id)
+      new(braintree_model_class.find(customer_id, id))
+    end
+
     def initialize(address = {})
       address = ensure_address(address)
       assign_attributes(extract_values(address))

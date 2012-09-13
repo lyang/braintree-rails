@@ -237,4 +237,17 @@ describe BraintreeRails::CreditCard do
       credit_card.errors[:number].wont_be :blank?
     end
   end
+
+  describe 'class methods' do
+    it "should wrap Braintree's Model find" do
+      credit_card = BraintreeRails::CreditCard.find('credit_card_id')
+      credit_card.id.must_equal 'credit_card_id'
+      credit_card.persisted?.must_equal true
+    end
+
+    it "should delegate delete to Braintree's Model" do
+      stub_braintree_request(:delete, '/payment_methods/credit_card_id', :body => fixture('credit_card.xml'))
+      BraintreeRails::CreditCard.delete('credit_card_id').must_equal true
+    end
+  end
 end

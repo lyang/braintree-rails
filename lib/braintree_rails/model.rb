@@ -26,6 +26,14 @@ module BraintreeRails
             def braintree_model_name
               name.demodulize.underscore
             end
+
+            def find(id)
+              new(braintree_model_class.find(id))
+            end
+
+            def delete(id)
+              braintree_model_class.delete(id)
+            end
           end
         end
       end   
