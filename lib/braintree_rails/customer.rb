@@ -16,6 +16,10 @@ module BraintreeRails
       super
     end
 
+    def full_name
+      "#{first_name} #{last_name}".strip
+    end
+
     protected
     def ensure_customer(customer)
       case customer
