@@ -2,7 +2,12 @@ braintree-rails
 ===============
 braintree-rails provides ActiveModel compatible(mostly) wrappers around the raw ruby client library.
 
-For example:
+You can check out the demo app at [braintree-rails-example](https://github.com/lyang/braintree-rails-example).
+
+The demo app shows how you can treat the resources stored in Braintree's vault as if it's in your database.
+
+Initialization
+---------------
 
     BraintreeRails::Customer.new({}) # new record
     
@@ -10,12 +15,22 @@ For example:
     
     BraintreeRails::Customer.new(Braintree::Customer.find(customer_id)) # wrapping Braintree model objects
     
+CRUD
+---------------
+
     BraintreeRails::Customer.find(id) # delegated to Braintree::Customer.find
     
     BraintreeRails::Customer.delete(id) # same as above
     
     BraintreeRails::Customer.create!(:first_name => 'Foo')
+
+    card.update_attributes(:last_name => 'Bar')
     
+    customer.destroy!
+    
+Associations
+---------------
+
     customer.credit_cards # => [credit_card], Array like associations 
     
     customer.addresses # => [address]
@@ -23,18 +38,19 @@ For example:
     address = customer.addresses.create!(:first_name => 'Foo')
 
     card = customer.credit_cards.build(:cardholder_name => 'Foo', :billing_address => {:stree_adress => 'Bar'})
-    
+
+Validations
+---------------
+
+    card.save # => false
+
     card.valid? # => false, local validations, rules based on Braintree's documents listed below.
     
     card.errors # => ActiveModel::Errors
-    
-    card.save # => false
-    
-    card.update_attributes(:last_name => 'Bar')
-    
-    customer.destroy!
 
-You get how it works, right?
+For example, validations defined as in [BraintreeRails::CreditCard](https://github.com/lyang/braintree-rails/blob/master/lib/braintree_rails/credit_card.rb)
+    
+You can use it pretty much like ActiveRecord.
 
 NOTICE
 ---------------
