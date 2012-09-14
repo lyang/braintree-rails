@@ -48,20 +48,20 @@ Validations
     
     card.errors # => ActiveModel::Errors
 
-For example, validations defined as in [BraintreeRails::CreditCard](https://github.com/lyang/braintree-rails/blob/master/lib/braintree_rails/credit_card.rb)
-    
 You can use it pretty much like ActiveRecord.
 
-NOTICE
----------------
-This IS NOT from or maintained by Braintree.
-
+For example, validations defined as in [BraintreeRails::CreditCard](https://github.com/lyang/braintree-rails/blob/master/lib/braintree_rails/credit_card.rb)
 
 The local validations are solely based on Braintree's document. For length and numericallity checks it works fine, but it can't verify credit card numbers etc without resulting to Braintree's API.
 
 So, be prepared to get validation errors from Braintree even if the local validations have passed.
 
 Currently cvv, street address, postal code are required for creating/updating credit cards as per Braintree's strong recommendations.
+
+NOTICE
+---------------
+This IS NOT created or maintained by Braintree.
+
 
 Braintree
 ---------------
