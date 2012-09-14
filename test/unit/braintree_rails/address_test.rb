@@ -45,6 +45,15 @@ describe BraintreeRails::Address do
     end
   end
 
+  describe 'customer' do
+    it 'should load customer for persisted address' do
+      stub_braintree_request(:get, '/customers/customer_id', :body => fixture('customer.xml'))
+      address = BraintreeRails::Customer.new('customer_id').addresses.first
+      address.customer.persisted?.must_equal true
+      address.customer.id.must_equal 'customer_id'
+    end
+  end
+
   describe 'validations' do
     [:first_name, :last_name, :company, :street_address, :extended_address, :locality, :region].each do |attribute|
       it "should validate length of #{attribute}" do

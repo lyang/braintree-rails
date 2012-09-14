@@ -45,6 +45,15 @@ describe BraintreeRails::CreditCard do
     end
   end
 
+  describe 'customer' do
+    it 'should load customer for persisted credit_card' do
+      credit_card = BraintreeRails::CreditCard.new('credit_card_id')
+      stub_braintree_request(:get, '/customers/customer_id', :body => fixture('customer.xml'))
+      credit_card.customer.persisted?.must_equal true
+      credit_card.customer.id.must_equal 'customer_id'
+    end
+  end
+
   describe '#billing_address' do
     it 'should wrap billing_address with Address object' do
       credit_card = BraintreeRails::CreditCard.new(OpenStruct.new(:billing_address => nil))

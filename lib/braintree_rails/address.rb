@@ -18,6 +18,10 @@ module BraintreeRails
       super
     end
 
+    def customer
+      new_record? ? nil : @customer ||= BraintreeRails::Customer.new(customer_id)
+    end
+
     def country_name=(val)
       self.country_code_alpha2= Braintree::Address::CountryNames.find{|country| country[0] == val}.try(:[], 1)
       @country_name = val
@@ -58,13 +62,13 @@ module BraintreeRails
 
     def update
       with_update_braintree do
-        self.class.braintree_model_class.update(self.customer_id, self.id, self.attributes.except(:id, :customer_id))
+        self.class.braintree_model_class.update(self.customer_id, self.id, attributes_for_update)
       end
     end
 
     def update!
       with_update_braintree do
-        self.class.braintree_model_class.update!(self.customer_id, self.id, self.attributes.except(:id, :customer_id))
+        self.class.braintree_model_class.update!(self.customer_id, self.id, attributes_for_update)
       end
     end
 

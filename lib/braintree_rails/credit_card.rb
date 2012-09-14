@@ -24,6 +24,10 @@ module BraintreeRails
       token
     end
 
+    def customer
+      new_record? ? nil : @customer ||= BraintreeRails::Customer.new(customer_id)
+    end
+
     def expiration_date=(date)
       expiration_month, expiration_year = date.split('/')
       self.expiration_month = expiration_month
