@@ -45,7 +45,7 @@ The local validations are solely based on Braintree's document. For length and n
 
 So, be prepared to get validation errors from Braintree even if the local validations have passed.
 
-Currently cvv, street address, postal code are required for creation/updating credit cards as per Braintree's strong recommendations.
+Currently cvv, street address, postal code are required for creating/updating credit cards as per Braintree's strong recommendations.
 
 Braintree
 ---------------
