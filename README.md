@@ -4,13 +4,19 @@ braintree-rails provides ActiveModel compatible(mostly) wrappers around the raw 
 
 For example:
 
-    BraintreeRails::Customer.new({}).persisted? # => false
+    BraintreeRails::Customer.new({}) # new record
     
-    BraintreeRails::Customer.new(customer_id).persisted? # => true
+    BraintreeRails::Customer.new(customer_id) # fetched from Braintree for given id
     
-    BraintreeRails::Customer.new(Braintree::Customer.find(customer_id)).persisted? # => true
+    BraintreeRails::Customer.new(Braintree::Customer.find(customer_id)) # wrapping Braintree model objects
     
-    customer.credit_cards # => [credit_card]
+    BraintreeRails::Customer.find(id) # delegated to Braintree::Customer.find
+    
+    BraintreeRails::Customer.delete(id) # same as above
+    
+    BraintreeRails::Customer.create!(:first_name => 'Foo'})
+    
+    customer.credit_cards # => [credit_card], Array like associations 
     
     customer.addresses # => [address]
 
@@ -32,6 +38,8 @@ You get how it works, right?
 
 NOTICE
 ---------------
+This IS NOT from or maintained by Braintree.
+
 
 The local validations are solely based on Braintree's document. For length and numericallity checks it works fine, but it can't verify credit card numbers etc without resulting to Braintree's API.
 
