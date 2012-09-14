@@ -155,6 +155,7 @@ module BraintreeRails
       end
 
       def extract_values(obj)
+        return {} if obj.nil?
         self.class::Attributes.inject({}) do |hash, attr|
           hash[attr] = obj.send(attr) if obj.respond_to?(attr)
           hash
