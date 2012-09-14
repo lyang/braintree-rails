@@ -14,7 +14,7 @@ For example:
     
     BraintreeRails::Customer.delete(id) # same as above
     
-    BraintreeRails::Customer.create!(:first_name => 'Foo'})
+    BraintreeRails::Customer.create!(:first_name => 'Foo')
     
     customer.credit_cards # => [credit_card], Array like associations 
     
@@ -22,7 +22,7 @@ For example:
 
     address = customer.addresses.create!(:first_name => 'Foo')
 
-    card = customer.credit_cards.build(:first_name => 'Foo')
+    card = customer.credit_cards.build(:cardholder_name => 'Foo', :billing_address => {:stree_adress => 'Bar'})
     
     card.valid? # => false, local validations, rules based on Braintree's documents listed below.
     
