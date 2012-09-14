@@ -22,6 +22,10 @@ module BraintreeRails
       new_record? ? nil : @customer ||= BraintreeRails::Customer.new(customer_id)
     end
 
+    def full_name
+      "#{first_name} #{last_name}".strip
+    end
+
     def country_name=(val)
       self.country_code_alpha2= Braintree::Address::CountryNames.find{|country| country[0] == val}.try(:[], 1)
       @country_name = val
