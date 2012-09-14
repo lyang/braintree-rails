@@ -8,10 +8,16 @@ require 'delegate'
 require 'braintree'
 require 'braintree/exceptions'
 
-require 'model'
-require 'exceptions'
-require 'address'
-require 'addresses'
-require 'credit_card'
-require 'credit_cards'
-require 'customer'
+require 'braintree_rails/model'
+require 'braintree_rails/exceptions'
+require 'braintree_rails/address'
+require 'braintree_rails/addresses'
+require 'braintree_rails/credit_card'
+require 'braintree_rails/credit_cards'
+require 'braintree_rails/customer'
+
+module BraintreeRails
+  def self.use_relative_model_naming?
+    true
+  end
+end
