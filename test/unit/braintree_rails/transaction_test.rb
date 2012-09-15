@@ -4,13 +4,13 @@ describe BraintreeRails::Transaction do
   before do
     stub_braintree_request(:get, '/customers/customer_id', :body => fixture('customer.xml'))
     stub_braintree_request(:get, '/payment_methods/credit_card_id', :body => fixture('credit_card.xml'))
-    stub_braintree_request(:get, '/transactions/transaction_id', :body => fixture('transaction.xml'))
+    stub_braintree_request(:get, '/transactions/transactionid', :body => fixture('transaction.xml'))
   end
 
   describe '#initialize' do
     it 'should find transaction from braintree when given a transaction id' do
-      braintree_transaction = Braintree::Transaction.find('transaction_id')
-      transaction = BraintreeRails::Transaction.new('transaction_id')
+      braintree_transaction = Braintree::Transaction.find('transactionid')
+      transaction = BraintreeRails::Transaction.new('transactionid')
 
       transaction.persisted?.must_equal true
       [:amount, :created_at, :updated_at].each do |attribute|
@@ -19,7 +19,7 @@ describe BraintreeRails::Transaction do
     end
 
     it 'should wrap a Braintree::Transaction' do
-      braintree_transaction = Braintree::Transaction.find('transaction_id')
+      braintree_transaction = Braintree::Transaction.find('transactionid')
       transaction = BraintreeRails::Transaction.new(braintree_transaction)
 
       transaction.persisted?.must_equal true
@@ -50,7 +50,7 @@ describe BraintreeRails::Transaction do
   [:customer, :credit_card].each do |association|
     describe association do
       it "should load #{association} for persisted transaction" do
-        transaction = BraintreeRails::Transaction.new('transaction_id')
+        transaction = BraintreeRails::Transaction.new('transactionid')
         transaction.send(association).persisted?.must_equal true
       end
     end    
@@ -87,15 +87,31 @@ describe BraintreeRails::Transaction do
       transaction.status.must_equal Braintree::Transaction::Status::Authorized
     end
 
-    [:submit_for_settlement, :refund, :void].each do |operation|
-      it "should be able to #{operation} a transaction" do
-        customer = BraintreeRails::Customer.find('customer_id')
-        credit_card = BraintreeRails::CreditCard.find('credit_card_id')
-        transaction = BraintreeRails::Transaction.new(:amount => '10.00', :customer => customer, :credit_card => credit_card)
-        transaction.save
+    it "should be able to submit_for_settlement a transaction" do
+      customer = BraintreeRails::Customer.find('customer_id')
+      credit_card = BraintreeRails::CreditCard.find('credit_card_id')
+      transaction = BraintreeRails::Transaction.new(:amount => '10.00', :customer => customer, :credit_card => credit_card)
+      transaction.save!
+      stub_braintree_request(:put, "/transactions/#{transaction.id}/submit_for_settlement", :body => fixture('transaction.xml'))
+      transaction.submit_for_settlement.must_equal true
+    end
 
-        lambda{transaction.send(operation)}.must_be_silent
-      end
+    it "should be able to refund a transaction" do
+      customer = BraintreeRails::Customer.find('customer_id')
+      credit_card = BraintreeRails::CreditCard.find('credit_card_id')
+      transaction = BraintreeRails::Transaction.new(:amount => '10.00', :customer => customer, :credit_card => credit_card)
+      transaction.save!
+      stub_braintree_request(:post, "/transactions/#{transaction.id}/refund", :body => fixture('transaction.xml'))
+      transaction.refund.must_equal true
+    end
+
+    it "should be able to void a transaction" do
+      customer = BraintreeRails::Customer.find('customer_id')
+      credit_card = BraintreeRails::CreditCard.find('credit_card_id')
+      transaction = BraintreeRails::Transaction.new(:amount => '10.00', :customer => customer, :credit_card => credit_card)
+      transaction.save!
+      stub_braintree_request(:put, "/transactions/#{transaction.id}/void", :body => fixture('transaction.xml'))
+      transaction.void.must_equal true
     end
   end
 end

@@ -1,9 +1,9 @@
 module BraintreeRails
   class Transaction < SimpleDelegator
-    Attributes = [:amount, :customer, :credit_card, :vault_customer, :vault_credit_card, :created_at, :updated_at].freeze
+    Attributes = [:id, :amount, :customer, :credit_card, :vault_customer, :vault_credit_card, :created_at, :updated_at].freeze
     include Model
     
-    validates :amount, :presence => true, :numericality => {:greater_than_or_equal_to => 0}, :if => :new_record?
+    validates :amount, :presence => true, :numericality => {:greater_than_or_equal_to => 0}
     validates_each :credit_card, :customer do |record, attribute, value|
       record.errors.add(attribute, "is not persisted") unless (value && value.persisted?)
     end
@@ -35,21 +35,26 @@ module BraintreeRails
     end
 
     [:submit_for_settlement!, :refund!, :void!].each do |method_with_exception|
-      method_without_exception = method_with_exception.to_s.gsub(/!$/, '')
-      
       define_method method_with_exception do |*args|
-        raise RecordInvalid.new("You can only #{method_without_exception} an existing transaction") if new_record?
+        raise RecordInvalid.new("cannot #{method_with_exception} transactions not saved") if new_record?
         with_update_braintree do
           Braintree::Transaction.send(method_with_exception, *args.unshift(id))
         end
+        true
       end
-      
+    end
+
+    [:submit_for_settlement, :refund, :void].each do |method_without_exception|
       define_method method_without_exception do |*args|
         begin
-          self.send(method_with_exception, *args)
+          raise RecordInvalid.new("cannot #{method_with_exception} transactions not saved") if new_record?
+          with_update_braintree do
+            Braintree::Transaction.send(method_without_exception, *args.unshift(id))
+          end
+          true
         rescue RecordInvalid => e
           errors.add(:base, e.message)
-          return false
+          false
         end
       end
     end

@@ -9,7 +9,7 @@ GEM
       multi_json (~> 1.0)
     addressable (2.3.2)
     ansi (1.4.3)
-    braintree (2.14.0)
+    braintree (2.16.0)
       builder (>= 2.0.0)
     builder (3.0.3)
     crack (0.3.1)
@@ -26,9 +26,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activemodel (~> 3.0)
-  activesupport (~> 3.0)
-  braintree (~> 2.14.0)
+  activemodel (>= 3.0)
+  activesupport (>= 3.0)
+  braintree (>= 2.16.0)
   minitest
   turn
   webmock

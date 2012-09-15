@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transaction>
-  <id>transaction_id</id>
+  <id>transactionid</id>
   <status>authorized</status>
   <type>sale</type>
   <currency-iso-code>USD</currency-iso-code>
