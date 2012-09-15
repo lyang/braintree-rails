@@ -147,13 +147,13 @@ module BraintreeRails
       end
 
       def attributes_to_exclude_from_update
-        [:id]
+        [:id, :created_at, :updated_at]
       end
 
       def attributes_to_exclude_from_create
-        []
+        [:created_at, :updated_at]
       end
-
+      
       def extract_values(obj)
         return {} if obj.nil?
         self.class::Attributes.inject({}) do |hash, attr|

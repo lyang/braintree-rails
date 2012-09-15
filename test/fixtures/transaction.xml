@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transaction>
+  <id>transaction_id</id>
+  <status>authorized</status>
+  <type>sale</type>
+  <currency-iso-code>USD</currency-iso-code>
+  <amount>10.00</amount>
+  <merchant-account-id>merchant_id</merchant-account-id>
+  <order-id nil="true"></order-id>
+  <created-at type="datetime">2012-09-15T01:07:58Z</created-at>
+  <updated-at type="datetime">2012-09-15T01:07:58Z</updated-at>
+  <customer>
+    <id>customer_id</id>
+    <first-name>Brain</first-name>
+    <last-name>Tree</last-name>
+    <company>Braintree</company>
+    <email>braintree@example.com</email>
+    <website>www.braintreepayments.com</website>
+    <phone>877.434.2894</phone>
+    <fax>888.781.6495</fax>
+  </customer>
+  <billing>
+    <id>address_id</id>
+    <first-name>Brain</first-name>
+    <last-name>Tree</last-name>
+    <company>Braintree</company>
+    <street-address>1134 Crane Avenue</street-address>
+    <extended-address>Suite 200</extended-address>
+    <locality>Menlo Park</locality>
+    <region>California</region>
+    <postal-code>94025</postal-code>
+    <country-name>United States of America</country-name>
+    <country-code-alpha2>US</country-code-alpha2>
+    <country-code-alpha3>USA</country-code-alpha3>
+    <country-code-numeric>840</country-code-numeric>
+  </billing>
+  <refund-id nil="true"></refund-id>
+  <refund-ids type="array"/>
+  <refunded-transaction-id nil="true"></refunded-transaction-id>
+  <settlement-batch-id nil="true"></settlement-batch-id>
+  <shipping>
+    <id nil="true"></id>
+    <first-name nil="true"></first-name>
+    <last-name nil="true"></last-name>
+    <company nil="true"></company>
+    <street-address nil="true"></street-address>
+    <extended-address nil="true"></extended-address>
+    <locality nil="true"></locality>
+    <region nil="true"></region>
+    <postal-code nil="true"></postal-code>
+    <country-name nil="true"></country-name>
+    <country-code-alpha2 nil="true"></country-code-alpha2>
+    <country-code-alpha3 nil="true"></country-code-alpha3>
+    <country-code-numeric nil="true"></country-code-numeric>
+  </shipping>
+  <custom-fields>
+  </custom-fields>
+  <avs-error-response-code nil="true"></avs-error-response-code>
+  <avs-postal-code-response-code>M</avs-postal-code-response-code>
+  <avs-street-address-response-code>M</avs-street-address-response-code>
+  <cvv-response-code>I</cvv-response-code>
+  <gateway-rejection-reason nil="true"></gateway-rejection-reason>
+  <processor-authorization-code>796RN2</processor-authorization-code>
+  <processor-response-code>1000</processor-response-code>
+  <processor-response-text>Approved</processor-response-text>
+  <purchase-order-number nil="true"></purchase-order-number>
+  <tax-amount nil="true"></tax-amount>
+  <tax-exempt type="boolean">false</tax-exempt>
+  <credit-card>
+    <token>credit_card_id</token>
+    <cardholder-name>Brain Tree</cardholder-name>
+    <customer-location>US</customer-location>
+    <card-type>MasterCard</card-type>
+    <bin>555555</bin>
+    <last-4>4444</last-4>
+    <expiration-month>05</expiration-month>
+    <expiration-year>2037</expiration-year>
+  </credit-card>
+  <status-history type="array">
+    <status-event>
+      <timestamp type="datetime">2012-09-15T01:07:58Z</timestamp>
+      <status>authorized</status>
+      <amount>10.00</amount>
+      <user>linyang84</user>
+      <transaction-source>API</transaction-source>
+    </status-event>
+  </status-history>
+  <plan-id nil="true"></plan-id>
+  <subscription-id nil="true"></subscription-id>
+  <subscription>
+    <billing-period-end-date nil="true"></billing-period-end-date>
+    <billing-period-start-date nil="true"></billing-period-start-date>
+  </subscription>
+  <add-ons type="array"/>
+  <discounts type="array"/>
+  <descriptor>
+    <name nil="true"></name>
+    <phone nil="true"></phone>
+  </descriptor>
+</transaction>

@@ -15,6 +15,7 @@ require 'braintree_rails/addresses'
 require 'braintree_rails/credit_card'
 require 'braintree_rails/credit_cards'
 require 'braintree_rails/customer'
+require 'braintree_rails/transaction'
 
 module BraintreeRails
   def self.use_relative_model_naming?

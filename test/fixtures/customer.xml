@@ -51,7 +51,7 @@
   </credit-cards>
   <addresses type="array">
     <address>
-      <id>wx</id>
+      <id>address_id</id>
       <customer-id>customer_id</customer-id>
       <first-name>Brain</first-name>
       <last-name>Tree</last-name>

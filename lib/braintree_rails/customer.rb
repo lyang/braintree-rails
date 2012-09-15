@@ -37,13 +37,5 @@ module BraintreeRails
         customer
       end
     end
-
-    def attributes_to_exclude_from_update
-      [:created_at, :updated_at]
-    end
-
-    def attributes_to_exclude_from_create
-      [:created_at, :updated_at]
-    end
   end
 end

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <address>
   <id>address_id</id>
-  <customer-id>8404776</customer-id>
+  <customer-id>customer_id</customer-id>
   <first-name>Brain</first-name>
   <last-name>Tree</last-name>
   <company>Braintree</company>
