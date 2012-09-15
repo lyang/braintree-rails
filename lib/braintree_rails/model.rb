@@ -173,7 +173,7 @@ module BraintreeRails
           if respond_to?(error.attribute)
             self.errors.add error.attribute, error.message
           else
-            self.error.add :base, error.message
+            self.errors.add :base, error.message
           end
         end
       end
