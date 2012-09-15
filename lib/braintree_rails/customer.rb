@@ -20,6 +20,10 @@ module BraintreeRails
       "#{first_name} #{last_name}".strip
     end
 
+    def transactions
+      new_record? ? [] : @transactions ||= Transactions.new(self)
+    end
+
     protected
     def ensure_customer(customer)
       case customer

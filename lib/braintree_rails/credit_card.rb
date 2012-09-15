@@ -28,6 +28,10 @@ module BraintreeRails
       new_record? ? nil : @customer ||= BraintreeRails::Customer.new(customer_id)
     end
 
+    def transactions
+      new_record? ? [] : @transactions ||= Transactions.new(customer, self)
+    end
+
     def expiration_date=(date)
       expiration_month, expiration_year = date.split('/')
       self.expiration_month = expiration_month

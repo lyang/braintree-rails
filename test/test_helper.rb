@@ -19,6 +19,32 @@ MiniTest::Unit::TestCase.class_eval do
     response = response.reverse_merge(:headers => {'Content-Type' => ['application/xml', 'charset=utf-8'], 'Content-Encoding' => 'gzip'})
     stub_request(method, BraintreeBaseUri+path).to_return(response)
   end
+
+  def address_hash
+    {
+      :first_name => 'Brain',
+      :last_name => 'Tree',
+      :company => 'Braintree',
+      :street_address => '1134 Crane Avenue',
+      :extended_address => 'Suite 200',
+      :locality => 'Menlo Park',
+      :region => 'California',
+      :postal_code => '94025',
+      :country_name => 'United States of America'
+    }
+  end
+
+  def credit_card_hash
+    {
+      :token => 'credit_card_id',
+      :number => '4111111111111111',
+      :cvv => '123',
+      :cardholder_name => 'Brain Tree',
+      :expiration_month => '05',
+      :expiration_year => '2037',
+      :billing_address => address_hash,
+    }
+  end
 end
 
 String.class_eval do

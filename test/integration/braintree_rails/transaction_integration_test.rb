@@ -6,27 +6,6 @@ describe 'Transaction Integration' do
   end
 
   it 'should be able to create, submit, void transactions for a customer' do
-    address_hash = {
-      :first_name => 'Brain',
-      :last_name => 'Tree',
-      :company => 'Braintree',
-      :street_address => '1134 Crane Avenue',
-      :extended_address => 'Suite 200',
-      :locality => 'Menlo Park',
-      :region => 'California',
-      :postal_code => '94025',
-      :country_name => 'United States of America'
-    }
-
-    credit_card_hash = {
-      :token => 'credit_card_id',
-      :number => '4111111111111111',
-      :cvv => '123',
-      :cardholder_name => 'Brain Tree',
-      :expiration_month => '05',
-      :expiration_year => '2037',
-      :billing_address => address_hash,
-    }
 
     braintree_customer = Braintree::Customer.create!(:id => 'customer_id', :first_name => 'Brain', :last_name => 'Tree', :credit_card => credit_card_hash)
     customer = BraintreeRails::Customer.new(braintree_customer)
@@ -44,5 +23,15 @@ describe 'Transaction Integration' do
       transaction.void!
       transaction.status.must_equal Braintree::Transaction::Status::Voided
     end
+  end
+
+  it "should be able to load transactions for given customer and credit_card" do
+    braintree_customer = Braintree::Customer.create!(:id => 'customer_id', :first_name => 'Brain', :last_name => 'Tree', :credit_card => credit_card_hash)
+    customer = BraintreeRails::Customer.new(braintree_customer)
+    credit_card = customer.credit_cards.first
+    transaction = BraintreeRails::Transaction.create!({:amount => 15.00, :customer => customer})
+    
+    customer.transactions.count.must_equal 1
+    credit_card.transactions.count.must_equal 1
   end
 end
