@@ -51,7 +51,6 @@ module BraintreeRails
           with_update_braintree do
             Braintree::Transaction.send(method_without_exception, *args.unshift(id))
           end
-          true
         rescue RecordInvalid => e
           errors.add(:base, e.message)
           false
