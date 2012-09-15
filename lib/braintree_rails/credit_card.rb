@@ -64,6 +64,10 @@ module BraintreeRails
       end
     end
 
+    def attributes_for_update
+      super.tap { |attributes| attributes[:billing_address].merge!(:options => {:update_existing => true}) }
+    end
+
     def attributes_to_exclude_from_update
       [:token, :customer_id, :expiration_date, :created_at, :updated_at]
     end
