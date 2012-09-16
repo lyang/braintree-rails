@@ -117,7 +117,17 @@ module BraintreeRails
         end
       end
 
-      private
+      def add_errors(validation_errors)
+        validation_errors.each do |error|
+          if respond_to?(error.attribute)
+            self.errors.add error.attribute, error.message
+          else
+            self.errors.add :base, error.message
+          end
+        end
+      end
+
+      protected
       def create_or_update
         !!(new_record? ? create : update)
       end
@@ -165,16 +175,6 @@ module BraintreeRails
       def assign_attributes(hash)
         hash.each do |attribute, value|
           send("#{attribute}=", value) if respond_to?("#{attribute}=")
-        end
-      end
-
-      def add_errors(validation_errors)
-        validation_errors.each do |error|
-          if respond_to?(error.attribute)
-            self.errors.add error.attribute, error.message
-          else
-            self.errors.add :base, error.message
-          end
         end
       end
 
