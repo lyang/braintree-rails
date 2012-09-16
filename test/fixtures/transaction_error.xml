@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api-error-response>
+  <message>Cannot submit for settlement unless status is authorized.</message>
+  <errors>
+    <transaction>
+      <errors type="array">
+        <error>
+          <code>91507</code>
+          <message>Cannot submit for settlement unless status is authorized.</message>
+          <attribute type="symbol">base</attribute>
+        </error>
+      </errors>
+    </transaction>
+    <errors type="array"/>
+  </errors>
+  <params>
+    <merchant-id>merchant_id</merchant-id>
+    <action>submit_for_settlement</action>
+    <id>transactionid</id>
+    <transaction>
+      <amount nil="true"></amount>
+    </transaction>
+    <controller>transactions</controller>
+  </params>
+</api-error-response>

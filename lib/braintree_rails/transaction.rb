@@ -37,10 +37,7 @@ module BraintreeRails
     [:submit_for_settlement!, :refund!, :void!].each do |method_with_exception|
       define_method method_with_exception do |*args|
         raise RecordInvalid.new("cannot #{method_with_exception} transactions not saved") if new_record?
-        with_update_braintree do
-          Braintree::Transaction.send(method_with_exception, *args.unshift(id))
-        end
-        true
+        !!with_update_braintree {Braintree::Transaction.send(method_with_exception, *args.unshift(id))}
       end
     end
 
@@ -48,9 +45,7 @@ module BraintreeRails
       define_method method_without_exception do |*args|
         begin
           raise RecordInvalid.new("cannot #{method_with_exception} transactions not saved") if new_record?
-          with_update_braintree do
-            Braintree::Transaction.send(method_without_exception, *args.unshift(id))
-          end
+          !!with_update_braintree {Braintree::Transaction.send(method_without_exception, *args.unshift(id))}
         rescue RecordInvalid => e
           errors.add(:base, e.message)
           false

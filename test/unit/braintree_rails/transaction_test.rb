@@ -113,5 +113,20 @@ describe BraintreeRails::Transaction do
       stub_braintree_request(:put, "/transactions/#{transaction.id}/void", :body => fixture('transaction.xml'))
       transaction.void.must_equal true
     end
+
+    it 'should show errors when trying to submit already voided transaction' do
+      customer = BraintreeRails::Customer.find('customer_id')
+      credit_card = BraintreeRails::CreditCard.find('credit_card_id')
+      transaction = BraintreeRails::Transaction.new(:amount => '10.00', :customer => customer, :credit_card => credit_card)
+      transaction.save!
+      stub_braintree_request(:put, "/transactions/#{transaction.id}/void", :body => fixture('transaction.xml'))
+      transaction.void.must_equal true
+
+      stub_braintree_request(:put, "/transactions/#{transaction.id}/submit_for_settlement", :status => 422, :body => fixture('transaction_error.xml'))
+      transaction.submit_for_settlement.must_equal false
+      transaction.errors[:base].wont_be :blank?
+
+      lambda{transaction.submit_for_settlement!}.must_raise Braintree::ValidationsFailed
+    end
   end
 end
