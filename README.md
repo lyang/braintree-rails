@@ -24,7 +24,7 @@ CRUD
     
     BraintreeRails::Customer.create!(:first_name => 'Foo')
 
-    card.update_attributes(:last_name => 'Bar')
+    customer.update_attributes(:last_name => 'Bar')
     
     customer.destroy!
     
@@ -35,9 +35,9 @@ Associations
     
     customer.addresses # => [address]
 
-    address = customer.addresses.create!(:first_name => 'Foo')
+    address = customer.addresses.create!(:first_name => 'Foo') # => persisted
 
-    card = customer.credit_cards.build(:cardholder_name => 'Foo', :billing_address => {:stree_adress => 'Bar'})
+    card = customer.credit_cards.build(:cardholder_name => 'Foo', :billing_address => {:stree_adress => 'Bar'}) # => new_record
 
 Validations
 ---------------
