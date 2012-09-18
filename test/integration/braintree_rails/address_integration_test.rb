@@ -6,18 +6,19 @@ describe 'Address Integration' do
   end
 
   it 'should be able to add address' do
-    customer = BraintreeRails::Customer.create!(:first_name => 'Brain', :last_name => 'Tree')
-    customer.addresses.create!(address_hash)
+    customer = BraintreeRails::Customer.create!(customer_hash)
+    attributes = address_hash()
+    customer.addresses.create!(attributes)
     braintree_customer = Braintree::Customer.find(customer.id)
     braintree_address = braintree_customer.addresses.first
     
-    address_hash.each do |key, value|
+    attributes.each do |key, value|
       braintree_address.send(key).must_equal value
     end
   end
 
   it 'should be able to update existing address' do
-    customer = BraintreeRails::Customer.create!(:first_name => 'Brain', :last_name => 'Tree')
+    customer = BraintreeRails::Customer.create!(customer_hash)
     address = customer.addresses.create!(address_hash)
     address.update_attributes!(:first_name => 'Foo', :last_name => 'Bar')
     braintree_customer = Braintree::Customer.find(customer.id)
@@ -28,7 +29,7 @@ describe 'Address Integration' do
   end
 
   it 'should be able to destroy existing address' do
-    customer = BraintreeRails::Customer.create!(:first_name => 'Brain', :last_name => 'Tree')
+    customer = BraintreeRails::Customer.create!(customer_hash)
     address = customer.addresses.create!(address_hash)
     address.destroy!
     lambda{ Braintree::Address.find(customer.id, address.id) }.must_raise Braintree::NotFoundError

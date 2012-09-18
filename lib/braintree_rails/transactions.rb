@@ -1,7 +1,7 @@
 module BraintreeRails
   class Transactions < SimpleDelegator
     def initialize(customer, credit_card=nil)
-      @customer = customer
+      @customer = customer || Customer.new({})
       @credit_card = credit_card || customer.credit_cards.find(&:default?)
       transactions = Braintree::Transaction.search do |search|
         search.customer_id.is @customer.id

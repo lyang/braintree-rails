@@ -7,26 +7,39 @@ describe 'Transaction Integration' do
 
   it 'should be able to create, submit, void transactions for a customer' do
 
-    braintree_customer = Braintree::Customer.create!(:id => 'customer_id', :first_name => 'Brain', :last_name => 'Tree', :credit_card => credit_card_hash)
+    braintree_customer = Braintree::Customer.create!(customer_hash.merge(:credit_card => credit_card_hash))
+    customer = BraintreeRails::Customer.new(braintree_customer)
+
+    transaction = BraintreeRails::Transaction.create!(:customer => customer, :amount => rand(1..5))
+    transaction.persisted?.must_equal true
+    transaction.status.must_equal Braintree::Transaction::Status::Authorized
+
+    transaction.submit_for_settlement!
+    transaction.status.must_equal Braintree::Transaction::Status::SubmittedForSettlement
+
+    transaction.void!
+    transaction.status.must_equal Braintree::Transaction::Status::Voided
+  end
+
+  it 'should be able to create, submit, void transactions for a customer with a credit_card' do
+    braintree_customer = Braintree::Customer.create!(customer_hash.merge(:credit_card => credit_card_hash))
     customer = BraintreeRails::Customer.new(braintree_customer)
     credit_card = customer.credit_cards.first
 
-    [{:amount => rand(1..10), :customer => customer}, {:amount => rand(1..10), :customer => customer, :credit_card => credit_card}].each do |params|
-      transaction = BraintreeRails::Transaction.create!(params)
-      transaction.persisted?.must_equal true
-      transaction.amount.must_equal params[:amount]
-      transaction.status.must_equal Braintree::Transaction::Status::Authorized
+    transaction = BraintreeRails::Transaction.create!(:customer => customer, :amount => rand(1..5), :credit_card => credit_card)
+    transaction.persisted?.must_equal true
+    transaction.status.must_equal Braintree::Transaction::Status::Authorized
 
-      transaction.submit_for_settlement!
-      transaction.status.must_equal Braintree::Transaction::Status::SubmittedForSettlement
+    transaction.submit_for_settlement!
+    transaction.status.must_equal Braintree::Transaction::Status::SubmittedForSettlement
 
-      transaction.void!
-      transaction.status.must_equal Braintree::Transaction::Status::Voided
-    end
+    transaction.void!
+    transaction.status.must_equal Braintree::Transaction::Status::Voided
   end
 
+
   it "should be able to load transactions for given customer and credit_card" do
-    braintree_customer = Braintree::Customer.create!(:id => 'customer_id', :first_name => 'Brain', :last_name => 'Tree', :credit_card => credit_card_hash)
+    braintree_customer = Braintree::Customer.create!(customer_hash.merge(:credit_card => credit_card_hash))
     customer = BraintreeRails::Customer.new(braintree_customer)
     credit_card = customer.credit_cards.first
     transaction = BraintreeRails::Transaction.create!(:amount => rand(1..10), :customer => customer)
@@ -35,8 +48,14 @@ describe 'Transaction Integration' do
     credit_card.transactions.count.must_equal 1
   end
 
+  it 'should be able to create a one time transaction' do
+    transaction = BraintreeRails::Transaction.create!(:amount => rand(1..10), :customer => customer_hash, :credit_card => credit_card_hash)
+    transaction.persisted?.must_equal true
+    transaction.id.wont_be :blank?
+  end
+
   it 'should be able to capture braintree api errors' do
-    braintree_customer = Braintree::Customer.create!(:id => 'customer_id', :first_name => 'Brain', :last_name => 'Tree', :credit_card => credit_card_hash)
+    braintree_customer = Braintree::Customer.create!(customer_hash.merge(:credit_card => credit_card_hash))
     customer = BraintreeRails::Customer.new(braintree_customer)
     credit_card = customer.credit_cards.first
     transaction = BraintreeRails::Transaction.create!(:amount => rand(1..10), :customer => customer)

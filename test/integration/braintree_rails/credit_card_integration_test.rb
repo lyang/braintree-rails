@@ -6,30 +6,32 @@ describe 'Credit Card Integration' do
   end
 
   it 'should be able to fetch from Braintree for given token' do
-    braintree_customer = Braintree::Customer.create!(:id => 'customer_id', :first_name => 'Brain', :last_name => 'Tree', :credit_card => credit_card_hash)
+    attributes = credit_card_hash()
+    braintree_customer = Braintree::Customer.create!(:id => 'customer_id', :first_name => 'Brain', :last_name => 'Tree', :credit_card => attributes)
 
     credit_card = BraintreeRails::CreditCard.new(braintree_customer.credit_cards.first.token)
 
-    credit_card_hash.except(:number, :cvv, :billing_address).each do |key, value|
+    attributes.except(:number, :cvv, :billing_address).each do |key, value|
       credit_card.send(key).must_equal value
     end
 
-    address_hash.each do |key, value|
+    attributes[:billing_address].each do |key, value|
       credit_card.billing_address.send(key).must_equal value
     end
   end
 
   it 'should be able to add credit card' do
     customer = BraintreeRails::Customer.create!(:id => 'customer_id', :first_name => 'Brain', :last_name => 'Tree')
-    credit_card = customer.credit_cards.create!(credit_card_hash)
+    attributes = credit_card_hash()
+    credit_card = customer.credit_cards.create!(attributes)
 
     braintree_credit_card = Braintree::CreditCard.find(credit_card.id)
-    credit_card_hash.except(:number, :cvv, :billing_address).each do |key, value|
+    attributes.except(:number, :cvv, :billing_address).each do |key, value|
       braintree_credit_card.send(key).must_equal value
     end
     
     braintree_address = braintree_credit_card.billing_address
-    address_hash.each do |key, value|
+    attributes[:billing_address].each do |key, value|
       braintree_address.send(key).must_equal value
     end
   end

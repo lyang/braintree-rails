@@ -11,8 +11,8 @@ module BraintreeRails
     def initialize(customer = {})
       customer = ensure_customer(customer)
       assign_attributes(extract_values(customer))
-      @addresses = Addresses.new(self, customer.addresses)
-      @credit_cards = CreditCards.new(self, customer.credit_cards)
+      @addresses = Addresses.new(self, customer.try(:addresses))
+      @credit_cards = CreditCards.new(self, customer.try(:credit_cards))
       super
     end
 

@@ -25,11 +25,11 @@ MiniTest::Unit::TestCase.class_eval do
       :first_name => 'Brain',
       :last_name => 'Tree',
       :company => 'Braintree',
-      :street_address => '1134 Crane Avenue',
-      :extended_address => 'Suite 200',
+      :street_address => "#{rand(1000..9999)} Crane Avenue",
+      :extended_address => "Suite #{rand(100..999)}",
       :locality => 'Menlo Park',
       :region => 'California',
-      :postal_code => '94025',
+      :postal_code => ("00001".."99999").to_a.shuffle.first,
       :country_name => 'United States of America'
     }
   end
@@ -37,12 +37,19 @@ MiniTest::Unit::TestCase.class_eval do
   def credit_card_hash
     {
       :token => 'credit_card_id',
-      :number => '4111111111111111',
-      :cvv => '123',
+      :number => (Braintree::Test::CreditCardNumbers::All - Braintree::Test::CreditCardNumbers::AmExes).shuffle.first,
+      :cvv => ("100".."999").to_a.shuffle.first,
       :cardholder_name => 'Brain Tree',
-      :expiration_month => '05',
-      :expiration_year => '2037',
+      :expiration_month => ("01".."12").to_a.shuffle.first,
+      :expiration_year => ("2012".."2035").to_a.shuffle.first,
       :billing_address => address_hash,
+    }
+  end
+
+  def customer_hash
+    {
+      :first_name => "Brain#{rand(1..100)}",
+      :last_name => "Tree#{rand(1..100)}"
     }
   end
 end

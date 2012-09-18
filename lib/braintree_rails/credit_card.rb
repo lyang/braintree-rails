@@ -1,6 +1,6 @@
 module BraintreeRails
   class CreditCard < SimpleDelegator
-    Attributes = [:customer_id, :number, :token, :cvv, :cardholder_name, :expiration_date, :expiration_month, :expiration_year, :billing_address, :created_at, :updated_at].freeze
+    Attributes = [:customer_id, :number, :token, :cvv, :cardholder_name, :expiration_date, :expiration_month, :expiration_year, :billing_address, :options, :created_at, :updated_at].freeze
     
     include Model
 
