@@ -97,6 +97,11 @@ Controllers
 
 Check out [braintree-rails-example](https://github.com/lyang/braintree-rails-example) for complete examples.
 
+Todos
+---------------
+1. Adding support for subscriptions.
+2. Adding a Arel like query interface?
+
 NOTICE
 ---------------
 This IS NOT created or maintained by Braintree.
