@@ -1,6 +1,6 @@
 module BraintreeRails
   class Transaction < SimpleDelegator
-    Attributes = [:id, :amount, :tax_amount, :tax_exempt, :customer, :order_id, :purchase_order_number, :credit_card, :vault_customer, :vault_credit_card, :billing, :shipping, :custom_fields, :descriptor, :options, :created_at, :updated_at].freeze
+    Attributes = [:id, :amount, :tax_amount, :tax_exempt, :customer, :order_id, :purchase_order_number, :credit_card, :vault_customer, :vault_credit_card, :credit_card_details, :billing, :shipping, :custom_fields, :descriptor, :options, :created_at, :updated_at].freeze
     include Model
     
     validates :amount, :presence => true, :numericality => {:greater_than_or_equal_to => 0}
@@ -23,11 +23,15 @@ module BraintreeRails
     end
 
     def vault_customer=(val)
-      @vault_customer = self.customer = val
+      @vault_customer = val.tap { self.customer ||= val }
     end
 
     def vault_credit_card=(val)
-      @vault_credit_card = self.credit_card = val
+      @vault_credit_card = val.tap { self.credit_card ||= val }
+    end
+
+    def credit_card_details=(val)
+      @credit_card_details = val.tap { self.credit_card ||= val }
     end
 
     def customer=(val)
@@ -108,7 +112,7 @@ module BraintreeRails
     end
 
     def attributes_to_exclude_from_update
-      [:id, :customer, :credit_card, :vault_customer, :vault_credit_card, :created_at, :updated_at]
+      [:id, :customer, :credit_card, :vault_customer, :vault_credit_card, :credit_card_details, :created_at, :updated_at]
     end
   end
 end
