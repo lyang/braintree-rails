@@ -37,7 +37,7 @@ Associations
 
     address = customer.addresses.create!(:first_name => 'Foo') # => persisted
 
-    card = customer.credit_cards.build(:cardholder_name => 'Foo', :billing_address => {:stree_adress => 'Bar'}) # => new_record
+    card = customer.credit_cards.build(:cardholder_name => 'Foo', :billing_address => {:street_adress => 'Bar'}) # => new_record
 
 Validations
 ---------------
