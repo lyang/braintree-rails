@@ -8,6 +8,8 @@ require 'delegate'
 require 'braintree'
 require 'braintree/exceptions'
 
+require 'braintree_rails/attributes'
+require 'braintree_rails/persistence'
 require 'braintree_rails/model'
 require 'braintree_rails/exceptions'
 require 'braintree_rails/address'
