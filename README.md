@@ -8,45 +8,81 @@ The demo app shows how you can treat the resources stored in Braintree's vault a
 
 Initialization
 ---------------
-
-    BraintreeRails::Customer.new({}) # new record
-    
-    BraintreeRails::Customer.new(customer_id) # fetched from Braintree for given id
-    
-    BraintreeRails::Customer.new(Braintree::Customer.find(customer_id)) # wrapping Braintree model objects
+    Braintree::Configuration.environment = :sandbox
+    Braintree::Configuration.merchant_id = ''
+    Braintree::Configuration.public_key = ''
+    Braintree::Configuration.private_key = ''
     
 CRUD
 ---------------
+    customer = BraintreeRails::Customer.new({:first_name => 'Foo'}) # new record
 
-    BraintreeRails::Customer.find(id) # delegated to Braintree::Customer.find
-    
-    BraintreeRails::Customer.delete(id) # same as above
-    
-    BraintreeRails::Customer.create!(:first_name => 'Foo')
+    customer.save! # => persisted
 
-    customer.update_attributes(:last_name => 'Bar')
+    customer = BraintreeRails::Customer.new(customer.id) # fetched from Braintree for given id
+
+    customer = BraintreeRails::Customer.new(Braintree::Customer.find(customer.id)) # wrapping Braintree model objects
+
+    customer = BraintreeRails::Customer.create!(:first_name => 'Foo')
+
+    customer = BraintreeRails::Customer.find(customer.id)
     
-    customer.destroy!
+    customer.company = 'Foo Bar'
+
+    customer.save!
+
+    customer.update_attributes(:website => 'www.example.com')
+
+    customer.update_attributes!(:email => 'foobar@example.com')
+    
+    customer.destroy
     
 Associations
 ---------------
-
-    customer.credit_cards # => [credit_card], Array like associations 
     
-    customer.addresses # => [address]
+    customer = BraintreeRails::Customer.create!(:first_name => 'Foo')
 
-    address = customer.addresses.create!(:first_name => 'Foo') # => persisted
+    customer.credit_cards # => []
 
-    card = customer.credit_cards.build(:cardholder_name => 'Foo', :billing_address => {:street_adress => 'Bar'}) # => new_record
+    credit_card = customer.credit_cards.build(
+      :cardholder_name => 'Foo',
+      :number => '4111111111111111',
+      :cvv => '123',
+      :expiration_month => '12',
+      :expiration_year => '2020',
+      :billing_address => {:street_address => 'Foo St', :postal_code => '12345'}
+    )
+
+    credit_card.save
+
+    transaction = credit_card.transactions.create!(:amount => '10.00') # => authorized
+
+    transaction.submit_for_settlement # => submitted_for_settlement
+
+    transaction.void! # => voided
+    
+    transaction.void! # => raises Braintree::ValidationsFailed
 
 Validations
 ---------------
-
-    card.save # => false
-
-    card.valid? # => false, local validations, rules based on Braintree's documents listed below.
+    credit_card = customer.credit_cards.build({})
     
-    card.errors # => ActiveModel::Errors
+    credit_card.save! # => raises RecordInvalid
+
+    credit_card.errors # => ActiveModel::Errors
+
+    credit_card.valid? # => false
+    
+    credit_card.assign_attributes(
+      :cardholder_name => 'Foo',
+      :number => '4111111111111111',
+      :cvv => '123',
+      :expiration_month => '12',
+      :expiration_year => '2020',
+      :billing_address => {:street_address => 'Foo St', :postal_code => '12345'}
+    )
+
+    credit_card.save! # => true
 
 Forms
 ---------------
