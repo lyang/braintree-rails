@@ -127,6 +127,12 @@ module BraintreeRails
         end
       end
 
+      def assign_attributes(hash)
+        hash.each do |attribute, value|
+          send("#{attribute}=", value) if respond_to?("#{attribute}=")
+        end
+      end
+
       protected
       def create_or_update
         !!(new_record? ? create : update)
@@ -169,12 +175,6 @@ module BraintreeRails
         self.class::Attributes.inject({}) do |hash, attr|
           hash[attr] = obj.send(attr) if obj.respond_to?(attr)
           hash
-        end
-      end
-
-      def assign_attributes(hash)
-        hash.each do |attribute, value|
-          send("#{attribute}=", value) if respond_to?("#{attribute}=")
         end
       end
 
