@@ -4,7 +4,7 @@ module BraintreeRails
     include Model
 
     validates :first_name, :last_name, :company, :street_address, :extended_address, :locality, :region, :length => {:maximum => 255}
-    validates :country_code_alpha2, :inclusion => { :in => Braintree::Address::CountryNames.map {|country| country[1]} }
+    validates :country_code_alpha2, :allow_blank => true, :inclusion => { :in => Braintree::Address::CountryNames.map {|country| country[1]} }
     validates :postal_code, :street_address, :presence => true
     validates :postal_code, :format => { :with => /^[- a-z0-9]+$/i}
 
