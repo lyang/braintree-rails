@@ -46,6 +46,18 @@ module BraintreeRails
       @billing_address = Address.new(val)
     end
 
+    def add_errors(validation_errors)
+      validation_errors.each do |error|
+        if respond_to?(error.attribute)
+          self.errors.add error.attribute, error.message
+        elsif billing_address.respond_to?(error.attribute)
+          billing_address.errors.add error.attribute, error.message
+        else
+          self.errors.add :base, error.message
+        end
+      end
+    end
+
     protected
     def ensure_credit_card(credit_card)
       case credit_card
