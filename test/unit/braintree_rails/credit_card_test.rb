@@ -244,6 +244,9 @@ describe BraintreeRails::CreditCard do
       credit_card = BraintreeRails::CreditCard.new('credit_card_id')
       credit_card.update_attributes(:number => '1' * 15, :cvv => '111')
       credit_card.errors[:number].wont_be :blank?
+
+      credit_card.billing_address.errors[:street_address].wont_be :blank?
+      credit_card.billing_address.errors[:postal_code].wont_be :blank?
     end
   end
 

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <api-error-response>
-  <message>Credit card number is invalid.</message>
+  <message>Credit card number is invalid.
+CVV is required.
+Street address is required.
+Postal code is required.</message>
   <errors>
     <errors type="array"/>
     <credit-card>
@@ -10,7 +13,26 @@
           <message>Credit card number is invalid.</message>
           <attribute type="symbol">number</attribute>
         </error>
+        <error>
+          <code>81706</code>
+          <message>CVV is required.</message>
+          <attribute type="symbol">cvv</attribute>
+        </error>
       </errors>
+      <billing-address>
+        <errors type="array">
+          <error>
+            <code>81811</code>
+            <message>Street address is required.</message>
+            <attribute type="symbol">street_address</attribute>
+          </error>
+          <error>
+            <code>81808</code>
+            <message>Postal code is required.</message>
+            <attribute type="symbol">postal_code</attribute>
+          </error>
+        </errors>
+      </billing-address>
     </credit-card>
   </errors>
   <params>
@@ -20,6 +42,17 @@
       <cardholder-name>Brain Tree</cardholder-name>
       <customer-id>customer_id</customer-id>
       <expiration-date>05/2037</expiration-date>
+      <billing-address>
+        <street-address></street-address>
+        <postal-code></postal-code>
+        <locality>Braintree</locality>
+        <company>Braintree</company>
+        <last-name>Tree</last-name>
+        <extended-address>#1</extended-address>
+        <region>California</region>
+        <first-name>Brain</first-name>
+        <country-code-alpha2>US</country-code-alpha2>
+      </billing-address>
     </credit-card>
     <controller>payment_methods</controller>
   </params>
