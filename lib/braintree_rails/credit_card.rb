@@ -1,8 +1,7 @@
 module BraintreeRails
   class CreditCard < SimpleDelegator
-    Attributes = [:customer_id, :number, :token, :cvv, :cardholder_name, :expiration_date, :expiration_month, :expiration_year, :billing_address, :options, :created_at, :updated_at].freeze
-    
     include Model
+    define_attributes :customer_id, :number, :token, :cvv, :cardholder_name, :expiration_date, :expiration_month, :expiration_year, :billing_address, :options, :created_at, :updated_at
 
     validates :customer_id, :presence => true, :length => {:maximum => 36}, :if => :new_record?
     validates :number, :presence => true, :numericality => { :only_integer => true }, :length => {:minimum => 12, :maximum => 19}, :if => :new_record?

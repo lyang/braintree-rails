@@ -15,7 +15,7 @@ describe BraintreeRails::CreditCards do
 
       braintree_credit_cards.each do |braintree_credit_card|
         credit_card = credit_cards.find(braintree_credit_card.token)
-        BraintreeRails::CreditCard::Attributes.each do |attribute|
+        BraintreeRails::CreditCard.attributes.each do |attribute|
           credit_card.send(attribute).must_equal braintree_credit_card.send(attribute) if braintree_credit_card.respond_to?(attribute)
         end
       end

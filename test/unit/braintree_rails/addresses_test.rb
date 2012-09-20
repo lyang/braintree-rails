@@ -15,7 +15,7 @@ describe BraintreeRails::Addresses do
 
       braintree_addresses.each do |braintree_address|
         address = addresses.find(braintree_address.id)
-        BraintreeRails::Address::Attributes.each do |attribute|
+        BraintreeRails::Address.attributes.each do |attribute|
           address.send(attribute).must_equal braintree_address.send(attribute)
         end
       end

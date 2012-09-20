@@ -11,7 +11,7 @@ describe BraintreeRails::Customer do
       braintree_customer = Braintree::Customer.find('customer_id')
 
       customer.persisted?.must_equal true
-      BraintreeRails::Customer::Attributes.each do |attribute|
+      BraintreeRails::Customer.attributes.each do |attribute|
         customer.send(attribute).must_equal braintree_customer.send(attribute)
       end
     end
@@ -21,7 +21,7 @@ describe BraintreeRails::Customer do
       customer = BraintreeRails::Customer.new(braintree_customer)
 
       customer.persisted?.must_equal true
-      BraintreeRails::Customer::Attributes.each do |attribute|
+      BraintreeRails::Customer.attributes.each do |attribute|
         customer.send(attribute).must_equal braintree_customer.send(attribute)
       end
     end

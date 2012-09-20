@@ -1,7 +1,7 @@
 module BraintreeRails
   class Transaction < SimpleDelegator
-    Attributes = [:id, :amount, :tax_amount, :tax_exempt, :customer, :order_id, :purchase_order_number, :credit_card, :vault_customer, :vault_credit_card, :credit_card_details, :billing, :shipping, :custom_fields, :descriptor, :options, :created_at, :updated_at].freeze
     include Model
+    define_attributes(:id, :amount, :tax_amount, :tax_exempt, :customer, :order_id, :purchase_order_number, :credit_card, :vault_customer, :vault_credit_card, :credit_card_details, :billing, :shipping, :custom_fields, :descriptor, :options, :created_at, :updated_at)
     
     validates :amount, :presence => true, :numericality => {:greater_than_or_equal_to => 0}
     validates_each :customer do |record, attribute, value|

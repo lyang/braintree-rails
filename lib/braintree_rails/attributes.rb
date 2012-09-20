@@ -2,16 +2,18 @@ module BraintreeRails
   module Attributes
     module ClassMethods
       def self.extended(receiver)
-        receiver.class_eval do
-          include ::ActiveModel::Serialization
-          attr_accessor(*self::Attributes)
-        end
+        class << receiver; attr_accessor :attributes; end
+      end
+
+      def define_attributes(*attributes)
+        self.attributes = attributes
+        attr_accessor(*attributes)
       end
     end
 
     module InstanceMethods
       def attributes
-        self.class::Attributes.inject({}) do |hash, attribute|
+        self.class.attributes.inject({}) do |hash, attribute|
           value = self.send(attribute)
           hash[attribute] =  value if value.present?
           hash
@@ -50,7 +52,7 @@ module BraintreeRails
       
       def extract_values(obj)
         return {} if obj.nil?
-        self.class::Attributes.inject({}) do |hash, attr|
+        self.class.attributes.inject({}) do |hash, attr|
           hash[attr] = obj.send(attr) if obj.respond_to?(attr)
           hash
         end
@@ -60,6 +62,7 @@ module BraintreeRails
     def self.included(receiver)
       receiver.extend         ClassMethods
       receiver.send :include, InstanceMethods
+      receiver.send :include, ::ActiveModel::Serialization
     end
   end
 end

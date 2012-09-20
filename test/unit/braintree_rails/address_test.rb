@@ -11,7 +11,7 @@ describe BraintreeRails::Address do
       address = BraintreeRails::Address.new(braintree_address)
 
       address.persisted?.must_equal true
-      BraintreeRails::Address::Attributes.each do |attribute|
+      BraintreeRails::Address.attributes.each do |attribute|
         address.send(attribute).must_equal braintree_address.send(attribute)
       end
     end

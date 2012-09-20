@@ -1,7 +1,7 @@
 module BraintreeRails
   class Customer < SimpleDelegator
-    Attributes = [:id, :first_name, :last_name, :email, :company, :website, :phone, :fax, :created_at, :updated_at].freeze
     include Model
+    define_attributes(:id, :first_name, :last_name, :email, :company, :website, :phone, :fax, :created_at, :updated_at)
 
     validates :id, :format => {:with => /^[-_a-z0-9]*$/i}, :length => {:maximum => 36}, :exclusion => {:in => %w(all new)}
     validates :first_name, :last_name, :company, :website, :phone, :fax, :length => {:maximum => 255}
