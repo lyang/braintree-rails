@@ -18,5 +18,6 @@ _yardoc
 doc/
 
 *.DS_Store
+*.tag*
 .rvmrc
 test/config/braintree_auth.yml
