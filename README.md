@@ -1,4 +1,4 @@
-braintree-rails
+braintree-rails [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/lyang/braintree-rails)
 ===============
 braintree-rails provides ActiveModel compatible(mostly) wrappers around the raw ruby client library.
 
