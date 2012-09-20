@@ -1,4 +1,8 @@
 module BraintreeRails
+  def self.use_relative_model_naming?
+    true
+  end
+
   module Model
     module ClassMethods
       def self.extended(receiver)
@@ -13,16 +17,16 @@ module BraintreeRails
       def ensure_model(model)
         model = case model
         when String
-          @persisted = true
+          self.persisted = true
           self.class.braintree_model_class.find(model)
         when self.class.braintree_model_class
-          @persisted = true
+          self.persisted = true
           model
         when Hash
-          @persisted = false
+          self.persisted = false
           OpenStruct.new(model)
         else
-          @persisted = model.respond_to?(:persisted?) ? model.persisted? : false
+          self.persisted = model.respond_to?(:persisted?) ? model.persisted? : false
           model
         end
         assign_attributes(extract_values(model))

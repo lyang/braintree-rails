@@ -43,7 +43,7 @@ module BraintreeRails
       if persisted?
         self.class.braintree_model_class.delete(customer_id, id)
       end
-      @persisted = false
+      self.persisted = false
       freeze
     end
 

@@ -9,14 +9,6 @@ module BraintreeRails
         new(params).tap { |new_record| new_record.save! }
       end
 
-      def braintree_model_class
-        "braintree/#{braintree_model_name}".camelize.constantize
-      end
-
-      def braintree_model_name
-        name.demodulize.underscore
-      end
-
       def find(id)
         new(braintree_model_class.find(id))
       end
@@ -24,11 +16,19 @@ module BraintreeRails
       def delete(id)
         braintree_model_class.delete(id)
       end
+
+      def braintree_model_class
+        "braintree/#{braintree_model_name}".camelize.constantize
+      end
+
+      def braintree_model_name
+        name.demodulize.underscore
+      end
     end    
 
     module InstanceMethods
       def persisted?
-        @persisted
+        !!persisted
       end
 
       def new_record?
@@ -58,7 +58,7 @@ module BraintreeRails
       def destroy
         destroy!
       rescue Braintree::NotFoundError
-        @persisted = false
+        self.persisted = false
         freeze
       end
       alias :delete :destroy
@@ -67,7 +67,7 @@ module BraintreeRails
         if persisted?
           self.class.braintree_model_class.delete(id)
         end
-        @persisted = false
+        self.persisted = false
         freeze
       end
       alias :delete! :destroy!
@@ -110,13 +110,14 @@ module BraintreeRails
         else
           new_record = result.respond_to?(self.class.braintree_model_name) ? result.send(self.class.braintree_model_name) : result
           assign_attributes(extract_values(new_record))
-          @persisted = true
+          self.persisted = true
           self.__setobj__(new_record)
         end
       end
     end
     
     def self.included(receiver)
+      receiver.class_eval { attr_accessor :persisted }
       receiver.extend         ClassMethods
       receiver.send :include, InstanceMethods
     end

@@ -35,4 +35,24 @@ describe BraintreeRails::CreditCards do
       credit_card.last_name.must_equal 'bar'
     end
   end
+
+  describe '#create' do
+    it 'should add credit card to collection if creation succeeded' do
+      stub_braintree_request(:post, '/payment_methods', :body => fixture('credit_card.xml'))
+
+      braintree_customer = BraintreeRails::Customer.find('customer_id')
+      credit_card = braintree_customer.credit_cards.create(credit_card_hash)
+      credit_card.persisted?.must_equal true
+      braintree_customer.credit_cards.must_include credit_card
+    end
+
+    it 'should not add credit card to collection if creation failed' do
+      stub_braintree_request(:post, '/payment_methods', :body => fixture('credit_card_validation_error.xml'))
+
+      braintree_customer = BraintreeRails::Customer.find('customer_id')
+      credit_card = braintree_customer.credit_cards.create(credit_card_hash)
+      credit_card.persisted?.must_equal false
+      braintree_customer.credit_cards.wont_include credit_card
+    end
+  end
 end

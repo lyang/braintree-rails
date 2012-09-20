@@ -12,6 +12,7 @@ require 'braintree_rails/attributes'
 require 'braintree_rails/persistence'
 require 'braintree_rails/model'
 require 'braintree_rails/exceptions'
+require 'braintree_rails/association'
 require 'braintree_rails/address'
 require 'braintree_rails/addresses'
 require 'braintree_rails/credit_card'
@@ -19,9 +20,3 @@ require 'braintree_rails/credit_cards'
 require 'braintree_rails/customer'
 require 'braintree_rails/transaction'
 require 'braintree_rails/transactions'
-
-module BraintreeRails
-  def self.use_relative_model_naming?
-    true
-  end
-end
