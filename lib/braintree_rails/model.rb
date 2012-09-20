@@ -10,6 +10,25 @@ module BraintreeRails
     end
     
     module InstanceMethods
+      def ensure_model(model)
+        model = case model
+        when String
+          @persisted = true
+          self.class.braintree_model_class.find(model)
+        when self.class.braintree_model_class
+          @persisted = true
+          model
+        when Hash
+          @persisted = false
+          OpenStruct.new(model)
+        else
+          @persisted = model.respond_to?(:persisted?) ? model.persisted? : false
+          model
+        end
+        assign_attributes(extract_values(model))
+        model
+      end
+
       def to_key
         persisted? ? [id] : nil
       end

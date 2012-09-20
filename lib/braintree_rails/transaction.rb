@@ -17,9 +17,7 @@ module BraintreeRails
     undef_method :update_attributes, :update_attributes!, :delete, :delete!, :destroy, :destroy!, :update, :update!
 
     def initialize(transaction = {})
-      transaction = ensure_transaction(transaction)
-      assign_attributes(extract_values(transaction))
-      super
+      super(ensure_model(transaction))
     end
 
     def vault_customer=(val)
@@ -92,23 +90,6 @@ module BraintreeRails
         attributes.merge!(:credit_card => credit_card.attributes_for_create.except(:billing_address))
       end
       attributes
-    end
-
-    def ensure_transaction(transaction)
-      case transaction
-      when String
-        @persisted = true
-        Braintree::Transaction.find(transaction)
-      when Braintree::Transaction
-        @persisted = true
-        transaction
-      when Hash
-        @persisted = false
-        OpenStruct.new(transaction.reverse_merge(:credit_card_details => nil, :transaction_details => nil, :subscription_details => nil))
-      else
-        @persisted = transaction.respond_to?(:persisted?) ? transaction.persisted? : false
-        transaction
-      end
     end
 
     def attributes_to_exclude_from_update

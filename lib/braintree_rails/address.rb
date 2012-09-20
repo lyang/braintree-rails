@@ -13,9 +13,7 @@ module BraintreeRails
     end
 
     def initialize(address = {})
-      address = ensure_address(address)
-      assign_attributes(extract_values(address))
-      super
+      super(ensure_model(address))
     end
 
     def customer
@@ -50,20 +48,6 @@ module BraintreeRails
     end
 
     protected
-    def ensure_address(address)
-      case address
-      when Braintree::Address
-        @persisted = true
-        address
-      when Hash
-        @persisted = false
-        OpenStruct.new(address)
-      else
-        @persisted = address.respond_to?(:persisted?) ? address.persisted? : false
-        address
-      end
-    end
-
     def update
       with_update_braintree do
         self.class.braintree_model_class.update(self.customer_id, self.id, attributes_for_update)
