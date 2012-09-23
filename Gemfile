@@ -7,4 +7,5 @@ group :test do
   gem 'minitest'
   gem 'webmock'
   gem 'turn'
+  gem 'simplecov'
 end
