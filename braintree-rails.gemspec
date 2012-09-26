@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = 'braintree-rails'
-  spec.version     = '0.3.0'
+  spec.version     = '0.4.0'
   spec.summary     = 'Provides ActiveModel compatible wrappers for Braintree models.'
   spec.description = 'Provides ActiveModel compatible wrappers for Braintree models and more.'
   spec.author      = 'Lin Yang'
@@ -12,6 +12,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'braintree', '>= 2.16.0'
   spec.add_runtime_dependency 'activemodel', '>= 3.0'
   spec.add_runtime_dependency 'activesupport', '>= 3.0'
+  spec.add_development_dependency 'rake'
   spec.add_development_dependency 'minitest'
   spec.add_development_dependency 'webmock'
   spec.add_development_dependency 'turn'
