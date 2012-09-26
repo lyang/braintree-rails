@@ -1,6 +1,6 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '../test_helper'))
 config = File.join(TEST_PATH, 'config/braintree_auth.yml')
-if auth = YAML.load_file(config)
+if File.exist?(config) && auth = YAML.load_file(config)
   Braintree::Configuration.environment = :sandbox
   Braintree::Configuration.merchant_id = auth['merchant_id']
   Braintree::Configuration.public_key = auth['public_key']
