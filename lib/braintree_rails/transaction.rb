@@ -18,6 +18,7 @@ module BraintreeRails
 
     def initialize(transaction = {})
       super(ensure_model(transaction))
+      freeze if persisted?
     end
 
     def vault_customer=(val)
@@ -48,22 +49,10 @@ module BraintreeRails
       @shipping= Address.new(val)
     end
 
-    [:submit_for_settlement!, :refund!, :void!].each do |method_with_exception|
-      define_method method_with_exception do |*args|
-        raise RecordInvalid.new("cannot #{method_with_exception} transactions not saved") if new_record?
-        !!with_update_braintree {Braintree::Transaction.send(method_with_exception, *args.unshift(id))}
-      end
-    end
-
-    [:submit_for_settlement, :refund, :void].each do |method_without_exception|
-      define_method method_without_exception do |*args|
-        begin
-          raise RecordInvalid.new("cannot #{method_with_exception} transactions not saved") if new_record?
-          !!with_update_braintree {Braintree::Transaction.send(method_without_exception, *args.unshift(id))}
-        rescue RecordInvalid => e
-          errors.add(:base, e.message)
-          false
-        end
+    [:submit_for_settlement, :submit_for_settlement!, :refund, :refund!, :void, :void!].each do |method|
+      define_method method do |*args|
+        raise RecordInvalid.new("cannot #{method} transactions not saved") if new_record?
+        !!with_update_braintree {Braintree::Transaction.send(method, *args.unshift(id))}
       end
     end
 

@@ -42,7 +42,7 @@ module BraintreeRails
       end
 
       def save!
-        create_or_update || raise(RecordNotSaved)
+        create_or_update!
       end
 
       def update_attributes(attributes)
@@ -56,25 +56,23 @@ module BraintreeRails
       end
 
       def destroy
-        destroy!
-      rescue Braintree::NotFoundError
-        self.persisted = false
-        freeze
-      end
-      alias :delete :destroy
-
-      def destroy!
         if persisted?
           self.class.braintree_model_class.delete(id)
         end
-        self.persisted = false
+        self.persisted = false unless frozen?
         freeze
       end
-      alias :delete! :destroy!
+      alias :delete :destroy
+      alias :delete! :destroy
+      alias :destroy! :destroy
 
       protected
       def create_or_update
         !!(new_record? ? create : update)
+      end
+
+      def create_or_update!
+        !!(new_record? ? create! : update!)
       end
 
       def create

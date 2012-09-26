@@ -66,6 +66,17 @@ describe BraintreeRails::Customer do
     end
   end
 
+  describe '#full_name' do
+    it 'should combine first_name and last_name to form full_name' do
+      BraintreeRails::Customer.new(:first_name => "Foo", :last_name => 'Bar').full_name.must_equal "Foo Bar"
+    end
+
+    it 'should not have extra spaces when first_name or last_name is missing' do
+      BraintreeRails::Customer.new(:first_name => "Foo").full_name.must_equal 'Foo'
+      BraintreeRails::Customer.new(:last_name => 'Bar').full_name.must_equal 'Bar'
+    end
+  end
+
   describe 'validations' do
     it 'should validate id' do
       customer = BraintreeRails::Customer.new(:id => '%')

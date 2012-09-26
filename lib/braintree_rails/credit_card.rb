@@ -45,15 +45,8 @@ module BraintreeRails
     end
 
     def add_errors(validation_errors)
-      validation_errors.each do |error|
-        if respond_to?(error.attribute)
-          self.errors.add error.attribute, error.message
-        elsif billing_address.respond_to?(error.attribute)
-          billing_address.errors.add error.attribute, error.message
-        else
-          self.errors.add :base, error.message
-        end
-      end
+      billing_address.add_errors(validation_errors.for(:credit_card).for(:billing_address).to_a)
+      super(validation_errors)
     end
 
     protected

@@ -16,6 +16,18 @@ describe BraintreeRails::Address do
       end
     end
 
+    it 'should find a Braintree::Address' do
+      stub_braintree_request(:get, '/customers/customer_id/addresses/address_id', :body => fixture('address.xml'))
+      braintree_customer = Braintree::Customer.find('customer_id')
+      braintree_address = braintree_customer.addresses.first
+      address = BraintreeRails::Address.find('customer_id', braintree_address.id)
+
+      address.persisted?.must_equal true
+      BraintreeRails::Address.attributes.each do |attribute|
+        address.send(attribute).must_equal braintree_address.send(attribute)
+      end
+    end
+
     it 'should extract values from hash' do
       address = BraintreeRails::Address.new(:id => 'new_id')
 
@@ -36,11 +48,11 @@ describe BraintreeRails::Address do
     end
   end
 
-  describe 'country_code_alpha2' do
+  describe 'country_code_numeric' do
     it 'should always convert to country_code_alpha2' do
-      {:country_name => 'United States of America', :country_code_alpha3 => 'USA', :country_code_numeric => '840'}.each_pair do |key, value|
+      {:country_name => 'United States of America', :country_code_alpha2 => 'US', :country_code_alpha3 => 'USA'}.each_pair do |key, value|
         address = BraintreeRails::Address.new(key => value)
-        address.country_code_alpha2.must_equal 'US'
+        address.country_code_numeric.must_equal '840'
       end
     end
   end
@@ -51,6 +63,17 @@ describe BraintreeRails::Address do
       address = BraintreeRails::Customer.new('customer_id').addresses.first
       address.customer.persisted?.must_equal true
       address.customer.id.must_equal 'customer_id'
+    end
+  end
+
+  describe 'full_name' do
+    it 'should combine first_name and last_name to form full_name' do
+      BraintreeRails::Address.new(:first_name => "Foo", :last_name => 'Bar').full_name.must_equal "Foo Bar"
+    end
+
+    it 'should not have extra spaces when first_name or last_name is missing' do
+      BraintreeRails::Address.new(:first_name => "Foo").full_name.must_equal 'Foo'
+      BraintreeRails::Address.new(:last_name => 'Bar').full_name.must_equal 'Bar'
     end
   end
 

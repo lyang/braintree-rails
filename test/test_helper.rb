@@ -10,7 +10,7 @@ Braintree::Configuration.private_key = 'private_key'
 Braintree::Configuration.logger = Logger.new(File.join(ROOT_PATH, 'log/braintree_test.log'))
 BraintreeBaseUri = "https://#{Braintree::Configuration.public_key}:#{Braintree::Configuration.private_key}@#{Braintree::Configuration.environment}.braintreegateway.com/merchants/#{Braintree::Configuration.merchant_id}"
 
-MiniTest::Unit::TestCase.class_eval do
+module TestHelper
   def fixture(name)
     File.read(File.join(FIXTURE_PATH, name)).gzip
   end
@@ -52,6 +52,11 @@ MiniTest::Unit::TestCase.class_eval do
       :last_name => "Tree#{rand(1..100)}"
     }
   end
+end
+
+
+MiniTest::Unit::TestCase.class_eval do
+  include TestHelper
 end
 
 String.class_eval do

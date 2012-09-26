@@ -19,12 +19,18 @@ describe 'Address Integration' do
 
   it 'should be able to update existing address' do
     customer = BraintreeRails::Customer.create!(customer_hash)
-    address = customer.addresses.create!(address_hash)
-    address.update_attributes!(:first_name => 'Foo', :last_name => 'Bar')
+    address = customer.addresses.create(address_hash)
+    address.update_attributes(:first_name => 'Foo')
+
     braintree_customer = Braintree::Customer.find(customer.id)
     braintree_address = braintree_customer.addresses.first
-    
     braintree_address.first_name.must_equal 'Foo'
+
+    address.last_name = 'Bar'
+    address.save!
+
+    braintree_customer = Braintree::Customer.find(customer.id)
+    braintree_address = braintree_customer.addresses.first
     braintree_address.last_name.must_equal 'Bar'
   end
 

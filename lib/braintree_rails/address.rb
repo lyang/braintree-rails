@@ -24,19 +24,11 @@ module BraintreeRails
       "#{first_name} #{last_name}".strip
     end
 
-    def country_name=(val)
-      self.country_code_alpha2= Braintree::Address::CountryNames.find{|country| country[0] == val}.try(:[], 1)
-      @country_name = val
-    end
-
-    def country_code_alpha3=(val)
-      self.country_code_alpha2= Braintree::Address::CountryNames.find{|country| country[2] == val}.try(:[], 1)
-      @country_code_alpha3 = val
-    end
-
-    def country_code_numeric=(val)
-      self.country_code_alpha2= Braintree::Address::CountryNames.find{|country| country[3] == val}.try(:[], 1)
-      @country_code_numeric = val
+    [:country_name, :country_code_alpha2, :country_code_alpha3].each_with_index do |country, index|
+      define_method("#{country}=") do |val|
+        self.country_code_numeric = Braintree::Address::CountryNames.find{|country| country[index] == val}.try(:[], 3)
+        self.instance_variable_set("@#{country}", val) if self.instance_variable_get("@#{country}").blank?
+      end
     end
 
     def destroy!
@@ -61,11 +53,11 @@ module BraintreeRails
     end
 
     def attributes_to_exclude_from_update
-      [:id, :customer_id, :country_name, :country_code_alpha3, :country_code_numeric, :created_at, :updated_at]
+      [:id, :customer_id, :country_name, :country_code_alpha2, :country_code_alpha3, :created_at, :updated_at]
     end
 
     def attributes_to_exclude_from_create
-      [:country_name, :country_code_alpha3, :country_code_numeric, :created_at, :updated_at]
+      [:country_name, :country_code_alpha2, :country_code_alpha3, :created_at, :updated_at]
     end
   end
 end
