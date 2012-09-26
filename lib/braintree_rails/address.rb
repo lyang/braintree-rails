@@ -3,6 +3,11 @@ module BraintreeRails
     include Model
     define_attributes(:id, :customer_id, :first_name, :last_name, :company, :street_address, :extended_address, :locality, :country_name, :country_code_alpha2, :country_code_alpha3, :country_code_numeric, :region, :postal_code, :created_at, :updated_at)
 
+    exclude_attributes_from(
+      :update => [:id, :customer_id, :country_name, :country_code_alpha2, :country_code_alpha3, :created_at, :updated_at],
+      :create => [:country_name, :country_code_alpha2, :country_code_alpha3, :created_at, :updated_at]
+    )
+
     validates :first_name, :last_name, :company, :street_address, :extended_address, :locality, :region, :length => {:maximum => 255}
     validates :country_code_alpha2, :allow_blank => true, :inclusion => { :in => Braintree::Address::CountryNames.map {|country| country[1]} }
     validates :postal_code, :street_address, :presence => true
@@ -42,22 +47,14 @@ module BraintreeRails
     protected
     def update
       with_update_braintree do
-        self.class.braintree_model_class.update(self.customer_id, self.id, attributes_for_update)
+        self.class.braintree_model_class.update(self.customer_id, self.id, attributes_for(:update))
       end
     end
 
     def update!
       with_update_braintree do
-        self.class.braintree_model_class.update!(self.customer_id, self.id, attributes_for_update)
+        self.class.braintree_model_class.update!(self.customer_id, self.id, attributes_for(:update))
       end
-    end
-
-    def attributes_to_exclude_from_update
-      [:id, :customer_id, :country_name, :country_code_alpha2, :country_code_alpha3, :created_at, :updated_at]
-    end
-
-    def attributes_to_exclude_from_create
-      [:country_name, :country_code_alpha2, :country_code_alpha3, :created_at, :updated_at]
     end
   end
 end

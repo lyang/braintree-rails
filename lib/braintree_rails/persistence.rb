@@ -77,25 +77,25 @@ module BraintreeRails
 
       def create
         with_update_braintree do
-          self.class.braintree_model_class.create(attributes_for_create)
+          self.class.braintree_model_class.create(attributes_for(:create))
         end
       end
 
       def create!
         with_update_braintree do
-          self.class.braintree_model_class.create!(attributes_for_create)
+          self.class.braintree_model_class.create!(attributes_for(:create))
         end
       end
 
       def update
         with_update_braintree do
-          self.class.braintree_model_class.update(id, attributes_for_update)
+          self.class.braintree_model_class.update(id, attributes_for(:update))
         end
       end
 
       def update!
         with_update_braintree do
-          self.class.braintree_model_class.update!(id, attributes_for_update)
+          self.class.braintree_model_class.update!(id, attributes_for(:update))
         end
       end
 

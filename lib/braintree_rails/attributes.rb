@@ -2,12 +2,17 @@ module BraintreeRails
   module Attributes
     module ClassMethods
       def self.extended(receiver)
-        class << receiver; attr_accessor :attributes; end
+        class << receiver; attr_accessor :attributes, :attributes_to_exclude; end
       end
 
       def define_attributes(*attributes)
         self.attributes = attributes
         attr_accessor(*attributes)
+      end
+
+      def exclude_attributes_from(exclusions)
+        self.attributes_to_exclude ||= {}
+        self.attributes_to_exclude.merge!(exclusions)
       end
     end
 
@@ -20,18 +25,10 @@ module BraintreeRails
         end
       end
 
-      def attributes_for_update
-        attributes.except(*attributes_to_exclude_from_update).tap do |hash|
+      def attributes_for(action)
+        attributes.except(*self.class.attributes_to_exclude[action]).tap do |hash|
           hash.each_pair do |key, value|
-            hash[key] = value.attributes_for_update if value.respond_to?(:attributes_for_update)
-          end
-        end
-      end
-
-      def attributes_for_create
-        attributes.except(*attributes_to_exclude_from_create).tap do |hash|
-          hash.each_pair do |key, value|
-            hash[key] = value.attributes_for_create if value.respond_to?(:attributes_for_create)
+            hash[key] = value.attributes_for(action) if value.respond_to?(:attributes_for)
           end
         end
       end
@@ -42,14 +39,6 @@ module BraintreeRails
         end
       end
 
-      def attributes_to_exclude_from_update
-        [:id, :created_at, :updated_at]
-      end
-
-      def attributes_to_exclude_from_create
-        [:created_at, :updated_at]
-      end
-      
       def extract_values(obj)
         return {} if obj.nil?
         self.class.attributes.inject({}) do |hash, attr|
@@ -63,6 +52,8 @@ module BraintreeRails
       receiver.extend         ClassMethods
       receiver.send :include, InstanceMethods
       receiver.send :include, ::ActiveModel::Serialization
+
+      receiver.exclude_attributes_from(:update => [:id, :created_at, :updated_at], :create => [:created_at, :updated_at])
     end
   end
 end

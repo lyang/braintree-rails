@@ -3,6 +3,11 @@ module BraintreeRails
     include Model
     define_attributes :customer_id, :number, :token, :cvv, :cardholder_name, :expiration_date, :expiration_month, :expiration_year, :billing_address, :options, :created_at, :updated_at
 
+    exclude_attributes_from(
+      :update => [:token, :customer_id, :expiration_date, :created_at, :updated_at],
+      :create => [:expiration_date, :created_at, :updated_at]
+    )
+
     validates :customer_id, :presence => true, :length => {:maximum => 36}, :if => :new_record?
     validates :number, :presence => true, :numericality => { :only_integer => true }, :length => {:minimum => 12, :maximum => 19}, :if => :new_record?
     validates :cvv, :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 100, :less_than_or_equal_to => 9999 }
@@ -49,17 +54,8 @@ module BraintreeRails
       super(validation_errors)
     end
 
-    protected
-    def attributes_for_update
-      super.tap { |attributes| attributes[:billing_address].merge!(:options => {:update_existing => true}) }
-    end
-
-    def attributes_to_exclude_from_update
-      [:token, :customer_id, :expiration_date, :created_at, :updated_at]
-    end
-
-    def attributes_to_exclude_from_create
-      [:expiration_date, :created_at, :updated_at]
+    def attributes_for(action)
+      super.tap { |attributes| attributes[:billing_address].merge!(:options => {:update_existing => true}) if action == :update }
     end
   end
 end
