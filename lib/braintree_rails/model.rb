@@ -11,9 +11,9 @@ module BraintreeRails
           include ::ActiveModel::Validations
           include ::ActiveModel::Conversion
         end
-      end   
+      end
     end
-    
+
     module InstanceMethods
       def ensure_model(model)
         model = case model
@@ -41,7 +41,7 @@ module BraintreeRails
         end
       end
     end
-    
+
     def self.included(receiver)
       receiver.send :include, BraintreeRails::Attributes
       receiver.send :include, BraintreeRails::Persistence

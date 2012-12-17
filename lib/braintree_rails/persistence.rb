@@ -24,7 +24,7 @@ module BraintreeRails
       def braintree_model_name
         name.demodulize.underscore
       end
-    end    
+    end
 
     module InstanceMethods
       def persisted?
@@ -33,7 +33,7 @@ module BraintreeRails
 
       def new_record?
         !persisted?
-      end      
+      end
 
       def save
         create_or_update
@@ -113,9 +113,10 @@ module BraintreeRails
         end
       end
     end
-    
+
     def self.included(receiver)
       receiver.class_eval { attr_accessor :persisted }
+      receiver.instance_eval { alias :build :new }
       receiver.extend         ClassMethods
       receiver.send :include, InstanceMethods
     end

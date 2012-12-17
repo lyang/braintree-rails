@@ -15,13 +15,12 @@ module BraintreeRails
       errors.add(:customer, "is required.") and return if customer.blank?
       errors.add(:attribute, "is not valid. #{customer.errors.full_messages.join("\n")}") unless customer.valid?
     end
-    
+
     def initialize(transaction = {})
       super(ensure_model(transaction))
       self.customer = customer_details.id if customer_details.present?
       self.credit_card ||= customer.credit_cards.find(&:default?) if customer.present?
       self.credit_card = credit_card_details.token if credit_card_details.present?
-      freeze if persisted?
     end
 
     def customer=(val)
