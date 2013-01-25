@@ -32,7 +32,7 @@ module BraintreeRails
     [:country_name, :country_code_alpha2, :country_code_alpha3].each_with_index do |country, index|
       define_method("#{country}=") do |val|
         self.country_code_numeric = Braintree::Address::CountryNames.find{|country| country[index] == val}.try(:[], 3)
-        self.instance_variable_set("@#{country}", val) if self.instance_variable_get("@#{country}").blank?
+        self.instance_variable_set("@#{country}", val)
       end
     end
 
