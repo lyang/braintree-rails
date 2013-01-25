@@ -116,7 +116,6 @@ module BraintreeRails
 
     def self.included(receiver)
       receiver.class_eval { attr_accessor :persisted }
-      receiver.instance_eval { alias :build :new }
       receiver.extend         ClassMethods
       receiver.send :include, InstanceMethods
     end
