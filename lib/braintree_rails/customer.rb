@@ -7,7 +7,7 @@ module BraintreeRails
     validates :first_name, :last_name, :company, :website, :phone, :fax, :length => {:maximum => 255}
 
     attr_reader :addresses, :credit_cards
-    
+
     def initialize(customer = {})
       customer = ensure_model(customer)
       @addresses = Addresses.new(self, customer.try(:addresses))

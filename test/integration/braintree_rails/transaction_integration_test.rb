@@ -43,8 +43,11 @@ describe 'Transaction Integration' do
     customer = BraintreeRails::Customer.new(braintree_customer)
     credit_card = customer.credit_cards.first
     transaction = BraintreeRails::Transaction.create!(:amount => rand(1..10), :customer => customer)
-    
-    customer.transactions.count.must_equal 1
+
+    customer.transactions.length.must_equal 1
+    customer.transactions.each do |t|
+     t.must_equal transaction
+    end
     credit_card.transactions.count.must_equal 1
   end
 
