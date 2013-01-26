@@ -15,6 +15,7 @@ module BraintreeRails
     validates :expiration_month, :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 1, :less_than_or_equal_to => 12 }
     validates :expiration_year,  :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 1976, :less_than_or_equal_to => 2200 }
     validates :billing_address, :presence => true
+    validates_with Luhn10Validator, :attribute => :number
     validates_each :billing_address do |record, attribute, value|
       record.errors.add(attribute, "is not valid. #{value.errors.full_messages.join("\n")}") if value && value.invalid?
     end
