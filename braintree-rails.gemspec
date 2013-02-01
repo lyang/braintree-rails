@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = 'braintree-rails'
-  spec.version     = '0.4.0'
+  spec.version     = '0.4.1'
   spec.summary     = 'Provides ActiveModel compatible wrappers for Braintree models.'
   spec.description = 'Provides ActiveModel compatible wrappers for Braintree models and more.'
   spec.author      = 'Lin Yang'
