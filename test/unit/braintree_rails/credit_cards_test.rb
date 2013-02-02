@@ -10,7 +10,7 @@ describe BraintreeRails::CreditCards do
       braintree_customer = Braintree::Customer.find('customer_id')
       braintree_credit_cards = braintree_customer.credit_cards
       credit_cards = BraintreeRails::CreditCards.new(braintree_customer, braintree_credit_cards)
-      
+
       credit_cards.size.must_equal braintree_credit_cards.size
 
       braintree_credit_cards.each do |braintree_credit_card|

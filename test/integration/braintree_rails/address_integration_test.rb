@@ -11,7 +11,7 @@ describe 'Address Integration' do
     customer.addresses.create!(attributes)
     braintree_customer = Braintree::Customer.find(customer.id)
     braintree_address = braintree_customer.addresses.first
-    
+
     attributes.each do |key, value|
       braintree_address.send(key).must_equal value
     end
@@ -42,5 +42,4 @@ describe 'Address Integration' do
     address.persisted?.must_equal false
     address.frozen?.must_equal true
   end
-
 end

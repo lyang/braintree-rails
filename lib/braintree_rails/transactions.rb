@@ -1,6 +1,7 @@
 module BraintreeRails
   class Transactions < SimpleDelegator
     include Association
+    lazy_load Array.public_instance_methods - Object.public_instance_methods
 
     def initialize(customer, credit_card=nil)
       @customer = customer || Customer.new({})
@@ -12,23 +13,8 @@ module BraintreeRails
       {:customer => @customer, :credit_card => @credit_card}
     end
 
-    def each
-      load_associated_transactions
-      super
-    end
-
-    def length
-      load_associated_transactions
-      super
-    end
-
-    def count
-      load_associated_transactions
-      super
-    end
-
-    private
-    def load_associated_transactions
+    protected
+    def load!
       @result ||= Braintree::Transaction.search do |search|
         search.customer_id.is @customer.id
         search.payment_method_token.is @credit_card.token if @credit_card && @credit_card.persisted?

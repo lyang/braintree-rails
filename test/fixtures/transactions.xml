@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<credit-card-transactions type="collection">
+  <current-page-number type="integer">1</current-page-number>
+  <page-size type="integer">50</page-size>
+  <total-items type="integer">1</total-items>
+  <transaction>
+    <id>transactionid</id>
+    <status>authorized</status>
+    <type>sale</type>
+    <currency-iso-code>USD</currency-iso-code>
+    <amount>9.00</amount>
+    <merchant-account-id>n3dbctrrrwc9vb3j</merchant-account-id>
+    <order-id nil="true"></order-id>
+    <created-at type="datetime">2013-02-02T04:38:56Z</created-at>
+    <updated-at type="datetime">2013-02-02T04:38:56Z</updated-at>
+    <customer>
+      <id>customer_id</id>
+      <first-name>Brain93</first-name>
+      <last-name>Tree33</last-name>
+      <company nil="true"></company>
+      <email nil="true"></email>
+      <website nil="true"></website>
+      <phone nil="true"></phone>
+      <fax nil="true"></fax>
+    </customer>
+    <billing>
+      <id>xh</id>
+      <first-name>Brain</first-name>
+      <last-name>Tree</last-name>
+      <company>Braintree</company>
+      <street-address>1350 Crane Avenue</street-address>
+      <extended-address>Suite 340</extended-address>
+      <locality>Menlo Park</locality>
+      <region>California</region>
+      <postal-code>63091</postal-code>
+      <country-name>United States of America</country-name>
+      <country-code-alpha2>US</country-code-alpha2>
+      <country-code-alpha3>USA</country-code-alpha3>
+      <country-code-numeric>840</country-code-numeric>
+    </billing>
+    <refund-id nil="true"></refund-id>
+    <refund-ids type="array"/>
+    <refunded-transaction-id nil="true"></refunded-transaction-id>
+    <settlement-batch-id nil="true"></settlement-batch-id>
+    <shipping>
+      <id nil="true"></id>
+      <first-name nil="true"></first-name>
+      <last-name nil="true"></last-name>
+      <company nil="true"></company>
+      <street-address nil="true"></street-address>
+      <extended-address nil="true"></extended-address>
+      <locality nil="true"></locality>
+      <region nil="true"></region>
+      <postal-code nil="true"></postal-code>
+      <country-name nil="true"></country-name>
+      <country-code-alpha2 nil="true"></country-code-alpha2>
+      <country-code-alpha3 nil="true"></country-code-alpha3>
+      <country-code-numeric nil="true"></country-code-numeric>
+    </shipping>
+    <custom-fields>
+    </custom-fields>
+    <avs-error-response-code nil="true"></avs-error-response-code>
+    <avs-postal-code-response-code>M</avs-postal-code-response-code>
+    <avs-street-address-response-code>M</avs-street-address-response-code>
+    <cvv-response-code>I</cvv-response-code>
+    <gateway-rejection-reason nil="true"></gateway-rejection-reason>
+    <processor-authorization-code>W05DGY</processor-authorization-code>
+    <processor-response-code>1000</processor-response-code>
+    <processor-response-text>Approved</processor-response-text>
+    <purchase-order-number nil="true"></purchase-order-number>
+    <tax-amount nil="true"></tax-amount>
+    <tax-exempt type="boolean">false</tax-exempt>
+    <credit-card>
+      <token>credit_card_id</token>
+      <bin>510510</bin>
+      <last-4>5100</last-4>
+      <card-type>MasterCard</card-type>
+      <expiration-month>01</expiration-month>
+      <expiration-year>2035</expiration-year>
+      <customer-location>US</customer-location>
+      <cardholder-name>Brain Tree</cardholder-name>
+      <prepaid>Unknown</prepaid>
+      <healthcare>Unknown</healthcare>
+      <debit>Unknown</debit>
+      <durbin-regulated>Unknown</durbin-regulated>
+      <commercial>Unknown</commercial>
+      <payroll>Unknown</payroll>
+      <issuing-bank>Unknown</issuing-bank>
+      <country-of-issuance>Unknown</country-of-issuance>
+    </credit-card>
+    <status-history type="array">
+      <status-event>
+        <timestamp type="datetime">2013-02-02T04:38:56Z</timestamp>
+        <status>authorized</status>
+        <amount>9.00</amount>
+        <user>linyang84</user>
+        <transaction-source>API</transaction-source>
+      </status-event>
+    </status-history>
+    <plan-id nil="true"></plan-id>
+    <subscription-id nil="true"></subscription-id>
+    <subscription>
+      <billing-period-end-date nil="true"></billing-period-end-date>
+      <billing-period-start-date nil="true"></billing-period-start-date>
+    </subscription>
+    <add-ons type="array"/>
+    <discounts type="array"/>
+    <descriptor>
+      <name nil="true"></name>
+      <phone nil="true"></phone>
+    </descriptor>
+    <recurring type="boolean">false</recurring>
+    <channel nil="true"></channel>
+  </transaction>
+</credit-card-transactions>
