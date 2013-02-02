@@ -4,6 +4,7 @@ describe BraintreeRails::Transactions do
 
   before do
     stub_braintree_request(:get, '/customers/customer_id', :body => fixture('customer.xml'))
+    stub_braintree_request(:get, '/payment_methods/credit_card_id', :body => fixture('credit_card.xml'))
   end
 
   describe '#initialize' do

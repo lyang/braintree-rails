@@ -18,7 +18,7 @@ module BraintreeRails
       @result ||= Braintree::Transaction.search do |search|
         search.customer_id.is @customer.id
         search.payment_method_token.is @credit_card.token if @credit_card && @credit_card.persisted?
-      end.to_a
+      end.map {|t| BraintreeRails::Transaction.new(t)}
       __setobj__(@result)
     end
   end
