@@ -100,7 +100,7 @@ describe BraintreeRails::Address do
         address.valid?
         address.errors[attribute].must_be :blank?
 
-        address = BraintreeRails::Address.new({})
+        address = BraintreeRails::Address.new
         address.valid?
         address.errors[attribute].wont_be :blank?
       end

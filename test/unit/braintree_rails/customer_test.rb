@@ -95,7 +95,7 @@ describe BraintreeRails::Customer do
       customer.valid?
       customer.errors[:id].wont_be :blank?
 
-      customer = BraintreeRails::Customer.new({})
+      customer = BraintreeRails::Customer.new
       customer.valid?
       customer.errors[:id].must_be :blank?
 

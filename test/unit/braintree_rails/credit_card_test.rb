@@ -62,7 +62,7 @@ describe BraintreeRails::CreditCard do
       credit_card = BraintreeRails::CreditCard.new(OpenStruct.new(:billing_address => {}))
       credit_card.billing_address.class.ancestors.must_include BraintreeRails::Address
 
-      credit_card.billing_address= BraintreeRails::Address.new
+      credit_card.billing_address = BraintreeRails::Address.new
       credit_card.billing_address.class.ancestors.must_include BraintreeRails::Address
     end
   end

@@ -77,7 +77,7 @@ describe 'Transaction Integration' do
         customer = BraintreeRails::Customer.new(braintree_customer)
         credit_card = customer.credit_cards.first
 
-        transaction = BraintreeRails::Transactions.new(customer, credit_card).build({})
+        transaction = BraintreeRails::Transactions.new(customer, credit_card).build
         transaction.customer.must_equal customer
         transaction.credit_card.must_equal credit_card
       end

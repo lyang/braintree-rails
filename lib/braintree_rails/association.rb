@@ -20,15 +20,15 @@ module BraintreeRails
         id.nil? ? super(&block) : super() { |model| model.id == id }
       end
 
-      def build(params)
+      def build(params = {})
         model_class.new(params.merge(default_options))
       end
 
-      def create(params)
+      def create(params = {})
         build(params).tap { |model| push(model) if model.save }
       end
 
-      def create!(params)
+      def create!(params = {})
         build(params).tap { |model| push(model) if model.save! }
       end
 

@@ -12,10 +12,10 @@ Initialization
     Braintree::Configuration.merchant_id = ''
     Braintree::Configuration.public_key = ''
     Braintree::Configuration.private_key = ''
-    
+
 CRUD
 ---------------
-    customer = BraintreeRails::Customer.new({:first_name => 'Foo'}) # new record
+    customer = BraintreeRails::Customer.new(:first_name => 'Foo') # new record
 
     customer.save! # => persisted
 
@@ -26,7 +26,7 @@ CRUD
     customer = BraintreeRails::Customer.create!(:first_name => 'Foo')
 
     customer = BraintreeRails::Customer.find(customer.id)
-    
+
     customer.company = 'Foo Bar'
 
     customer.save!
@@ -34,12 +34,12 @@ CRUD
     customer.update_attributes(:website => 'www.example.com')
 
     customer.update_attributes!(:email => 'foobar@example.com')
-    
+
     customer.destroy
-    
+
 Associations
 ---------------
-    
+
     customer = BraintreeRails::Customer.create!(:first_name => 'Foo')
 
     customer.credit_cards # => []
@@ -60,19 +60,19 @@ Associations
     transaction.submit_for_settlement # => submitted_for_settlement
 
     transaction.void! # => voided
-    
+
     transaction.void! # => raises Braintree::ValidationsFailed
 
 Validations
 ---------------
-    credit_card = customer.credit_cards.build({})
-    
+    credit_card = customer.credit_cards.build
+
     credit_card.save! # => raises RecordInvalid
 
     credit_card.errors # => ActiveModel::Errors
 
     credit_card.valid? # => false
-    
+
     credit_card.assign_attributes(
       :cardholder_name => 'Foo',
       :number => '4111111111111111',
@@ -111,13 +111,13 @@ Controllers
     class TransactionsController < ApplicationController
       ...
       def index
-        @transactions = (@credit_card || @customer).transactions    
+        @transactions = (@credit_card || @customer).transactions
       end
-  
+
       def new
         @transaction = @customer.transactions.build(:amount => "10.00")
       end
-  
+
       def create
         @transaction = @customer.transactions.build(params[:transaction])
         if @transaction.save
@@ -142,11 +142,11 @@ NOTICE
 ---------------
 This IS NOT created or maintained by Braintree.
 
-The local validations are solely based on Braintree's document. For length and numericallity checks it works fine, but it can't verify credit card numbers etc without resulting to Braintree's API.
+The local validations are solely based on Braintree's document. For length, numericallity and [luhn-10](http://en.wikipedia.org/wiki/Luhn) checks it works fine, but it can't verify credit card numbers etc without resulting to Braintree's API.
 
 So, be prepared to get validation errors from Braintree even if the local validations have passed.
 
-Currently cvv, street address, postal code are required for creating/updating credit cards as per Braintree's strong recommendations.
+Currently cvv, street address, postal code are required for creating/updating credit cards as per Braintree's strong recommendations to avoid fraud.
 
 
 Braintree
