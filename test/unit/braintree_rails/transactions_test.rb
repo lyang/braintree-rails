@@ -23,6 +23,25 @@ describe BraintreeRails::Transactions do
     end
   end
 
+  describe '#build' do
+    it 'should use default options' do
+      stub_braintree_request(:post, '/transactions/advanced_search_ids', :body => fixture('transaction_ids.xml'))
+      stub_braintree_request(:post, '/transactions/advanced_search', :body => fixture('transactions.xml'))
+      customer = BraintreeRails::Customer.new('customer_id')
+      transactions = BraintreeRails::Transactions.new(customer)
+      transaction = transactions.build
+      transaction.customer.must_equal customer
+      transaction.credit_card.must_equal customer.credit_cards.find(&:default?)
+    end
+
+    it 'should be able to override default values' do
+      transactions = BraintreeRails::Transactions.new(nil)
+      customer = BraintreeRails::Customer.new(:first_name => 'Braintree')
+      transaction = transactions.build(:customer => customer)
+      transaction.customer.must_equal customer
+    end
+  end
+
   describe '#lazy_loading' do
     it 'should not load if not necessary' do
       lambda {BraintreeRails::Transactions.new(BraintreeRails::Customer.new('customer_id'))}.must_be_silent

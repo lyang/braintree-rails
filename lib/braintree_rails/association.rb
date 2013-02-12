@@ -21,7 +21,7 @@ module BraintreeRails
       end
 
       def build(params = {})
-        model_class.new(params.merge(default_options))
+        model_class.new(default_options.merge(params))
       end
 
       def create(params = {})
