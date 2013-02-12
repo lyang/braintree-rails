@@ -53,7 +53,7 @@ describe BraintreeRails::Transaction do
         transaction = BraintreeRails::Transaction.new('transactionid')
         transaction.send(association).persisted?.must_equal true
       end
-    end    
+    end
   end
 
   describe 'validations' do
@@ -62,7 +62,7 @@ describe BraintreeRails::Transaction do
         transaction = BraintreeRails::Transaction.new(:amount => invalid_value)
         transaction.valid?.must_equal false
         transaction.errors[:amount].wont_be :blank?
-      end        
+      end
     end
   end
 
@@ -71,10 +71,19 @@ describe BraintreeRails::Transaction do
       stub_braintree_request(:post, '/transactions', :body => fixture('transaction.xml'))
     end
 
-    it 'should create a sale transaction' do
+    it 'should create a sale transaction from existing credit card' do
       customer = BraintreeRails::Customer.find('customer_id')
       credit_card = BraintreeRails::CreditCard.find('credit_card_id')
       transaction = BraintreeRails::Transaction.new(:amount => '10.00', :customer => customer, :credit_card => credit_card)
+
+      transaction.save.must_equal true
+      transaction.status.must_equal Braintree::Transaction::Status::Authorized
+    end
+
+    it 'should create a sale transaction from new credit card' do
+      customer = BraintreeRails::Customer.find('customer_id')
+      credit_card = BraintreeRails::CreditCard.find('credit_card_id')
+      transaction = BraintreeRails::Transaction.new(:amount => '10.00', :customer => customer, :credit_card => BraintreeRails::CreditCard.new(:number => Braintree::Test::CreditCardNumbers::Visa, :cvv => 123))
 
       transaction.save.must_equal true
       transaction.status.must_equal Braintree::Transaction::Status::Authorized

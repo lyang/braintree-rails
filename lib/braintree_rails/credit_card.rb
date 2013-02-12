@@ -37,9 +37,9 @@ module BraintreeRails
     end
 
     def expiration_date=(date)
-      expiration_month, expiration_year = date.split('/')
+      expiration_month, expiration_year = date.to_s.split('/')
       self.expiration_month = expiration_month
-      self.expiration_year = expiration_year.gsub(/^(\d\d)$/, '20\1')
+      self.expiration_year = expiration_year.to_s.gsub(/^(\d\d)$/, '20\1')
     end
 
     def expiration_date

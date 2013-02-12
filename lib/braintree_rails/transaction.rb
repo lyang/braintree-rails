@@ -69,7 +69,7 @@ module BraintreeRails
         attributes.merge!(:payment_method_token => credit_card.id)
         attributes.delete(:billing)
       else
-        attributes.merge!(:credit_card => credit_card.attributes_for(:update).except(:billing_address))
+        attributes.merge!(:credit_card => credit_card.attributes_for(:create).except(:billing_address))
       end
       attributes
     end
