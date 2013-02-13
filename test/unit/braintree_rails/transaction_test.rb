@@ -53,6 +53,11 @@ describe BraintreeRails::Transaction do
         transaction = BraintreeRails::Transaction.new('transactionid')
         transaction.send(association).persisted?.must_equal true
       end
+
+      it "should keep #{association} nil if assigned nil value" do
+        transaction = BraintreeRails::Transaction.new(association => nil)
+        transaction.send(association).class.must_equal NilClass
+      end
     end
   end
 

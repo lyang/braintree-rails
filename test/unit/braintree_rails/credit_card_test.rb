@@ -56,15 +56,18 @@ describe BraintreeRails::CreditCard do
 
   describe '#billing_address' do
     it 'should wrap billing_address with Address object' do
-      credit_card = BraintreeRails::CreditCard.new(OpenStruct.new(:billing_address => nil))
-      credit_card.billing_address.class.ancestors.must_include BraintreeRails::Address
-
       credit_card = BraintreeRails::CreditCard.new(OpenStruct.new(:billing_address => {}))
       credit_card.billing_address.class.ancestors.must_include BraintreeRails::Address
 
       credit_card.billing_address = BraintreeRails::Address.new
       credit_card.billing_address.class.ancestors.must_include BraintreeRails::Address
     end
+
+    it 'should keep billing_address nil if assigned nil value' do
+      credit_card = BraintreeRails::CreditCard.new(OpenStruct.new(:billing_address => nil))
+      credit_card.billing_address.class.must_equal NilClass
+    end
+
   end
 
   describe 'validations' do

@@ -22,12 +22,12 @@ module BraintreeRails
       set_credit_card
     end
 
-    def customer=(val)
-      @customer = Customer.new(val)
+    def customer=(value)
+      @customer = value && Customer.new(value)
     end
 
-    def credit_card=(val)
-      @credit_card = CreditCard.new(val)
+    def credit_card=(value)
+      @credit_card = value && CreditCard.new(value)
     end
 
     [:submit_for_settlement, :submit_for_settlement!, :refund, :refund!, :void, :void!].each do |method|

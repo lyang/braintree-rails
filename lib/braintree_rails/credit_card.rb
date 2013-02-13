@@ -46,8 +46,8 @@ module BraintreeRails
       expiration_month.present? ? "#{expiration_month}/#{expiration_year}" : nil
     end
 
-    def billing_address=(val)
-      @billing_address = Address.new(val)
+    def billing_address=(value)
+      @billing_address = value && Address.new(value)
     end
 
     def add_errors(validation_errors)
