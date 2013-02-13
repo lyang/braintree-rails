@@ -3,7 +3,7 @@ module BraintreeRails
     include Model
     define_attributes(:id, :first_name, :last_name, :email, :company, :website, :phone, :fax, :created_at, :updated_at)
 
-    validates :id, :format => {:with => /^[-_a-z0-9]*$/i}, :length => {:maximum => 36}, :exclusion => {:in => %w(all new)}
+    validates :id, :format => {:with => /\A[-_a-z0-9]*\z/i}, :length => {:maximum => 36}, :exclusion => {:in => %w(all new)}
     validates :first_name, :last_name, :company, :website, :phone, :fax, :length => {:maximum => 255}
 
     attr_reader :addresses, :credit_cards
