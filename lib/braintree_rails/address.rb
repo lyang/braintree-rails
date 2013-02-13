@@ -11,7 +11,7 @@ module BraintreeRails
     validates :first_name, :last_name, :company, :street_address, :extended_address, :locality, :region, :length => {:maximum => 255}
     validates :country_code_alpha2, :allow_blank => true, :inclusion => { :in => Braintree::Address::CountryNames.map {|country| country[1]} }
     validates :postal_code, :street_address, :presence => true
-    validates :postal_code, :format => { :with => /^[- a-z0-9]+$/i}
+    validates :postal_code, :format => { :with => /\A[- a-z0-9]+\z/i}
 
     def self.find(customer_id, id)
       new(braintree_model_class.find(customer_id, id))
