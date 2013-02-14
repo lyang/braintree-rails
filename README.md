@@ -1,4 +1,4 @@
-braintree-rails [![Build Status](https://secure.travis-ci.org/lyang/braintree-rails.png)](http://travis-ci.org/lyang/braintree-rails) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/lyang/braintree-rails)
+braintree-rails [![Build Status](https://secure.travis-ci.org/lyang/braintree-rails.png)](http://travis-ci.org/lyang/braintree-rails) [![Code Climate](https://codeclimate.com/github/lyang/braintree-rails.png)](https://codeclimate.com/github/lyang/braintree-rails)
 ===============
 braintree-rails provides ActiveModel compatible(mostly) wrappers around the raw ruby client library.
 
