@@ -5,12 +5,12 @@ module BraintreeRails
 
     def initialize(customer, credit_card=nil)
       @customer = customer || Customer.new({})
-      @credit_card = credit_card || @customer.credit_cards.find(&:default?)
+      @credit_card = credit_card
       super([])
     end
 
     def default_options
-      {:customer => @customer, :credit_card => @credit_card}
+      {:customer => @customer, :credit_card => @credit_card || @customer.credit_cards.find(&:default?)}
     end
 
     protected
