@@ -39,15 +39,12 @@ module BraintreeRails
 
     protected
     def set_customer
-      self.customer = customer_details.id if customer_details.present?
+      self.customer ||= customer_details.try(:id) || customer_details
     end
 
     def set_credit_card
-      if credit_card_details.present?
-        self.credit_card = credit_card_details.token
-      elsif customer.present? && credit_card.blank?
-        self.credit_card = customer.credit_cards.find(&:default?)
-      end
+      self.credit_card ||= credit_card_details.try(:token) || credit_card_details
+      self.credit_card ||= customer.credit_cards.find(&:default?) if customer.present?
     end
 
     def create

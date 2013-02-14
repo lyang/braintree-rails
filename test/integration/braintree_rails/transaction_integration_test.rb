@@ -55,6 +55,8 @@ describe 'Transaction Integration' do
     transaction = BraintreeRails::Transaction.create!(:amount => rand(1..10), :customer => customer_hash, :credit_card => credit_card_hash)
     transaction.persisted?.must_equal true
     transaction.id.wont_be :blank?
+    transaction.customer.wont_be :blank?
+    transaction.credit_card.wont_be :blank?
   end
 
   it 'should be able to capture braintree api errors' do
