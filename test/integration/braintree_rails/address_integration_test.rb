@@ -37,9 +37,13 @@ describe 'Address Integration' do
   it 'should be able to destroy existing address' do
     customer = BraintreeRails::Customer.create!(customer_hash)
     address = customer.addresses.create!(address_hash)
-    address.destroy!
+    address.destroy
     lambda{ Braintree::Address.find(customer.id, address.id) }.must_raise Braintree::NotFoundError
     address.persisted?.must_equal false
     address.frozen?.must_equal true
+
+    address = customer.addresses.create!(address_hash)
+    BraintreeRails::Address.delete(customer.id, address.id)
+    lambda{ Braintree::Address.find(customer.id, address.id) }.must_raise Braintree::NotFoundError
   end
 end

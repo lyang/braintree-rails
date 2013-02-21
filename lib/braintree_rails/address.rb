@@ -17,6 +17,10 @@ module BraintreeRails
       new(braintree_model_class.find(customer_id, id))
     end
 
+    def self.delete(customer_id, id)
+      braintree_model_class.delete(customer_id, id)
+    end
+
     def initialize(address = {})
       super(ensure_model(address))
     end
@@ -36,13 +40,16 @@ module BraintreeRails
       end
     end
 
-    def destroy!
+    def destroy
       if persisted?
-        self.class.braintree_model_class.delete(customer_id, id)
+        self.class.delete(customer_id, id)
       end
-      self.persisted = false
+      self.persisted = false unless frozen?
       freeze
     end
+    alias :delete :destroy
+    alias :delete! :destroy
+    alias :destroy! :destroy
 
     protected
     def update
