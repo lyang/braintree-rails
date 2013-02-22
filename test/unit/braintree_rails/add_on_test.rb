@@ -16,6 +16,16 @@ describe BraintreeRails::AddOn do
       end
     end
 
+    it 'should load a Braintree::AddOn by id' do
+      braintree_add_on = Braintree::AddOn.all.find { |a| a.id == 'add_on_id' }
+      add_on = BraintreeRails::AddOn.new('add_on_id')
+
+      add_on.persisted?.must_equal true
+      BraintreeRails::AddOn.attributes.each do |attribute|
+        add_on.send(attribute).must_equal braintree_add_on.send(attribute)
+      end
+    end
+
     it 'should find a Braintree::AddOn' do
       braintree_add_on = Braintree::AddOn.all.find { |a| a.id == 'add_on_id' }
       add_on = BraintreeRails::AddOn.find('add_on_id')

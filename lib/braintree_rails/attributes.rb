@@ -2,7 +2,13 @@ module BraintreeRails
   module Attributes
     module ClassMethods
       def self.extended(receiver)
-        class << receiver; attr_accessor :attributes, :attributes_to_exclude; end
+        class << receiver
+          attr_accessor :attributes, :attributes_to_exclude
+          def inherited(subclass)
+            subclass.attributes = self.attributes
+            subclass.attributes_to_exclude = self.attributes_to_exclude
+          end
+        end
       end
 
       def define_attributes(*attributes)
