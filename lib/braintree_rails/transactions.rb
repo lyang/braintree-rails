@@ -1,7 +1,7 @@
 module BraintreeRails
   class Transactions < SimpleDelegator
     include Association
-    lazy_load Array.public_instance_methods - Object.public_instance_methods
+    lazy_load!
 
     def initialize(customer, credit_card=nil)
       @customer = customer || Customer.new({})

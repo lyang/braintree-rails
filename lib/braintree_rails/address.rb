@@ -47,9 +47,6 @@ module BraintreeRails
       self.persisted = false unless frozen?
       freeze
     end
-    alias :delete :destroy
-    alias :delete! :destroy
-    alias :destroy! :destroy
 
     protected
     def update

@@ -142,5 +142,10 @@ describe BraintreeRails::Transaction do
 
       lambda{transaction.submit_for_settlement!}.must_raise Braintree::ValidationsFailed
     end
+
+    it 'does not support update or destroy' do
+      lambda{BraintreeRails::Transaction.find('transactionid').update_attributes(:amount => 1)}.must_raise BraintreeRails::NotSupportedApiException
+      lambda{BraintreeRails::Transaction.find('transactionid').destroy!}.must_raise BraintreeRails::NotSupportedApiException
+    end
   end
 end

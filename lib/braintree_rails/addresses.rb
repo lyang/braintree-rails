@@ -1,7 +1,7 @@
 module BraintreeRails
   class Addresses < SimpleDelegator
     include Association
-    
+
     def initialize(customer, addresses)
       @customer = customer
       super(addresses)

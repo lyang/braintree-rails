@@ -152,7 +152,7 @@ describe BraintreeRails::Customer do
 
       it 'should throw error when save invalid record with bang' do
         customer = BraintreeRails::Customer.new(:first_name => 'f' * 256)
-        lambda{ customer.save! }.must_raise(RecordInvalid)
+        lambda{ customer.save! }.must_raise(BraintreeRails::RecordInvalid)
         customer.persisted?.must_equal false
       end
     end
@@ -175,7 +175,7 @@ describe BraintreeRails::Customer do
 
       it 'should throw error when update_attributes invalid record with bang' do
         customer = BraintreeRails::Customer.new(Braintree::Customer.find('customer_id'))
-        lambda{ customer.update_attributes!(:first_name => 'f' * 256) }.must_raise(RecordInvalid)
+        lambda{ customer.update_attributes!(:first_name => 'f' * 256) }.must_raise(BraintreeRails::RecordInvalid)
       end
     end
   end

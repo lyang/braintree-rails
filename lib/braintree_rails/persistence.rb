@@ -62,9 +62,10 @@ module BraintreeRails
         self.persisted = false unless frozen?
         freeze
       end
-      alias :delete :destroy
-      alias :delete! :destroy
-      alias :destroy! :destroy
+
+      def delete; destroy; end
+      def delete!; destroy; end
+      def destroy!; destroy; end
 
       protected
       def create_or_update

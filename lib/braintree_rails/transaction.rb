@@ -3,7 +3,7 @@ module BraintreeRails
     include Model
 
     class << self; undef_method :delete; end
-    undef_method :update_attributes, :update_attributes!, :delete, :delete!, :destroy, :destroy!, :update, :update!
+    not_supported_apis(:update, :update!, :destroy)
 
     define_attributes(:id, :amount, :tax_amount, :tax_exempt, :customer, :customer_details, :credit_card, :credit_card_details, :order_id, :purchase_order_number, :billing, :shipping, :custom_fields, :descriptor, :options, :created_at, :updated_at)
 

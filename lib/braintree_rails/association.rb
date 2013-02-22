@@ -1,8 +1,8 @@
 module BraintreeRails
   module Association
     module ClassMethods
-      def lazy_load(methods)
-        methods.each do |method|
+      def lazy_load!
+        (Array.public_instance_methods - Object.public_instance_methods).each do |method|
           define_method method do |*args, &block|
             load!
             super(*args, &block)
