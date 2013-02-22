@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<discounts type="array">
+  <discount>
+    <amount>5.00</amount>
+    <created-at type="datetime">2013-02-22T18:58:20Z</created-at>
+    <description>This is a discount for braintree-rails integration test</description>
+    <id>discount_id</id>
+    <kind>discount</kind>
+    <merchant-id>merchant_id</merchant-id>
+    <name>braintree-rails-test-discount</name>
+    <never-expires type="boolean">true</never-expires>
+    <number-of-billing-cycles nil="true"></number-of-billing-cycles>
+    <updated-at type="datetime">2013-02-22T18:59:27Z</updated-at>
+  </discount>
+</discounts>
