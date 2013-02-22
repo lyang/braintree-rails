@@ -10,7 +10,7 @@ describe BraintreeRails::Addresses do
       braintree_customer = Braintree::Customer.find('customer_id')
       braintree_addresses = braintree_customer.addresses
       addresses = BraintreeRails::Addresses.new(braintree_customer, braintree_addresses)
-      
+
       addresses.size.must_equal braintree_addresses.size
 
       braintree_addresses.each do |braintree_address|

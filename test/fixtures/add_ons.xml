@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<add-ons type="array">
+  <add-on>
+    <amount>10.00</amount>
+    <created-at type="datetime">2013-02-22T18:57:38Z</created-at>
+    <description>This is an add-on for braintree-rails integration test</description>
+    <id>add_on_id</id>
+    <kind>add_on</kind>
+    <merchant-id>merchant_id</merchant-id>
+    <name>braintree-rails-test-add-on</name>
+    <never-expires type="boolean">true</never-expires>
+    <number-of-billing-cycles nil="true"></number-of-billing-cycles>
+    <updated-at type="datetime">2013-02-22T18:58:59Z</updated-at>
+  </add-on>
+</add-ons>
+
+
