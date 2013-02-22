@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plans type="array">
+  <plan>
+    <id>plan_id</id>
+    <merchant-id>merchant_id</merchant-id>
+    <billing-day-of-month nil="true"></billing-day-of-month>
+    <billing-frequency type="integer">1</billing-frequency>
+    <currency-iso-code>USD</currency-iso-code>
+    <description>This is a plan for braintree-rails integration test</description>
+    <name>braintree-rails-test-plan</name>
+    <number-of-billing-cycles nil="true"></number-of-billing-cycles>
+    <price>100.00</price>
+    <trial-duration nil="true"></trial-duration>
+    <trial-duration-unit>day</trial-duration-unit>
+    <trial-period type="boolean">false</trial-period>
+    <created-at type="datetime">2013-02-22T19:00:30Z</created-at>
+    <updated-at type="datetime">2013-02-22T19:00:30Z</updated-at>
+    <add-ons type="array">
+      <add-on>
+        <amount>10.00</amount>
+        <created-at type="datetime">2013-02-22T18:57:38Z</created-at>
+        <description>This is an addon for braintree-rails integration test</description>
+        <id>addon_id</id>
+        <kind>add_on</kind>
+        <merchant-id>merchant_id</merchant-id>
+        <name>braintree-rails-test-add-on</name>
+        <never-expires type="boolean">true</never-expires>
+        <number-of-billing-cycles nil="true"></number-of-billing-cycles>
+        <updated-at type="datetime">2013-02-22T18:58:59Z</updated-at>
+      </add-on>
+    </add-ons>
+    <discounts type="array">
+      <discount>
+        <amount>5.00</amount>
+        <created-at type="datetime">2013-02-22T18:58:20Z</created-at>
+        <description>This is a discount for braintree-rails integration test</description>
+        <id>discount_id</id>
+        <kind>discount</kind>
+        <merchant-id>merchant_id</merchant-id>
+        <name>braintree-rails-test-discount</name>
+        <never-expires type="boolean">true</never-expires>
+        <number-of-billing-cycles nil="true"></number-of-billing-cycles>
+        <updated-at type="datetime">2013-02-22T18:59:27Z</updated-at>
+      </discount>
+    </discounts>
+  </plan>
+</plans>
