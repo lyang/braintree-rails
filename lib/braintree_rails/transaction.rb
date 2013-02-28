@@ -1,8 +1,7 @@
 module BraintreeRails
   class Transaction < SimpleDelegator
     include Model
-
-    class << self; undef_method :delete; end
+    singleton_class.not_supported_apis(:delete)
     not_supported_apis(:update, :update!, :destroy)
 
     define_attributes(

@@ -9,6 +9,7 @@ require 'delegate'
 require 'braintree'
 require 'braintree/exceptions'
 
+require 'braintree_rails/braintree_ext'
 require 'braintree_rails/module'
 require 'braintree_rails/attributes'
 require 'braintree_rails/persistence'

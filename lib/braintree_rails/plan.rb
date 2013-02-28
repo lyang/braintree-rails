@@ -9,18 +9,6 @@ module BraintreeRails
 
     not_supported_apis(:create, :create!, :update, :update!, :destroy)
 
-    def self.all
-      @all ||= Braintree::Plan.all.map { |p| new(p) }
-    end
-
-    def self.find(id = nil, &block)
-      id.nil? ? all.find(&block) : all.find { |model| model.id == id }
-    end
-
-    def ensure_model(model)
-      model.is_a?(String) ? super(self.class.find(model)) : super
-    end
-
     def add_ons
       @add_ons ||= AddOns.new(self)
     end

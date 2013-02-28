@@ -10,9 +10,7 @@ module BraintreeRails
         @credit_card = belongs_to
       when BraintreeRails::Subscription
         @subscription = belongs_to
-        self.singleton_class.class_eval do
-          not_supported_apis(:build)
-        end
+        self.singleton_class.not_supported_apis(:build)
       end
       super([])
     end
