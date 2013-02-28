@@ -1,25 +1,40 @@
 module BraintreeRails
   class Transactions < SimpleDelegator
     include Association
-    lazy_load!
 
-    def initialize(customer, credit_card=nil)
-      @customer = customer || Customer.new({})
-      @credit_card = credit_card
+    def initialize(belongs_to)
+      case belongs_to
+      when BraintreeRails::Customer
+        @customer = belongs_to
+      when BraintreeRails::CreditCard
+        @credit_card = belongs_to
+      when BraintreeRails::Subscription
+        @subscription = belongs_to
+        self.singleton_class.class_eval do
+          not_supported_apis(:build)
+        end
+      end
       super([])
     end
 
     def default_options
-      {:customer => @customer, :credit_card => @credit_card || @customer.credit_cards.find(&:default?)}
+      if @credit_card.present?
+        {:credit_card => @credit_card}
+      else @customer.present?
+        {:customer => @customer, :credit_card => @customer.default_credit_card}
+      end
     end
 
     protected
     def load!
-      @result ||= Braintree::Transaction.search do |search|
-        search.customer_id.is @customer.id
-        search.payment_method_token.is @credit_card.token if @credit_card && @credit_card.persisted?
-      end.map {|t| BraintreeRails::Transaction.new(t)}
-      __setobj__(@result)
+      self.collection = if @subscription.present?
+        @subscription.__getobj__.transactions
+      elsif @credit_card.present?
+        Braintree::Transaction.search {|search| search.payment_method_token.is @credit_card.token}
+      else
+        Braintree::Transaction.search {|search| search.customer_id.is @customer.id}
+      end
+      super
     end
   end
 end

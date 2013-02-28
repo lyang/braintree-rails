@@ -1,11 +1,14 @@
 module BraintreeRails
   class Address < SimpleDelegator
     include Model
-    define_attributes(:id, :customer_id, :first_name, :last_name, :company, :street_address, :extended_address, :locality, :country_name, :country_code_alpha2, :country_code_alpha3, :country_code_numeric, :region, :postal_code, :created_at, :updated_at)
+    define_attributes(
+      :company, :country_code_alpha2, :country_code_alpha3, :country_code_numeric, :country_name, :created_at, :customer_id,
+      :extended_address, :first_name, :id, :last_name, :locality, :postal_code, :region, :street_address, :updated_at
+    )
 
     exclude_attributes_from(
-      :update => [:id, :customer_id, :country_name, :country_code_alpha2, :country_code_alpha3, :created_at, :updated_at],
-      :create => [:country_name, :country_code_alpha2, :country_code_alpha3, :created_at, :updated_at]
+      :create => [:country_code_alpha2, :country_code_alpha3, :country_name, :created_at, :updated_at],
+      :update => [:country_code_alpha2, :country_code_alpha3, :country_name, :created_at, :customer_id, :id, :updated_at]
     )
 
     validates :first_name, :last_name, :company, :street_address, :extended_address, :locality, :region, :length => {:maximum => 255}
@@ -21,16 +24,12 @@ module BraintreeRails
       braintree_model_class.delete(customer_id, id)
     end
 
-    def initialize(address = {})
-      super(ensure_model(address))
+    def full_name
+      "#{first_name} #{last_name}".strip
     end
 
     def customer
-      new_record? ? nil : @customer ||= BraintreeRails::Customer.new(customer_id)
-    end
-
-    def full_name
-      "#{first_name} #{last_name}".strip
+      @customer ||= customer_id && Customer.new(customer_id)
     end
 
     [:country_name, :country_code_alpha2, :country_code_alpha3].each_with_index do |country, index|

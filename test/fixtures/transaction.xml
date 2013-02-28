@@ -91,8 +91,26 @@
     <billing-period-end-date nil="true"></billing-period-end-date>
     <billing-period-start-date nil="true"></billing-period-start-date>
   </subscription>
-  <add-ons type="array"/>
-  <discounts type="array"/>
+  <add-ons type="array">
+    <add-on>
+      <amount>10.00</amount>
+      <current-billing-cycle type="integer">1</current-billing-cycle>
+      <id>addon_id</id>
+      <never-expires type="boolean">true</never-expires>
+      <number-of-billing-cycles nil="true"></number-of-billing-cycles>
+      <quantity type="integer">1</quantity>
+    </add-on>
+  </add-ons>
+  <discounts type="array">
+    <discount>
+      <amount>5.00</amount>
+      <current-billing-cycle type="integer">1</current-billing-cycle>
+      <id>discount_id</id>
+      <never-expires type="boolean">true</never-expires>
+      <number-of-billing-cycles nil="true"></number-of-billing-cycles>
+      <quantity type="integer">1</quantity>
+    </discount>
+  </discounts>
   <descriptor>
     <name nil="true"></name>
     <phone nil="true"></phone>

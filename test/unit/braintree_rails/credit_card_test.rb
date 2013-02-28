@@ -54,6 +54,22 @@ describe BraintreeRails::CreditCard do
     end
   end
 
+  describe "#subscriptions" do
+    it 'behaves like enumerable' do
+      credit_card = BraintreeRails::CreditCard.new('credit_card_id')
+      braintree_credit_card = Braintree::CreditCard.find('credit_card_id')
+
+      credit_card.subscriptions.must_be_kind_of(Enumerable)
+      credit_card.subscriptions.size.must_equal braintree_credit_card.subscriptions.size
+    end
+
+    it 'can build new subscription' do
+      credit_card = BraintreeRails::CreditCard.new('credit_card_id')
+      subscription = credit_card.subscriptions.build
+      subscription.payment_method_token.must_equal credit_card.token
+    end
+  end
+
   describe '#billing_address' do
     it 'should wrap billing_address with Address object' do
       credit_card = BraintreeRails::CreditCard.new(OpenStruct.new(:billing_address => {}))

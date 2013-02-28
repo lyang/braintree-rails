@@ -29,7 +29,7 @@ describe 'Credit Card Integration' do
     attributes.except(:number, :cvv, :billing_address).each do |key, value|
       braintree_credit_card.send(key).must_equal value
     end
-    
+
     braintree_address = braintree_credit_card.billing_address
     attributes[:billing_address].each do |key, value|
       braintree_address.send(key).must_equal value

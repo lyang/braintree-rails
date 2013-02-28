@@ -2,9 +2,9 @@ module BraintreeRails
   class Addresses < SimpleDelegator
     include Association
 
-    def initialize(customer, addresses)
+    def initialize(customer)
       @customer = customer
-      super(addresses)
+      super(customer.__getobj__.addresses)
     end
 
     def default_options

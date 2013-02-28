@@ -9,7 +9,7 @@ describe BraintreeRails::Addresses do
     it 'should wrap an array of Braintree::Address' do
       braintree_customer = Braintree::Customer.find('customer_id')
       braintree_addresses = braintree_customer.addresses
-      addresses = BraintreeRails::Addresses.new(braintree_customer, braintree_addresses)
+      addresses = BraintreeRails::Addresses.new(BraintreeRails::Customer.find('customer_id'))
 
       addresses.size.must_equal braintree_addresses.size
 
@@ -26,7 +26,7 @@ describe BraintreeRails::Addresses do
     it 'should build new Address object with customer_id and params' do
       braintree_customer = Braintree::Customer.find('customer_id')
       braintree_addresses = braintree_customer.addresses
-      addresses = BraintreeRails::Addresses.new(braintree_customer, braintree_addresses)
+      addresses = BraintreeRails::Addresses.new(BraintreeRails::Customer.find('customer_id'))
       address = addresses.build({:first_name => 'foo', :last_name => 'bar'})
 
       address.persisted?.must_equal false

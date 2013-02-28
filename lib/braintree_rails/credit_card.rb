@@ -1,11 +1,21 @@
 module BraintreeRails
   class CreditCard < SimpleDelegator
     include Model
-    define_attributes :customer_id, :number, :token, :cvv, :cardholder_name, :expiration_date, :expiration_month, :expiration_year, :billing_address, :options, :created_at, :updated_at
+    define_attributes(
+      :billing_address, :bin, :card_type, :cardholder_name, :commercial, :country_of_issuance, :created_at, :customer_id,
+      :debit, :durbin_regulated, :expiration_month, :expiration_year, :expiration_date, :healthcare, :issuing_bank, :last_4,
+      :number, :cvv, :options, :payroll, :prepaid, :token, :unique_number_identifier, :updated_at
+    )
 
     exclude_attributes_from(
-      :update => [:token, :customer_id, :expiration_date, :created_at, :updated_at],
-      :create => [:expiration_date, :created_at, :updated_at]
+      :create => [
+        :bin, :card_type, :commercial, :country_of_issuance, :created_at, :debit, :durbin_regulated, :expiration_month,
+        :expiration_year, :healthcare, :issuing_bank, :last_4, :payroll, :prepaid, :unique_number_identifier, :updated_at
+      ],
+      :update => [
+        :bin, :card_type, :commercial, :country_of_issuance, :created_at, :customer_id, :debit, :durbin_regulated, :expiration_month,
+        :expiration_year, :healthcare, :issuing_bank, :last_4, :payroll, :prepaid, :unique_number_identifier, :updated_at
+      ]
     )
 
     validates :customer_id, :presence => true, :length => {:maximum => 36}, :if => :new_record?
@@ -20,34 +30,34 @@ module BraintreeRails
       record.errors.add(attribute, "is not valid. #{value.errors.full_messages.join("\n")}") if value && value.invalid?
     end
 
-    def initialize(credit_card = {})
-      super(ensure_model(credit_card))
-    end
-
     def id
       token
     end
 
     def customer
-      new_record? ? nil : @customer ||= BraintreeRails::Customer.new(customer_id)
+      @customer ||= customer_id && Customer.new(customer_id)
     end
 
     def transactions
-      new_record? ? [] : @transactions ||= Transactions.new(customer, self)
+      @transactions ||= Transactions.new(self)
+    end
+
+    def subscriptions
+      @subscriptions ||= Subscriptions.new(self)
+    end
+
+    def billing_address=(value)
+      @billing_address = value && Address.new(value)
     end
 
     def expiration_date=(date)
       expiration_month, expiration_year = date.to_s.split('/')
       self.expiration_month = expiration_month
-      self.expiration_year = expiration_year.to_s.gsub(/^(\d\d)$/, '20\1')
+      self.expiration_year = expiration_year.to_s.gsub(/\A(\d{2})\z/, '20\1')
     end
 
     def expiration_date
       expiration_month.present? ? "#{expiration_month}/#{expiration_year}" : nil
-    end
-
-    def billing_address=(value)
-      @billing_address = value && Address.new(value)
     end
 
     def add_errors(validation_errors)

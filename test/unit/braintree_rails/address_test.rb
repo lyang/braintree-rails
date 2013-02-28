@@ -111,7 +111,7 @@ describe BraintreeRails::Address do
       address.valid?
       address.errors[:postal_code].must_be :blank?
 
-      address = BraintreeRails::Address.new({:postal_code => '^$'})
+      address = BraintreeRails::Address.new({:postal_code => '%$'})
       address.valid?
       address.errors[:postal_code].wont_be :blank?
     end

@@ -52,6 +52,15 @@ module TestHelper
       :last_name => "Tree#{rand(1..100)}"
     }
   end
+
+  def subscription_hash
+    {
+      :id => 'subscription_id',
+      :plan_id => 'plan_id',
+      :payment_method_token => 'credit_card_id',
+      :first_billing_date => Date.tomorrow
+    }
+  end
 end
 
 

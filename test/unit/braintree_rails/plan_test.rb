@@ -36,4 +36,14 @@ describe BraintreeRails::Plan do
       plan.add_ons.size.must_equal braintree_plan.add_ons.size
     end
   end
+
+  describe '#discounts' do
+    it 'behaves like enumerable' do
+      braintree_plan = Braintree::Plan.all.find { |p| p.id == 'plan_id' }
+      plan = BraintreeRails::Plan.new(braintree_plan)
+
+      plan.discounts.must_be_kind_of(Enumerable)
+      plan.discounts.size.must_equal braintree_plan.discounts.size
+    end
+  end
 end

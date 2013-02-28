@@ -1,19 +1,22 @@
 module BraintreeRails
   module Association
     module ClassMethods
-      def lazy_load!
-        (Array.public_instance_methods - Object.public_instance_methods).each do |method|
-          define_method method do |*args, &block|
-            load!
-            super(*args, &block)
+      def self.extended(receiver)
+        receiver.class_eval do
+          attr_accessor :collection, :loaded
+          (Array.public_instance_methods - Object.public_instance_methods).each do |method|
+            define_method(method) do |*args, &block|
+              load!
+              super(*args, &block)
+            end
           end
         end
       end
     end
 
     module InstanceMethods
-      def initialize(models)
-        super(Array(models).map{|model| model_class.new(model)})
+      def initialize(collection = [])
+        super(self.collection = collection)
       end
 
       def find(id = nil, &block)
@@ -34,6 +37,12 @@ module BraintreeRails
 
       def model_class
         self.class.name.singularize.constantize
+      end
+
+      def load!
+        return if loaded
+        self.loaded = true
+        __setobj__(collection.map{|model| model_class.new(model)})
       end
     end
 

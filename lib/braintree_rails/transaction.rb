@@ -5,29 +5,28 @@ module BraintreeRails
     class << self; undef_method :delete; end
     not_supported_apis(:update, :update!, :destroy)
 
-    define_attributes(:id, :amount, :tax_amount, :tax_exempt, :customer, :customer_details, :credit_card, :credit_card_details, :order_id, :purchase_order_number, :billing, :shipping, :custom_fields, :descriptor, :options, :created_at, :updated_at)
+    define_attributes(
+      :amount, :avs_error_response_code, :avs_postal_code_response_code, :avs_street_address_response_code, :billing_details,
+      :channel, :created_at, :credit_card, :credit_card_details, :currency_iso_code, :customer, :custom_fields, :customer_details,
+      :cvv_response_code, :descriptor, :gateway_rejection_reason, :id, :merchant_account_id, :order_id, :plan_id, :processor_authorization_code,
+      :processor_response_code, :processor_response_text, :purchase_order_number, :recurring, :refund_ids, :refunded_transaction_id,
+      :settlement_batch_id, :shipping_details, :status, :status_history, :subscription_details, :subscription_id, :tax_amount, :tax_exempt, :type, :updated_at
+    )
 
-    exclude_attributes_from(:update => [:id, :customer, :credit_card, :customer_details, :credit_card_details, :created_at, :updated_at])
+    exclude_attributes_from(
+      :create => [
+        :avs_error_response_code, :avs_postal_code_response_code, :avs_street_address_response_code, :billing_details,
+        :channel, :created_at, :credit_card, :credit_card_details, :currency_iso_code, :customer, :customer_details,
+        :cvv_response_code, :plan_id, :purchase_order_number, :refund_ids, :refunded_transaction_id, :settlement_batch_id,
+        :shipping_details, :status, :status_history, :subscription_details, :updated_at
+      ]
+    )
 
     validates :amount, :presence => true, :numericality => {:greater_than_or_equal_to => 0}
 
     validate do
-      errors.add(:customer, "is required.") and return if customer.blank?
-      errors.add(:customer, "is not valid. #{customer.errors.full_messages.join("\n")}") unless customer.valid?
-    end
-
-    def initialize(transaction = {})
-      super(ensure_model(transaction))
-      set_customer
-      set_credit_card
-    end
-
-    def customer=(value)
-      @customer = value && Customer.new(value)
-    end
-
-    def credit_card=(value)
-      @credit_card = value && CreditCard.new(value)
+      errors.add(:base, "Either customer or credit card is required.") and return if customer.blank? && credit_card.blank?
+      errors.add(:customer, "does not have a default credit card.") if credit_card.blank? && customer.default_credit_card.blank?
     end
 
     [:submit_for_settlement, :submit_for_settlement!, :refund, :refund!, :void, :void!].each do |method|
@@ -37,15 +36,31 @@ module BraintreeRails
       end
     end
 
-    protected
-    def set_customer
-      self.customer ||= customer_details.try(:id) || customer_details
+    def customer=(val)
+      @customer = val && Customer.new(val)
     end
 
-    def set_credit_card
-      self.credit_card ||= credit_card_details.try(:token) || credit_card_details
-      self.credit_card ||= customer.credit_cards.find(&:default?) if customer.present?
+    def customer
+      @customer ||= customer_details.try(:id) && Customer.new(customer_details.id)
     end
+
+    def credit_card=(val)
+      @credit_card = val && CreditCard.new(val)
+    end
+
+    def credit_card
+      @credit_card ||= credit_card_details.try(:token) && CreditCard.new(credit_card_details.token)
+    end
+
+    def add_ons
+      @add_ons ||= AddOns.new(self)
+    end
+
+    def discounts
+      @discounts ||= Discounts.new(self)
+    end
+
+    protected
 
     def create
       with_update_braintree do
@@ -60,15 +75,34 @@ module BraintreeRails
     end
 
     def attributes_for_sale
-      attributes = attributes_for(:update)
-      attributes.merge!(customer.persisted? ? {:customer_id => customer.id} : {:customer => customer.attributes_for(:create)})
-      if credit_card.persisted?
-        attributes.merge!(:payment_method_token => credit_card.id)
-        attributes.delete(:billing)
-      else
-        attributes.merge!(:credit_card => credit_card.attributes_for(:create).except(:billing_address))
-      end
+      attributes = attributes_for(:create)
+      attributes.merge!(customer_attributes).merge!(credit_card_attributes)
+      attributes.delete(:billing) if credit_card.present? && credit_card.persisted?
       attributes
+    end
+
+    def customer_attributes
+      if customer.present?
+        if customer.persisted?
+          {:customer_id => customer.id}
+        else
+          {:customer => customer.attributes_for(:create)}
+        end
+      else
+        {}
+      end
+    end
+
+    def credit_card_attributes
+      if credit_card.present?
+        if credit_card.persisted?
+          {:payment_method_token => credit_card.token}
+        else
+          {:credit_card => credit_card.attributes_for(:create).except(:billing_address)}
+        end
+      else
+        {:payment_method_token => customer.default_credit_card.token}
+      end
     end
   end
 end

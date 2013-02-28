@@ -86,13 +86,22 @@ describe 'Transaction Integration' do
 
   describe BraintreeRails::Transactions do
     describe '#default_options' do
-      it 'should use default options to build new record' do
+      it 'can use default customer to build new record' do
         braintree_customer = Braintree::Customer.create!(customer_hash.merge(:credit_card => credit_card_hash))
         customer = BraintreeRails::Customer.new(braintree_customer)
-        credit_card = customer.credit_cards.first
+        credit_card = customer.default_credit_card
 
-        transaction = BraintreeRails::Transactions.new(customer, credit_card).build
+        transaction = BraintreeRails::Transactions.new(customer).create!(:amount => rand(1..10))
         transaction.customer.must_equal customer
+        transaction.credit_card.must_equal credit_card
+      end
+
+      it 'can use default credit_card to build new record' do
+        braintree_customer = Braintree::Customer.create!(customer_hash.merge(:credit_card => credit_card_hash))
+        customer = BraintreeRails::Customer.new(braintree_customer)
+        credit_card = customer.default_credit_card
+
+        transaction = BraintreeRails::Transactions.new(credit_card).create!(:amount => rand(1..10))
         transaction.credit_card.must_equal credit_card
       end
     end

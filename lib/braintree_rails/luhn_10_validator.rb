@@ -7,7 +7,7 @@ module BraintreeRails
 
     private
     def valid_integer?(number)
-      number =~ /^\d+$/
+      number =~ /\A\d+\z/
     end
 
     def valid_luhn_10_number?(number)

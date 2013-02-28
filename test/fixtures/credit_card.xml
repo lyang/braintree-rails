@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <credit-card>
-  <token>credit_card_id</token>
-  <unique-number-identifier>fe41071c3dc6a91f1dc0a95e64ff98d3</unique-number-identifier>
+  <bin>411111</bin>
+  <cardholder-name>Braintree Rails</cardholder-name>
+  <card-type>Visa</card-type>
+  <created-at type="datetime">2013-02-27T05:39:53Z</created-at>
   <customer-id>customer_id</customer-id>
-  <cardholder-name>Brain Tree</cardholder-name>
-  <customer-location>US</customer-location>
-  <card-type>MasterCard</card-type>
-  <bin>555555</bin>
-  <last-4>4444</last-4>
-  <expiration-month>05</expiration-month>
-  <expiration-year>2037</expiration-year>
   <default type="boolean">true</default>
+  <expiration-month>12</expiration-month>
+  <expiration-year>2015</expiration-year>
   <expired type="boolean">false</expired>
-  <subscriptions type="array"/>
-  <created-at type="datetime">2012-09-11T06:05:30Z</created-at>
-  <updated-at type="datetime">2012-09-11T06:05:30Z</updated-at>
+  <customer-location>US</customer-location>
+  <last-4>1111</last-4>
   <billing-address>
     <id>address_id</id>
-    <customer-id>8404776</customer-id>
+    <customer-id>customer_id</customer-id>
     <first-name>Brain</first-name>
     <last-name>Tree</last-name>
     <company>Braintree</company>
@@ -33,4 +29,202 @@
     <created-at type="datetime">2012-09-11T06:05:30Z</created-at>
     <updated-at type="datetime">2012-09-11T06:05:30Z</updated-at>
   </billing-address>
+  <subscriptions type="array">
+    <subscription>
+      <add-ons type="array">
+        <add-on>
+          <amount>10.00</amount>
+          <current-billing-cycle type="integer">1</current-billing-cycle>
+          <id>addon_id</id>
+          <never-expires type="boolean">true</never-expires>
+          <number-of-billing-cycles nil="true"></number-of-billing-cycles>
+          <quantity type="integer">1</quantity>
+        </add-on>
+      </add-ons>
+      <balance>0.00</balance>
+      <billing-day-of-month type="integer">26</billing-day-of-month>
+      <billing-period-end-date type="date">2013-03-25</billing-period-end-date>
+      <billing-period-start-date type="date">2013-02-26</billing-period-start-date>
+      <current-billing-cycle type="integer">1</current-billing-cycle>
+      <days-past-due nil="true"></days-past-due>
+      <discounts type="array">
+        <discount>
+          <amount>5.00</amount>
+          <current-billing-cycle type="integer">1</current-billing-cycle>
+          <id>discount_id</id>
+          <never-expires type="boolean">true</never-expires>
+          <number-of-billing-cycles nil="true"></number-of-billing-cycles>
+          <quantity type="integer">1</quantity>
+        </discount>
+      </discounts>
+      <failure-count type="integer">0</failure-count>
+      <first-billing-date type="date">2013-02-26</first-billing-date>
+      <id>subscription_id</id>
+      <merchant-account-id>n3dbctrrrwc9vb3j</merchant-account-id>
+      <never-expires type="boolean">true</never-expires>
+      <next-bill-amount>105.00</next-bill-amount>
+      <next-billing-period-amount>105.00</next-billing-period-amount>
+      <next-billing-date type="date">2013-03-26</next-billing-date>
+      <number-of-billing-cycles nil="true"></number-of-billing-cycles>
+      <paid-through-date type="date">2013-03-25</paid-through-date>
+      <payment-method-token>credit_card_id</payment-method-token>
+      <plan-id>plan_id</plan-id>
+      <price>100.00</price>
+      <status>Active</status>
+      <trial-duration nil="true"></trial-duration>
+      <trial-duration-unit>day</trial-duration-unit>
+      <trial-period type="boolean">false</trial-period>
+      <descriptor>
+        <name nil="true"></name>
+        <phone nil="true"></phone>
+      </descriptor>
+      <transactions type="array">
+        <transaction>
+          <id>br5d82</id>
+          <status>submitted_for_settlement</status>
+          <type>sale</type>
+          <currency-iso-code>USD</currency-iso-code>
+          <amount>105.00</amount>
+          <merchant-account-id>n3dbctrrrwc9vb3j</merchant-account-id>
+          <order-id nil="true"></order-id>
+          <created-at type="datetime">2013-02-27T05:40:28Z</created-at>
+          <updated-at type="datetime">2013-02-27T05:40:28Z</updated-at>
+          <customer>
+            <id>customer_id</id>
+            <first-name>Braintree</first-name>
+            <last-name>Rails</last-name>
+            <company>braintree-rails</company>
+            <email>braintree-rails@example.com</email>
+            <website></website>
+            <phone></phone>
+            <fax></fax>
+          </customer>
+          <billing>
+            <id nil="true"></id>
+            <first-name nil="true"></first-name>
+            <last-name nil="true"></last-name>
+            <company nil="true"></company>
+            <street-address nil="true"></street-address>
+            <extended-address nil="true"></extended-address>
+            <locality nil="true"></locality>
+            <region nil="true"></region>
+            <postal-code nil="true"></postal-code>
+            <country-name nil="true"></country-name>
+            <country-code-alpha2 nil="true"></country-code-alpha2>
+            <country-code-alpha3 nil="true"></country-code-alpha3>
+            <country-code-numeric nil="true"></country-code-numeric>
+          </billing>
+          <refund-id nil="true"></refund-id>
+          <refund-ids type="array"/>
+          <refunded-transaction-id nil="true"></refunded-transaction-id>
+          <settlement-batch-id nil="true"></settlement-batch-id>
+          <shipping>
+            <id nil="true"></id>
+            <first-name nil="true"></first-name>
+            <last-name nil="true"></last-name>
+            <company nil="true"></company>
+            <street-address nil="true"></street-address>
+            <extended-address nil="true"></extended-address>
+            <locality nil="true"></locality>
+            <region nil="true"></region>
+            <postal-code nil="true"></postal-code>
+            <country-name nil="true"></country-name>
+            <country-code-alpha2 nil="true"></country-code-alpha2>
+            <country-code-alpha3 nil="true"></country-code-alpha3>
+            <country-code-numeric nil="true"></country-code-numeric>
+          </shipping>
+          <custom-fields>
+          </custom-fields>
+          <avs-error-response-code nil="true"></avs-error-response-code>
+          <avs-postal-code-response-code>I</avs-postal-code-response-code>
+          <avs-street-address-response-code>I</avs-street-address-response-code>
+          <cvv-response-code>I</cvv-response-code>
+          <gateway-rejection-reason nil="true"></gateway-rejection-reason>
+          <processor-authorization-code>P575Q9</processor-authorization-code>
+          <processor-response-code>1000</processor-response-code>
+          <processor-response-text>Approved</processor-response-text>
+          <purchase-order-number nil="true"></purchase-order-number>
+          <tax-amount nil="true"></tax-amount>
+          <tax-exempt type="boolean">false</tax-exempt>
+          <credit-card>
+            <token>credit_card_id</token>
+            <bin>411111</bin>
+            <last-4>1111</last-4>
+            <card-type>Visa</card-type>
+            <expiration-month>12</expiration-month>
+            <expiration-year>2015</expiration-year>
+            <customer-location>US</customer-location>
+            <cardholder-name>Braintree Rails</cardholder-name>
+            <prepaid>Unknown</prepaid>
+            <healthcare>Unknown</healthcare>
+            <debit>Unknown</debit>
+            <durbin-regulated>Unknown</durbin-regulated>
+            <commercial>Unknown</commercial>
+            <payroll>Unknown</payroll>
+            <issuing-bank>Unknown</issuing-bank>
+            <country-of-issuance>Unknown</country-of-issuance>
+          </credit-card>
+          <status-history type="array">
+            <status-event>
+              <timestamp type="datetime">2013-02-27T05:40:28Z</timestamp>
+              <status>authorized</status>
+              <amount>105.00</amount>
+              <user>linyang84</user>
+              <transaction-source>Recurring</transaction-source>
+            </status-event>
+            <status-event>
+              <timestamp type="datetime">2013-02-27T05:40:28Z</timestamp>
+              <status>submitted_for_settlement</status>
+              <amount>105.00</amount>
+              <user>linyang84</user>
+              <transaction-source>Recurring</transaction-source>
+            </status-event>
+          </status-history>
+          <plan-id>plan_id</plan-id>
+          <subscription-id>subscription_id</subscription-id>
+          <subscription>
+            <billing-period-end-date type="date">2013-03-25</billing-period-end-date>
+            <billing-period-start-date type="date">2013-02-26</billing-period-start-date>
+          </subscription>
+          <add-ons type="array">
+            <add-on>
+              <amount>10.00</amount>
+              <current-billing-cycle type="integer">1</current-billing-cycle>
+              <id>addon_id</id>
+              <never-expires type="boolean">true</never-expires>
+              <number-of-billing-cycles nil="true"></number-of-billing-cycles>
+              <quantity type="integer">1</quantity>
+            </add-on>
+          </add-ons>
+          <discounts type="array">
+            <discount>
+              <amount>5.00</amount>
+              <current-billing-cycle type="integer">1</current-billing-cycle>
+              <id>discount_id</id>
+              <never-expires type="boolean">true</never-expires>
+              <number-of-billing-cycles nil="true"></number-of-billing-cycles>
+              <quantity type="integer">1</quantity>
+            </discount>
+          </discounts>
+          <descriptor>
+            <name nil="true"></name>
+            <phone nil="true"></phone>
+          </descriptor>
+          <recurring type="boolean">true</recurring>
+          <channel nil="true"></channel>
+        </transaction>
+      </transactions>
+    </subscription>
+  </subscriptions>
+  <token>credit_card_id</token>
+  <updated-at type="datetime">2013-02-27T05:39:53Z</updated-at>
+  <unique-number-identifier>f95aef5929fe2b4b2dc1377fc9c33b57</unique-number-identifier>
+  <prepaid>Unknown</prepaid>
+  <healthcare>Unknown</healthcare>
+  <debit>Unknown</debit>
+  <durbin-regulated>Unknown</durbin-regulated>
+  <commercial>Unknown</commercial>
+  <payroll>Unknown</payroll>
+  <issuing-bank>Unknown</issuing-bank>
+  <country-of-issuance>Unknown</country-of-issuance>
 </credit-card>

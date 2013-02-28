@@ -9,7 +9,7 @@ describe BraintreeRails::Discounts do
     it 'should wrap an array of Braintree::Discount' do
       braintree_plan = Braintree::Plan.all.find { |p| p.id == 'plan_id' }
       braintree_discounts = braintree_plan.discounts
-      discounts = BraintreeRails::Discounts.new(braintree_plan, braintree_discounts)
+      discounts = BraintreeRails::Discounts.new(BraintreeRails::Plan.find('plan_id'))
 
       discounts.size.must_equal braintree_discounts.size
 
@@ -26,7 +26,7 @@ describe BraintreeRails::Discounts do
     it 'should throw NotSupportedApiException' do
       braintree_plan = Braintree::Plan.all.find { |p| p.id == 'plan_id' }
       braintree_discounts = braintree_plan.discounts
-      discounts = BraintreeRails::Discounts.new(braintree_plan, braintree_discounts)
+      discounts = BraintreeRails::Discounts.new(BraintreeRails::Plan.find('plan_id'))
       lambda { discounts.create }.must_raise BraintreeRails::NotSupportedApiException
     end
   end

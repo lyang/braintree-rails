@@ -35,7 +35,7 @@ describe BraintreeRails::Transactions do
     end
 
     it 'should be able to override default values' do
-      transactions = BraintreeRails::Transactions.new(nil)
+      transactions = BraintreeRails::Transactions.new(BraintreeRails::Customer.new('customer_id'))
       customer = BraintreeRails::Customer.new(:first_name => 'Braintree')
       transaction = transactions.build(:customer => customer)
       transaction.customer.must_equal customer

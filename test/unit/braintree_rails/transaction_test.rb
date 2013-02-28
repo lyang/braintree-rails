@@ -61,6 +61,18 @@ describe BraintreeRails::Transaction do
     end
   end
 
+  [:add_ons, :discounts].each do |association|
+    describe "##{association}" do
+      it 'behaves like enumerable' do
+        braintree_transaction = Braintree::Transaction.find('transactionid')
+        transaction = BraintreeRails::Transaction.new(braintree_transaction)
+
+        transaction.send(association).must_be_kind_of(Enumerable)
+        transaction.send(association).size.must_equal braintree_transaction.send(association).size
+      end
+    end
+  end
+
   describe 'validations' do
     it 'should validate amount' do
       [nil, 'abc', -1].each do |invalid_value|
@@ -86,10 +98,8 @@ describe BraintreeRails::Transaction do
     end
 
     it 'should create a sale transaction from new credit card' do
-      customer = BraintreeRails::Customer.find('customer_id')
-      credit_card = BraintreeRails::CreditCard.find('credit_card_id')
-      transaction = BraintreeRails::Transaction.new(:amount => '10.00', :customer => customer, :credit_card => BraintreeRails::CreditCard.new(:number => Braintree::Test::CreditCardNumbers::Visa, :cvv => 123))
-
+      transaction = BraintreeRails::Transaction.new(:amount => '10.00', :credit_card => credit_card_hash)
+      transaction.valid?
       transaction.save.must_equal true
       transaction.status.must_equal Braintree::Transaction::Status::Authorized
     end

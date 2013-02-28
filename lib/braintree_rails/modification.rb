@@ -1,7 +1,9 @@
 module BraintreeRails
   class Modification < SimpleDelegator
     include Model
-    define_attributes(:id, :name, :description, :amount, :quantity, :number_of_billing_cycles, :never_expires, :created_at, :updated_at)
+
+    define_attributes(:amount, :created_at, :description, :id, :kind, :merchant_id, :name, :never_expires, :number_of_billing_cycles, :quantity, :updated_at)
+
     not_supported_apis(:create, :create!, :update, :update!, :destroy)
 
     def self.all
@@ -12,20 +14,8 @@ module BraintreeRails
       id.nil? ? all.find(&block) : all.find { |model| model.id == id }
     end
 
-    def initialize(modification)
-      super(ensure_model(modification))
-    end
-
     def ensure_model(model)
-      model = case model
-      when String
-        self.persisted = true
-        self.class.find(model)
-      else
-        super(model)
-      end
-      assign_attributes(extract_values(model))
-      model
+      model.is_a?(String) ? super(self.class.find(model)) : super
     end
   end
 end

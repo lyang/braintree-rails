@@ -1,14 +1,10 @@
 module BraintreeRails
   class Modifications < SimpleDelegator
     include Association
+    not_supported_apis(:build)
 
-    def initialize(plan, modifications)
-      @plan = plan
-      super(modifications)
-    end
-
-    def default_options
-      {:plan_id => @plan.id}
+    def initialize(parent)
+      super(parent.__getobj__.send(self.class.name.demodulize.underscore))
     end
   end
 end

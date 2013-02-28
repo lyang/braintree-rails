@@ -9,7 +9,7 @@ describe BraintreeRails::AddOns do
     it 'should wrap an array of Braintree::AddOn' do
       braintree_plan = Braintree::Plan.all.find { |p| p.id == 'plan_id' }
       braintree_add_ons = braintree_plan.add_ons
-      add_ons = BraintreeRails::AddOns.new(braintree_plan, braintree_add_ons)
+      add_ons = BraintreeRails::AddOns.new(BraintreeRails::Plan.find('plan_id'))
 
       add_ons.size.must_equal braintree_add_ons.size
 
@@ -26,7 +26,7 @@ describe BraintreeRails::AddOns do
     it 'should throw NotSupportedApiException' do
       braintree_plan = Braintree::Plan.all.find { |p| p.id == 'plan_id' }
       braintree_add_ons = braintree_plan.add_ons
-      add_ons = BraintreeRails::AddOns.new(braintree_plan, braintree_add_ons)
+      add_ons = BraintreeRails::AddOns.new(BraintreeRails::Plan.find('plan_id'))
       lambda { add_ons.create }.must_raise BraintreeRails::NotSupportedApiException
     end
   end

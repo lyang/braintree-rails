@@ -12,17 +12,13 @@ module BraintreeRails
           include ::ActiveModel::Conversion
         end
       end
-
-      def not_supported_apis(*methods)
-        methods.each do |method|
-          define_method method do |*args, &block|
-            raise NotSupportedApiException
-          end
-        end
-      end
     end
 
     module InstanceMethods
+      def initialize(model = {})
+        super(ensure_model(model))
+      end
+
       def ensure_model(model)
         model = case model
         when String

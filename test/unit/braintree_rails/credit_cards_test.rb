@@ -9,7 +9,7 @@ describe BraintreeRails::CreditCards do
     it 'should wrap an array of Braintree::CreditCard' do
       braintree_customer = Braintree::Customer.find('customer_id')
       braintree_credit_cards = braintree_customer.credit_cards
-      credit_cards = BraintreeRails::CreditCards.new(braintree_customer, braintree_credit_cards)
+      credit_cards = BraintreeRails::CreditCards.new(BraintreeRails::Customer.find('customer_id'))
 
       credit_cards.size.must_equal braintree_credit_cards.size
 
@@ -25,8 +25,9 @@ describe BraintreeRails::CreditCards do
   describe '#build' do
     it 'should build new CreditCard object with customer_id and params' do
       braintree_customer = Braintree::Customer.find('customer_id')
+      customer = BraintreeRails::Customer.find('customer_id')
       braintree_credit_cards = braintree_customer.credit_cards
-      credit_cards = BraintreeRails::CreditCards.new(braintree_customer, braintree_credit_cards)
+      credit_cards = BraintreeRails::CreditCards.new(BraintreeRails::Customer.find('customer_id'))
       credit_card = credit_cards.build({:first_name => 'foo', :last_name => 'bar'})
 
       credit_card.persisted?.must_equal false
@@ -40,19 +41,19 @@ describe BraintreeRails::CreditCards do
     it 'should add credit card to collection if creation succeeded' do
       stub_braintree_request(:post, '/payment_methods', :body => fixture('credit_card.xml'))
 
-      braintree_customer = BraintreeRails::Customer.find('customer_id')
-      credit_card = braintree_customer.credit_cards.create(credit_card_hash)
+      customer = BraintreeRails::Customer.find('customer_id')
+      credit_card = customer.credit_cards.create(credit_card_hash)
       credit_card.persisted?.must_equal true
-      braintree_customer.credit_cards.must_include credit_card
+      customer.credit_cards.must_include credit_card
     end
 
     it 'should not add credit card to collection if creation failed' do
       stub_braintree_request(:post, '/payment_methods', :body => fixture('credit_card_validation_error.xml'))
 
-      braintree_customer = BraintreeRails::Customer.find('customer_id')
-      credit_card = braintree_customer.credit_cards.create(credit_card_hash)
+      customer = BraintreeRails::Customer.find('customer_id')
+      credit_card = customer.credit_cards.create(credit_card_hash)
       credit_card.persisted?.must_equal false
-      braintree_customer.credit_cards.wont_include credit_card
+      customer.credit_cards.wont_include credit_card
     end
   end
 end
