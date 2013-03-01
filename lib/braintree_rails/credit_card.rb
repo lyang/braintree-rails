@@ -2,20 +2,13 @@ module BraintreeRails
   class CreditCard < SimpleDelegator
     include Model
     define_attributes(
-      :billing_address, :bin, :card_type, :cardholder_name, :commercial, :country_of_issuance, :created_at, :customer_id,
-      :debit, :durbin_regulated, :expiration_month, :expiration_year, :expiration_date, :healthcare, :issuing_bank, :last_4,
-      :number, :cvv, :options, :payroll, :prepaid, :token, :unique_number_identifier, :updated_at
-    )
-
-    exclude_attributes_from(
-      :create => [
+      :create => [:billing_address, :cardholder_name, :customer_id, :expiration_date, :number, :cvv, :options, :token],
+      :update => [:billing_address, :cardholder_name, :expiration_date, :number, :cvv, :options],
+      :readonly => [
         :bin, :card_type, :commercial, :country_of_issuance, :created_at, :debit, :durbin_regulated, :expiration_month,
         :expiration_year, :healthcare, :issuing_bank, :last_4, :payroll, :prepaid, :unique_number_identifier, :updated_at
       ],
-      :update => [
-        :bin, :card_type, :commercial, :country_of_issuance, :created_at, :customer_id, :debit, :durbin_regulated, :expiration_month,
-        :expiration_year, :healthcare, :issuing_bank, :last_4, :payroll, :prepaid, :unique_number_identifier, :updated_at
-      ]
+      :as_association => [:token, :cardholder_name, :cvv, :expiration_date, :expiration_month, :expiration_year, :number]
     )
 
     validates :customer_id, :presence => true, :length => {:maximum => 36}, :if => :new_record?

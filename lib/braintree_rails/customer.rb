@@ -1,11 +1,12 @@
 module BraintreeRails
   class Customer < SimpleDelegator
     include Model
-    define_attributes(:company, :created_at, :custom_fields, :email, :fax, :first_name, :id, :last_name, :phone, :updated_at, :website)
 
-    exclude_attributes_from(
-      :create => [:created_at, :updated_at],
-      :update => [:id, :created_at, :updated_at],
+    define_attributes(
+      :create => [:company, :custom_fields, :email, :fax, :first_name, :id, :last_name, :options, :phone, :website],
+      :update => [:company, :custom_fields, :email, :fax, :first_name, :id, :last_name, :options, :phone, :website],
+      :readonly => [:created_at, :updated_at],
+      :as_association => [:id, :company, :email, :fax, :first_name, :last_name, :phone, :website]
     )
 
     validates :id, :format => {:with => /\A[-_a-z0-9]*\z/i}, :length => {:maximum => 36}, :exclusion => {:in => %w(all new)}

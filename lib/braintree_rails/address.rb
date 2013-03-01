@@ -2,13 +2,10 @@ module BraintreeRails
   class Address < SimpleDelegator
     include Model
     define_attributes(
-      :company, :country_code_alpha2, :country_code_alpha3, :country_code_numeric, :country_name, :created_at, :customer_id,
-      :extended_address, :first_name, :id, :last_name, :locality, :postal_code, :region, :street_address, :updated_at
-    )
-
-    exclude_attributes_from(
-      :create => [:country_code_alpha2, :country_code_alpha3, :country_name, :created_at, :updated_at],
-      :update => [:country_code_alpha2, :country_code_alpha3, :country_name, :created_at, :customer_id, :id, :updated_at]
+      :create => [:company, :country_code_numeric, :customer_id, :extended_address, :first_name, :id, :last_name, :locality, :postal_code, :region, :street_address],
+      :update => [:company, :country_code_numeric, :extended_address, :first_name, :last_name, :locality, :postal_code, :region, :street_address],
+      :readonly => [:country_code_alpha2, :country_code_alpha3, :country_name, :created_at, :updated_at],
+      :as_association => [:company, :country_code_alpha2, :country_code_alpha3, :country_code_numeric, :country_name, :extended_address, :first_name, :last_name, :locality, :postal_code, :region, :street_address]
     )
 
     validates :first_name, :last_name, :company, :street_address, :extended_address, :locality, :region, :length => {:maximum => 255}

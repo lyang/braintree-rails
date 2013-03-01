@@ -12,7 +12,7 @@ describe BraintreeRails::Customer do
 
       customer.persisted?.must_equal true
       BraintreeRails::Customer.attributes.each do |attribute|
-        customer.send(attribute).must_equal braintree_customer.send(attribute)
+        customer.send(attribute).must_equal braintree_customer.send(attribute) if braintree_customer.respond_to?(attribute)
       end
     end
 
@@ -22,7 +22,7 @@ describe BraintreeRails::Customer do
 
       customer.persisted?.must_equal true
       BraintreeRails::Customer.attributes.each do |attribute|
-        customer.send(attribute).must_equal braintree_customer.send(attribute)
+        customer.send(attribute).must_equal braintree_customer.send(attribute) if braintree_customer.respond_to?(attribute)
       end
     end
 

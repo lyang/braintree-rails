@@ -5,15 +5,12 @@ module BraintreeRails
     not_supported_apis(:update, :update!, :destroy)
 
     define_attributes(
-      :amount, :avs_error_response_code, :avs_postal_code_response_code, :avs_street_address_response_code, :billing_details,
-      :channel, :created_at, :credit_card, :credit_card_details, :currency_iso_code, :customer, :custom_fields, :customer_details,
-      :cvv_response_code, :descriptor, :gateway_rejection_reason, :id, :merchant_account_id, :order_id, :plan_id, :processor_authorization_code,
-      :processor_response_code, :processor_response_text, :purchase_order_number, :recurring, :refund_ids, :refunded_transaction_id,
-      :settlement_batch_id, :shipping_details, :status, :status_history, :subscription_details, :subscription_id, :tax_amount, :tax_exempt, :type, :updated_at
-    )
-
-    exclude_attributes_from(
       :create => [
+        :amount, :billing, :channel, :custom_fields, :customer_id, :descriptor, :merchant_account_id,
+        :options, :order_id, :payment_method_token, :purchase_order_number, :recurring, :shipping, :shipping_address_id,
+        :tax_amount, :tax_exempt, :type, :venmo_sdk_payment_method_code
+      ],
+      :readonly => [
         :avs_error_response_code, :avs_postal_code_response_code, :avs_street_address_response_code, :billing_details,
         :channel, :created_at, :credit_card, :credit_card_details, :currency_iso_code, :customer, :customer_details,
         :cvv_response_code, :plan_id, :purchase_order_number, :refund_ids, :refunded_transaction_id, :settlement_batch_id,

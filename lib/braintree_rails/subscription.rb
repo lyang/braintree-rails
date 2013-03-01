@@ -3,20 +3,17 @@ module BraintreeRails
     include Model
 
     define_attributes(
-      :balance, :billing_day_of_month, :billing_period_end_date, :billing_period_start_date, :current_billing_cycle,
-      :days_past_due, :failure_count, :first_billing_date, :id, :next_billing_date, :next_billing_period_amount, :number_of_billing_cycles,
-      :options, :paid_through_date, :payment_method_token, :plan_id, :price, :status, :trial_duration, :trial_duration_unit, :trial_period
-    )
-
-    exclude_attributes_from(
       :create => [
-        :balance, :billing_period_end_date, :billing_period_start_date, :current_billing_cycle, :days_past_due,
-        :failure_count, :next_billing_date, :next_billing_period_amount, :paid_through_date, :status
+        :billing_day_of_month, :first_billing_date, :id, :merchant_account_id, :never_expires, :number_of_billing_cycles,
+        :payment_method_token, :plan_id, :price, :trial_duration, :trial_duration_unit, :trial_period, :options, :descriptor
       ],
       :update => [
-        :balance, :billing_day_of_month, :billing_period_end_date, :billing_period_start_date, :current_billing_cycle,
-        :days_past_due, :descriptor, :failure_count, :first_billing_date, :next_billing_date, :next_billing_period_amount, :number_of_billing_cycles,
-        :paid_through_date, :status, :trial_duration, :trial_duration_unit, :trial_period
+        :id, :merchant_account_id, :never_expires, :number_of_billing_cycles,
+        :payment_method_token, :plan_id, :price, :options
+      ],
+      :readonly => [
+        :balance, :billing_period_end_date, :billing_period_start_date, :current_billing_cycle, :days_past_due,
+        :failure_count, :next_billing_date, :next_billing_period_amount, :paid_through_date, :status
       ]
     )
 

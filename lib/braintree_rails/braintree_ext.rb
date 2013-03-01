@@ -5,3 +5,12 @@
    end
   end
 end
+
+module Braintree
+  class Descriptor
+    def ==(other)
+      return false unless other.is_a?(Descriptor)
+      name == other.name && phone == other.phone
+    end
+  end
+end
