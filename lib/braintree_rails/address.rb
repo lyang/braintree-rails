@@ -8,6 +8,8 @@ module BraintreeRails
       :as_association => [:company, :country_code_alpha2, :country_code_alpha3, :country_code_numeric, :country_name, :extended_address, :first_name, :last_name, :locality, :postal_code, :region, :street_address]
     )
 
+    define_associations(:customer => :customer_id)
+
     validates :first_name, :last_name, :company, :street_address, :extended_address, :locality, :region, :length => {:maximum => 255}
     validates :country_code_alpha2, :allow_blank => true, :inclusion => { :in => Braintree::Address::CountryNames.map {|country| country[1]} }
     validates :postal_code, :street_address, :presence => true
@@ -23,10 +25,6 @@ module BraintreeRails
 
     def full_name
       "#{first_name} #{last_name}".strip
-    end
-
-    def customer
-      @customer ||= customer_id && Customer.new(customer_id)
     end
 
     [:country_name, :country_code_alpha2, :country_code_alpha3].each_with_index do |country, index|

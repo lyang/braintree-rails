@@ -12,12 +12,6 @@ module BraintreeRails
       ]
     )
 
-    def add_ons
-      @add_ons ||= AddOns.new(self)
-    end
-
-    def discounts
-      @discounts ||= Discounts.new(self)
-    end
+    define_associations(:add_ons, :discounts)
   end
 end

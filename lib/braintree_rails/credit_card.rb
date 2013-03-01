@@ -11,6 +11,8 @@ module BraintreeRails
       :as_association => [:token, :cardholder_name, :cvv, :expiration_date, :expiration_month, :expiration_year, :number]
     )
 
+    define_associations(:transactions, :subscriptions, :customer => :customer_id)
+
     validates :customer_id, :presence => true, :length => {:maximum => 36}, :if => :new_record?
     validates :number, :presence => true, :numericality => { :only_integer => true }, :length => {:minimum => 12, :maximum => 19}, :if => :new_record?
     validates :cvv, :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 100, :less_than_or_equal_to => 9999 }
@@ -25,18 +27,6 @@ module BraintreeRails
 
     def id
       token
-    end
-
-    def customer
-      @customer ||= customer_id && Customer.new(customer_id)
-    end
-
-    def transactions
-      @transactions ||= Transactions.new(self)
-    end
-
-    def subscriptions
-      @subscriptions ||= Subscriptions.new(self)
     end
 
     def billing_address=(value)

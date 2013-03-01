@@ -17,6 +17,8 @@ module BraintreeRails
       ]
     )
 
+    define_associations(:add_ons, :discounts, :transactions, :plan => :plan_id, :credit_card => :payment_method_token)
+
     validates :id, :format => {:with => /\A[-_[:alnum:]]*$\z/i},  :exclusion => {:in => %w(all new)}
     validates :billing_day_of_month, :numericality => { :only_integer => true }, :inclusion => {:in => [*(1..28), 31]}, :allow_nil => true
     validates :number_of_billing_cycles, :numericality => { :only_integer => true, :greater_than_or_equal_to  => 1 }, :allow_nil => true
@@ -37,26 +39,6 @@ module BraintreeRails
       rescue ArgumentError
         record.errors.add(attribute, "is invalid.")
       end
-    end
-
-    def plan
-      @plan ||= plan_id && Plan.new(plan_id)
-    end
-
-    def credit_card
-      @credit_card ||= payment_method_token && CreditCard.new(payment_method_token)
-    end
-
-    def add_ons
-      @add_ons ||= AddOns.new(self)
-    end
-
-    def discounts
-      @discounts ||= Discounts.new(self)
-    end
-
-    def transactions
-      @transactions ||= Transactions.new(self)
     end
   end
 end

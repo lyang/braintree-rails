@@ -18,6 +18,8 @@ module BraintreeRails
       ]
     )
 
+    define_associations(:add_ons, :discounts)
+
     validates :amount, :presence => true, :numericality => {:greater_than_or_equal_to => 0}
 
     validate do
@@ -46,14 +48,6 @@ module BraintreeRails
 
     def credit_card
       @credit_card ||= credit_card_details.try(:token) && CreditCard.new(credit_card_details.token)
-    end
-
-    def add_ons
-      @add_ons ||= AddOns.new(self)
-    end
-
-    def discounts
-      @discounts ||= Discounts.new(self)
     end
 
     protected
