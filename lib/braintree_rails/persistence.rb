@@ -104,7 +104,13 @@ module BraintreeRails
         raise RecordInvalid unless valid?
         result = yield
         if result.respond_to?(:success?) && !result.success?
-          add_errors(result.errors)
+          validation_errors = result.errors.inject({}) do |hash, error|
+            hash[error.attribute.to_s] = error.message
+            hash
+          end
+          base_error = (result.message.split("\n") - validation_errors.values).join("\n")
+          validation_errors['base'] = base_error unless base_error.blank?
+          add_errors(validation_errors)
           false
         else
           new_record = result.respond_to?(self.class.braintree_model_name) ? result.send(self.class.braintree_model_name) : result
