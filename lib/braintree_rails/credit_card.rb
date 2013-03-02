@@ -28,6 +28,13 @@ module BraintreeRails
       record.errors.add(attribute, "is not valid. #{value.errors.full_messages.join("\n")}") if value && value.invalid?
     end
 
+    def ensure_model(model)
+      if Braintree::Transaction::CreditCardDetails === model && model.token.present?
+        model = model.token
+      end
+      super
+    end
+
     def id
       token
     end

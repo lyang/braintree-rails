@@ -18,7 +18,7 @@ module BraintreeRails
       ]
     )
 
-    define_associations(:add_ons, :discounts)
+    define_associations(:add_ons, :discounts, :customer => :customer_details, :credit_card => :credit_card_details)
 
     validates :amount, :presence => true, :numericality => {:greater_than_or_equal_to => 0}
 
@@ -38,16 +38,8 @@ module BraintreeRails
       @customer = val && Customer.new(val)
     end
 
-    def customer
-      @customer ||= customer_details.try(:id) && Customer.new(customer_details.id)
-    end
-
     def credit_card=(val)
       @credit_card = val && CreditCard.new(val)
-    end
-
-    def credit_card
-      @credit_card ||= credit_card_details.try(:token) && CreditCard.new(credit_card_details.token)
     end
 
     protected

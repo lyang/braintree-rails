@@ -14,6 +14,14 @@ module BraintreeRails
     validates :id, :format => {:with => /\A[-_a-z0-9]*\z/i}, :length => {:maximum => 36}, :exclusion => {:in => %w(all new)}
     validates :first_name, :last_name, :company, :website, :phone, :fax, :length => {:maximum => 255}
 
+    def ensure_model(model)
+      if Braintree::Transaction::CustomerDetails === model
+        super(model.id || extract_values(model))
+      else
+        super
+      end
+    end
+
     def full_name
       "#{first_name} #{last_name}".strip
     end
