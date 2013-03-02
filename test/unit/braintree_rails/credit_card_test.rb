@@ -119,6 +119,9 @@ describe BraintreeRails::CreditCard do
       credit_card = BraintreeRails::CreditCard.new(:number => '4111111111111111')
       credit_card.valid?
       credit_card.errors[:number].must_be :blank?
+
+      credit_card = BraintreeRails::CreditCard.new('credit_card_id')
+      credit_card.valid?.must_equal true
     end
 
     it 'should validate numericality of number' do
