@@ -18,8 +18,10 @@ module BraintreeRails
     def default_options
       if @credit_card.present?
         {:credit_card => @credit_card}
-      else @customer.present?
+      elsif @customer.present?
         {:customer => @customer, :credit_card => @customer.default_credit_card}
+      else
+        {}
       end
     end
 
@@ -29,8 +31,10 @@ module BraintreeRails
         @subscription.__getobj__.transactions
       elsif @credit_card.present?
         Braintree::Transaction.search {|search| search.payment_method_token.is @credit_card.token}
-      else
+      elsif @customer.present?
         Braintree::Transaction.search {|search| search.customer_id.is @customer.id}
+      else
+        Braintree::Transaction.search
       end
       super
     end
