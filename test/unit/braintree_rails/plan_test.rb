@@ -48,4 +48,28 @@ describe BraintreeRails::Plan do
       end
     end
   end
+
+  describe 'subscriptions' do
+    before do
+      stub_braintree_request(:post, '/subscriptions/advanced_search_ids', :body => fixture('subscription_ids.xml'))
+      stub_braintree_request(:post, '/subscriptions/advanced_search', :body => fixture('subscriptions.xml'))
+    end
+
+    it 'behaves like enumerable' do
+      braintree_plan = Braintree::Plan.all.find { |p| p.id == 'plan_id' }
+      plan = BraintreeRails::Plan.new(braintree_plan)
+      braintree_subscriptions = Braintree::Subscription.search do |search|
+        search.plan_id.is 'plan_id'
+      end.to_a
+
+      plan.subscriptions.must_be_kind_of(Enumerable)
+      plan.subscriptions.size.must_equal braintree_subscriptions.size
+    end
+
+    it 'can build new subscription' do
+      plan = BraintreeRails::Plan.new('plan_id')
+      subscription = plan.subscriptions.build
+      subscription.plan_id.must_equal plan.id
+    end
+  end
 end

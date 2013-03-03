@@ -18,7 +18,7 @@ module BraintreeRails
       ]
     )
 
-    define_associations(:add_ons, :discounts, :customer => :customer_details, :credit_card => :credit_card_details)
+    define_associations(:add_ons, :discounts, :customer => :customer_details, :credit_card => :credit_card_details, :subscription => :subscription_id)
 
     validates :amount, :presence => true, :numericality => {:greater_than_or_equal_to => 0}
 

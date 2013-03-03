@@ -12,7 +12,7 @@ module BraintreeRails
       ]
     )
 
-    define_associations(:add_ons, :discounts)
+    define_associations(:add_ons, :discounts, :subscriptions)
 
     def self.all
       braintree_model_class.all.map{ |plan| new(plan) }
