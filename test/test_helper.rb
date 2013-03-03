@@ -58,7 +58,8 @@ module TestHelper
       :id => 'subscription_id',
       :plan_id => 'plan_id',
       :payment_method_token => 'credit_card_id',
-      :first_billing_date => Date.tomorrow
+      :first_billing_date => Date.tomorrow,
+      :price => ''
     }
   end
 end
