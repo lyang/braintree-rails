@@ -21,6 +21,15 @@ describe BraintreeRails::Transactions do
 
       transactions.map(&:id).sort.must_equal braintree_transactions.map(&:id).sort
     end
+
+    it 'should load all transactions' do
+      stub_braintree_request(:post, '/transactions/advanced_search_ids', :body => fixture('transaction_ids.xml'))
+      stub_braintree_request(:post, '/transactions/advanced_search', :body => fixture('transactions.xml'))
+
+      braintree_transactions = Braintree::Transaction.search
+      transactions = BraintreeRails::Transactions.new(nil)
+      transactions.map(&:id).sort.must_equal braintree_transactions.map(&:id).sort
+    end
   end
 
   describe '#build' do
@@ -32,6 +41,12 @@ describe BraintreeRails::Transactions do
       transaction = transactions.build
       transaction.customer.must_equal customer
       transaction.credit_card.must_equal customer.credit_cards.find(&:default?)
+    end
+
+    it 'has no default options when loading all' do
+      transactions = BraintreeRails::Transactions.new(nil)
+      transaction = transactions.build
+      transaction.attributes.values.compact.must_be :empty?
     end
 
     it 'should be able to override default values' do

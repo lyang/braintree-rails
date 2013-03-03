@@ -12,5 +12,8 @@ module BraintreeRails
       ]
     )
 
+    def self.all
+      braintree_model_class.all.map{ |modification| new(modification) }
+    end
   end
 end

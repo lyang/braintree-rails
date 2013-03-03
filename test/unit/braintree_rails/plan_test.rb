@@ -27,23 +27,25 @@ describe BraintreeRails::Plan do
     end
   end
 
-  describe '#add_ons' do
-    it 'behaves like enumerable' do
-      braintree_plan = Braintree::Plan.all.find { |p| p.id == 'plan_id' }
-      plan = BraintreeRails::Plan.new(braintree_plan)
+  describe 'all' do
+    it 'should wrap all plans' do
+      braintree_plans = Braintree::Plan.all
+      plans = BraintreeRails::Plan.all
 
-      plan.add_ons.must_be_kind_of(Enumerable)
-      plan.add_ons.size.must_equal braintree_plan.add_ons.size
+      plans.must_be_kind_of(Enumerable)
+      plans.size.must_equal braintree_plans.size
     end
   end
 
-  describe '#discounts' do
-    it 'behaves like enumerable' do
-      braintree_plan = Braintree::Plan.all.find { |p| p.id == 'plan_id' }
-      plan = BraintreeRails::Plan.new(braintree_plan)
+  [:add_ons, :discounts].each do |association|
+    describe association do
+      it 'behaves like enumerable' do
+        braintree_plan = Braintree::Plan.all.find { |p| p.id == 'plan_id' }
+        plan = BraintreeRails::Plan.new(braintree_plan)
 
-      plan.discounts.must_be_kind_of(Enumerable)
-      plan.discounts.size.must_equal braintree_plan.discounts.size
+        plan.send(association).must_be_kind_of(Enumerable)
+        plan.send(association).size.must_equal braintree_plan.send(association).size
+      end
     end
   end
 end

@@ -13,5 +13,9 @@ module BraintreeRails
     )
 
     define_associations(:add_ons, :discounts)
+
+    def self.all
+      braintree_model_class.all.map{ |plan| new(plan) }
+    end
   end
 end
