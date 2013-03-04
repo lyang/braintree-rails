@@ -57,7 +57,7 @@ module BraintreeRails
 
       def destroy
         if persisted?
-          self.class.braintree_model_class.delete(id)
+          self.class.delete(id)
         end
         self.persisted = false unless frozen?
         freeze

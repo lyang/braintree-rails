@@ -285,5 +285,12 @@ describe BraintreeRails::Subscription do
         lambda{ subscription.update_attributes!(:price => 'f' * 256) }.must_raise(BraintreeRails::RecordInvalid)
       end
     end
+
+    describe 'destroy' do
+      it 'should cancel subscription when destroy' do
+        stub_braintree_request(:put, '/subscriptions/subscription_id/cancel', :body => fixture('subscription.xml'))
+        BraintreeRails::Subscription.new('subscription_id').destroy
+      end
+    end
   end
 end

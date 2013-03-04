@@ -14,3 +14,11 @@ module Braintree
     end
   end
 end
+
+module Braintree
+  class Subscription
+    def self.delete(id)
+      cancel(id)
+    end
+  end
+end
