@@ -104,19 +104,31 @@ module BraintreeRails
         raise RecordInvalid unless valid?
         result = yield
         if result.respond_to?(:success?) && !result.success?
-          validation_errors = result.errors.inject({}) do |hash, error|
-            hash[error.attribute.to_s] = error.message
-            hash
-          end
-          base_error = (result.message.split("\n") - validation_errors.values).join("\n")
-          validation_errors['base'] = base_error unless base_error.blank?
-          add_errors(validation_errors)
+          add_errors(extract_errors(result))
           false
         else
           new_record = result.respond_to?(self.class.braintree_model_name) ? result.send(self.class.braintree_model_name) : result
           assign_attributes(extract_values(new_record))
           self.persisted = true
           self.__setobj__(new_record)
+        end
+      end
+
+      def extract_errors(result)
+        base_errors(result).merge(attribute_errors(result))
+      end
+
+      def base_errors(result)
+        all_messages = result.message.split("\n")
+        base_messages = all_messages - attribute_errors(result).values
+        {'base' => base_messages.join("\n")}
+      end
+
+      def attribute_errors(result)
+        result.errors.inject({}) do |hash, error|
+          next hash if error.attribute.to_s == 'base'
+          hash[error.attribute.to_s] = error.message
+          hash
         end
       end
     end
