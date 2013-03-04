@@ -3,7 +3,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), '../unit_test_helper'
 describe BraintreeRails::Luhn10Validator do
   class Validatable < Struct.new(:number)
     include ActiveModel::Validations
-    validates_with BraintreeRails::Luhn10Validator, :attribute => :number
+    validates :number, 'braintree_rails/luhn_10' => true
   end
 
   describe 'valid numbers' do
@@ -18,20 +18,6 @@ describe BraintreeRails::Luhn10Validator do
       invalid_record = Validatable.new('1234567890123456')
       invalid_record.wont_be :valid?
       invalid_record.errors[:number].must_include 'failed Luhn 10 validation.'
-    end
-
-    it 'should fail for non integers' do
-      invalid_record = Validatable.new('1234567890.123456')
-      invalid_record.wont_be :valid?
-      invalid_record.errors[:number].must_include 'must be an integer'
-
-      invalid_record = Validatable.new(1234567890.123456)
-      invalid_record.wont_be :valid?
-      invalid_record.errors[:number].must_include 'must be an integer'
-
-      invalid_record = Validatable.new('foobar')
-      invalid_record.wont_be :valid?
-      invalid_record.errors[:number].must_include 'must be an integer'
     end
   end
 end

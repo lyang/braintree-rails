@@ -32,10 +32,6 @@ module BraintreeRails
       record.errors.add(attribute, "is too small.") if value.present? && value < record.current_billing_cycle
     end
 
-    def price=(val)
-      @price = val.blank? ? nil : val
-    end
-
     validates_each :first_billing_date, :allow_nil => true, :if => :new_record? do |record, attribute, value|
       begin
         date = DateTime.parse(value.to_s)
@@ -43,6 +39,10 @@ module BraintreeRails
       rescue ArgumentError
         record.errors.add(attribute, "is invalid.")
       end
+    end
+
+    def price=(val)
+      @price = val.blank? ? nil : val
     end
   end
 end

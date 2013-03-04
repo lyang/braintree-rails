@@ -15,9 +15,8 @@ module BraintreeRails
 
     with_options :presence => true, :if => :new_record? do |credit_card|
       credit_card.validates :customer_id, :length => {:maximum => 36}
-      credit_card.validates :number, :numericality => { :only_integer => true }, :length => {:minimum => 12, :maximum => 19}
+      credit_card.validates :number, :numericality => { :only_integer => true }, :length => {:minimum => 12, :maximum => 19}, 'braintree_rails/luhn_10' => true
       credit_card.validates :cvv, :numericality => { :only_integer => true, :greater_than_or_equal_to => 100, :less_than_or_equal_to => 9999 }
-      credit_card.validates_with Luhn10Validator, :attribute => :number
     end
 
     validates :cardholder_name, :length => {:maximum => 255}
