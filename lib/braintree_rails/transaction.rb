@@ -21,6 +21,7 @@ module BraintreeRails
     define_associations(:add_ons, :discounts, :customer => :customer_details, :credit_card => :credit_card_details, :subscription => :subscription_id)
 
     validates :amount, :presence => true, :numericality => {:greater_than_or_equal_to => 0}
+    validates :type, :presence => true, :inclusion => {:in => %w(sale credit)}
 
     validate do
       errors.add(:base, "Either customer or credit card is required.") and return if customer.blank? && credit_card.blank?
@@ -42,25 +43,14 @@ module BraintreeRails
       @credit_card = val && CreditCard.new(val)
     end
 
+    def type
+      @type ||= 'sale'
+    end
+
     protected
 
-    def create
-      with_update_braintree do
-        Braintree::Transaction.sale(attributes_for_sale)
-      end
-    end
-
-    def create!
-      with_update_braintree do
-        Braintree::Transaction.sale!(attributes_for_sale)
-      end
-    end
-
-    def attributes_for_sale
-      attributes = attributes_for(:create)
-      attributes.merge!(customer_attributes).merge!(credit_card_attributes)
-      attributes.delete(:billing) if credit_card.present? && credit_card.persisted?
-      attributes
+    def attributes_for(action)
+      super.merge(customer_attributes).merge(credit_card_attributes)
     end
 
     def customer_attributes
@@ -82,8 +72,10 @@ module BraintreeRails
         else
           {:credit_card => credit_card.attributes_for(:create).except(:billing_address)}
         end
-      else
+      elsif customer.present? && customer.default_credit_card
         {:payment_method_token => customer.default_credit_card.token}
+      else
+        {}
       end
     end
   end

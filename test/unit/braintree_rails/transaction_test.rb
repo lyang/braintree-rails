@@ -83,6 +83,12 @@ describe BraintreeRails::Transaction do
     end
   end
 
+  describe '#attribute_for_create' do
+    it 'should default type to sale' do
+      BraintreeRails::Transaction.new.send(:attributes_for, :create).must_equal :type => 'sale'
+    end
+  end
+
   describe 'persistence' do
     before do
       stub_braintree_request(:post, '/transactions', :body => fixture('transaction.xml'))

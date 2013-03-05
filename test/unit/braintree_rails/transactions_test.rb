@@ -46,7 +46,7 @@ describe BraintreeRails::Transactions do
     it 'has no default options when loading all' do
       transactions = BraintreeRails::Transactions.new(nil)
       transaction = transactions.build
-      transaction.attributes.values.compact.must_be :empty?
+      transaction.attributes.except(:type).values.compact.must_be :empty?
     end
 
     it 'should be able to override default values' do

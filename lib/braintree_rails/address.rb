@@ -15,6 +15,13 @@ module BraintreeRails
     validates :postal_code, :street_address, :presence => true
     validates :postal_code, :format => { :with => /\A[- a-z0-9]+\z/i}
 
+    [:country_name, :country_code_alpha2, :country_code_alpha3].each_with_index do |country, index|
+      define_method("#{country}=") do |val|
+        self.country_code_numeric = Braintree::Address::CountryNames.find{|country| country[index] == val}.try(:[], 3)
+        self.instance_variable_set("@#{country}", val)
+      end
+    end
+
     def self.find(customer_id, id)
       new(braintree_model_class.find(customer_id, id))
     end
@@ -25,13 +32,6 @@ module BraintreeRails
 
     def full_name
       "#{first_name} #{last_name}".strip
-    end
-
-    [:country_name, :country_code_alpha2, :country_code_alpha3].each_with_index do |country, index|
-      define_method("#{country}=") do |val|
-        self.country_code_numeric = Braintree::Address::CountryNames.find{|country| country[index] == val}.try(:[], 3)
-        self.instance_variable_set("@#{country}", val)
-      end
     end
 
     def destroy
