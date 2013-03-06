@@ -266,7 +266,6 @@ describe BraintreeRails::Subscription do
     describe 'update_attributes, update_attributes!' do
       it 'should return true when update_attributes' do
         subscription = BraintreeRails::Subscription.new(Braintree::Subscription.find('subscription_id'))
-        subscription.update_attributes(:price => '10')
         subscription.update_attributes(:price => '10').must_equal true
       end
 

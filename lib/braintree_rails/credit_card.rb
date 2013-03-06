@@ -13,19 +13,8 @@ module BraintreeRails
 
     define_associations(:transactions, :subscriptions, :customer => :customer_id)
 
-    with_options :presence => true, :if => :new_record? do |credit_card|
-      credit_card.validates :customer_id, :length => {:maximum => 36}
-      credit_card.validates :number, :numericality => { :only_integer => true }, :length => {:minimum => 12, :maximum => 19}, 'braintree_rails/luhn_10' => true
-      credit_card.validates :cvv, :numericality => { :only_integer => true, :greater_than_or_equal_to => 100, :less_than_or_equal_to => 9999 }
-    end
+    validates_with CreditCardValidator
 
-    validates :cardholder_name, :length => {:maximum => 255}
-    validates :expiration_month, :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 1, :less_than_or_equal_to => 12 }
-    validates :expiration_year,  :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 1976, :less_than_or_equal_to => 2200 }
-    validates :billing_address, :presence => true
-    validates_each :billing_address do |record, attribute, value|
-      record.errors.add(attribute, "is not valid. #{value.errors.full_messages.join("\n")}") if value && value.invalid?
-    end
 
     def ensure_model(model)
       if Braintree::Transaction::CreditCardDetails === model && model.token.present?

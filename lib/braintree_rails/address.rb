@@ -10,10 +10,7 @@ module BraintreeRails
 
     define_associations(:customer => :customer_id)
 
-    validates :first_name, :last_name, :company, :street_address, :extended_address, :locality, :region, :length => {:maximum => 255}
-    validates :country_code_alpha2, :allow_blank => true, :inclusion => { :in => Braintree::Address::CountryNames.map {|country| country[1]} }
-    validates :postal_code, :street_address, :presence => true
-    validates :postal_code, :format => { :with => /\A[- a-z0-9]+\z/i}
+    validates_with AddressValidator
 
     [:country_name, :country_code_alpha2, :country_code_alpha3].each_with_index do |country, index|
       define_method("#{country}=") do |val|

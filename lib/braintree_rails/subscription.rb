@@ -19,27 +19,7 @@ module BraintreeRails
 
     define_associations(:add_ons, :discounts, :transactions, :plan => :plan_id, :credit_card => :payment_method_token)
 
-    validates :id, :format => {:with => /\A[-_[:alnum:]]*$\z/i},  :exclusion => {:in => %w(all new)}
-    validates :billing_day_of_month, :numericality => { :only_integer => true }, :inclusion => {:in => [*(1..28), 31]}, :allow_nil => true
-    validates :number_of_billing_cycles, :numericality => { :only_integer => true, :greater_than_or_equal_to  => 1 }, :allow_nil => true
-    validates :payment_method_token, :presence => true, :if => :new_record?
-    validates :plan_id, :presence => true, :if => :new_record?
-    validates :price, :numericality => true, :allow_nil => true
-    validates :trial_duration, :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 1, :less_than_or_equal_to => 9999 }, :if => :trial_period
-    validates :trial_duration_unit, :presence => true, :inclusion => { :in => %w(day month) }, :if => :trial_period
-
-    validates_each :number_of_billing_cycles, :if => Proc.new {|subscription| subscription.current_billing_cycle.present? } do |record, attribute, value|
-      record.errors.add(attribute, "is too small.") if value.present? && value < record.current_billing_cycle
-    end
-
-    validates_each :first_billing_date, :allow_nil => true, :if => :new_record? do |record, attribute, value|
-      begin
-        date = DateTime.parse(value.to_s)
-        record.errors.add(attribute, "cannot be in the past.") if date < Date.today
-      rescue ArgumentError
-        record.errors.add(attribute, "is invalid.")
-      end
-    end
+    validates_with SubscriptionValidator
 
     def price=(val)
       @price = val.blank? ? nil : val

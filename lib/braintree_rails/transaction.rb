@@ -20,13 +20,7 @@ module BraintreeRails
 
     define_associations(:add_ons, :discounts, :customer => :customer_details, :credit_card => :credit_card_details, :subscription => :subscription_id)
 
-    validates :amount, :presence => true, :numericality => {:greater_than_or_equal_to => 0}
-    validates :type, :presence => true, :inclusion => {:in => %w(sale credit)}
-
-    validate do
-      errors.add(:base, "Either customer or credit card is required.") and return if customer.blank? && credit_card.blank?
-      errors.add(:customer, "does not have a default credit card.") if credit_card.blank? && customer.default_credit_card.blank?
-    end
+    validates_with TransactionValidator
 
     [:submit_for_settlement, :submit_for_settlement!, :refund, :refund!, :void, :void!].each do |method|
       define_method method do |*args|
