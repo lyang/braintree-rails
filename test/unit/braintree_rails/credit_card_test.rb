@@ -217,6 +217,10 @@ describe BraintreeRails::CreditCard do
       credit_card.valid?
       credit_card.errors[:expiration_month].wont_be :blank?
 
+      credit_card = BraintreeRails::CreditCard.new(:expiration_month => 1.1)
+      credit_card.valid?
+      credit_card.errors[:expiration_month].wont_be :blank?
+
       credit_card = BraintreeRails::CreditCard.new(:expiration_month => 1)
       credit_card.valid?
       credit_card.errors[:expiration_month].must_be :blank?
@@ -236,6 +240,10 @@ describe BraintreeRails::CreditCard do
       credit_card.errors[:expiration_year].wont_be :blank?
 
       credit_card = BraintreeRails::CreditCard.new(:expiration_year => 2201)
+      credit_card.valid?
+      credit_card.errors[:expiration_year].wont_be :blank?
+
+      credit_card = BraintreeRails::CreditCard.new(:expiration_year => 1976.1)
       credit_card.valid?
       credit_card.errors[:expiration_year].wont_be :blank?
 
