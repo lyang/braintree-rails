@@ -4,12 +4,13 @@ module BraintreeRails
       def self.extended(receiver)
         receiver.class_eval do
           attr_accessor :collection, :loaded
-          (Array.public_instance_methods - Object.public_instance_methods).each do |method|
-            define_method(method) do |*args, &block|
-              load!
-              super(*args, &block)
-            end
-          end
+          lazy_load(Array.public_instance_methods - Object.public_instance_methods)
+        end
+      end
+
+      def lazy_load(methods)
+        methods.each do |method|
+          define_method(method) { |*args, &block| load!; super(*args, &block) }
         end
       end
     end
