@@ -178,5 +178,22 @@ describe BraintreeRails::Customer do
         lambda{ customer.update_attributes!(:first_name => 'f' * 256) }.must_raise(BraintreeRails::RecordInvalid)
       end
     end
+
+    describe 'serialization' do
+      it 'can be serializable hash' do
+        customer = BraintreeRails::Customer.new('customer_id')
+        customer.serializable_hash.must_be_kind_of Hash
+      end
+
+      it 'can be serialized to xml' do
+        customer = BraintreeRails::Customer.new('customer_id')
+        customer.to_xml.must_include "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+      end
+
+      it 'can be serialized to json' do
+        customer = BraintreeRails::Customer.new('customer_id')
+        customer.as_json.must_be_kind_of Hash
+      end
+    end
   end
 end

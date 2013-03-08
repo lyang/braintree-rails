@@ -71,7 +71,8 @@ module BraintreeRails
     def self.included(receiver)
       receiver.extend         ClassMethods
       receiver.send :include, InstanceMethods
-      receiver.send :include, ::ActiveModel::Serialization
+      receiver.send :include, ::ActiveModel::Serializers::JSON
+      receiver.send :include, ::ActiveModel::Serializers::Xml
     end
   end
 end
