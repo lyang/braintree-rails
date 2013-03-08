@@ -135,19 +135,7 @@ Check out [braintree-rails-example](https://github.com/lyang/braintree-rails-exa
 
 Todos
 ---------------
-1. Adding support for subscriptions.
-2. Adding a Arel like query interface?
-
-NOTICE
----------------
-This IS NOT created or maintained by Braintree.
-
-The local validations are solely based on Braintree's document. For length, numericallity and [luhn-10](http://en.wikipedia.org/wiki/Luhn) checks it works fine, but it can't verify credit card numbers etc without resulting to Braintree's API.
-
-So, be prepared to get validation errors from Braintree even if the local validations have passed.
-
-Currently cvv, street address, postal code are required for creating/updating credit cards as per Braintree's strong recommendations to avoid fraud.
-
+Write better documents
 
 Braintree
 ---------------
