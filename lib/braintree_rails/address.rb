@@ -12,10 +12,10 @@ module BraintreeRails
 
     validates_with AddressValidator
 
-    [:country_name, :country_code_alpha2, :country_code_alpha3].each_with_index do |country, index|
-      define_method("#{country}=") do |val|
-        self.country_code_numeric = Braintree::Address::CountryNames.find{|country| country[index] == val}.try(:[], 3)
-        self.instance_variable_set("@#{country}", val)
+    [:country_name, :country_code_alpha2, :country_code_alpha3].each_with_index do |country_attribute, index|
+      define_method("#{country_attribute}=") do |val|
+        self.country_code_numeric = Braintree::Address::CountryNames.find{|country_name| country_name[index] == val}.try(:[], 3)
+        self.instance_variable_set("@#{country_attribute}", val)
       end
     end
 

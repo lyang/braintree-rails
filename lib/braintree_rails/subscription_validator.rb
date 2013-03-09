@@ -1,17 +1,15 @@
 module BraintreeRails
-  class SubscriptionValidator < ActiveModel::Validator
-    def setup(klass)
-      klass.class_eval do
-        validates :id, :format => {:with => /\A[-_[:alnum:]]*$\z/i},  :exclusion => {:in => %w(all new)}
-        validates :billing_day_of_month, :numericality => { :only_integer => true }, :inclusion => {:in => [*(1..28), 31]}, :allow_nil => true
-        validates :number_of_billing_cycles, :numericality => { :only_integer => true, :greater_than_or_equal_to  => 1 }, :allow_nil => true
-        validates :payment_method_token, :presence => true, :if => :new_record?
-        validates :plan_id, :presence => true, :if => :new_record?
-        validates :price, :numericality => true, :allow_nil => true
-        validates :trial_duration, :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 1, :less_than_or_equal_to => 9999 }, :if => :trial_period
-        validates :trial_duration_unit, :presence => true, :inclusion => { :in => %w(day month) }, :if => :trial_period
-      end
-    end
+  class SubscriptionValidator < Validator
+    Validations = [
+      [:id, :format => {:with => /\A[-_[:alnum:]]*$\z/i},  :exclusion => {:in => %w(all new)}],
+      [:billing_day_of_month, :numericality => { :only_integer => true }, :inclusion => {:in => [*(1..28), 31]}, :allow_nil => true],
+      [:number_of_billing_cycles, :numericality => { :only_integer => true, :greater_than_or_equal_to  => 1 }, :allow_nil => true],
+      [:payment_method_token, :presence => true, :if => :new_record?],
+      [:plan_id, :presence => true, :if => :new_record?],
+      [:price, :numericality => true, :allow_nil => true],
+      [:trial_duration, :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 1, :less_than_or_equal_to => 9999 }, :if => :trial_period],
+      [:trial_duration_unit, :presence => true, :inclusion => { :in => %w(day month) }, :if => :trial_period]
+    ]
 
     def validate(subscription)
       number_of_billing_cycles_must_be_greater_than_current_billing_cycle(subscription)

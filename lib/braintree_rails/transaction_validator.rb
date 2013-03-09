@@ -1,11 +1,9 @@
 module BraintreeRails
-  class TransactionValidator < ActiveModel::Validator
-    def setup(klass)
-      klass.class_eval do
-        validates :amount, :presence => true, :numericality => {:greater_than_or_equal_to => 0}
-        validates :type, :presence => true, :inclusion => {:in => %w(sale credit)}
-      end
-    end
+  class TransactionValidator < Validator
+    Validations = [
+      [:amount, :presence => true, :numericality => {:greater_than_or_equal_to => 0}],
+      [:type, :presence => true, :inclusion => {:in => %w(sale credit)}]
+    ]
 
     def validate(transaction)
       must_have_credit_card(transaction)

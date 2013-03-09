@@ -124,34 +124,6 @@ describe BraintreeRails::CreditCard do
       credit_card.valid?.must_equal true
     end
 
-    it 'should validate numericality of number' do
-      credit_card = BraintreeRails::CreditCard.new(:number => 'foobar')
-      credit_card.valid?
-      credit_card.errors[:number].wont_be :blank?
-
-      credit_card = BraintreeRails::CreditCard.new(:number => '4111111111111111')
-      credit_card.valid?
-      credit_card.errors[:number].must_be :blank?
-    end
-
-    it 'should validate length of number' do
-      credit_card = BraintreeRails::CreditCard.new(:number => '1')
-      credit_card.valid?
-      credit_card.errors[:number].wont_be :blank?
-
-      credit_card = BraintreeRails::CreditCard.new(:number => '1' * 20)
-      credit_card.valid?
-      credit_card.errors[:number].wont_be :blank?
-
-      credit_card = BraintreeRails::CreditCard.new(:number => '4111111111111111')
-      credit_card.valid?
-      credit_card.errors[:number].must_be :blank?
-
-      credit_card = BraintreeRails::CreditCard.new(:number => '6208645006512478950')
-      credit_card.valid?
-      credit_card.errors[:number].must_be :blank?
-    end
-
     it 'should validate precence of cvv' do
       credit_card = BraintreeRails::CreditCard.new
       credit_card.valid?
@@ -162,32 +134,127 @@ describe BraintreeRails::CreditCard do
       credit_card.errors[:cvv].must_be :blank?
     end
 
-    it 'should validate numericality of cvv' do
-      credit_card = BraintreeRails::CreditCard.new(:cvv => 'foo')
-      credit_card.valid?
-      credit_card.errors[:cvv].wont_be :blank?
+    describe 'S2S mode' do
+      before do
+        BraintreeRails::Configuration.mode = BraintreeRails::Configuration::Mode::S2S
+      end
 
-      credit_card = BraintreeRails::CreditCard.new(:cvv => '111')
-      credit_card.valid?
-      credit_card.errors[:cvv].must_be :blank?
+      after do
+        BraintreeRails::Configuration.mode = nil
+      end
+
+      it 'should validate numericality of number' do
+        credit_card = BraintreeRails::CreditCard.new(:number => 'foobar')
+        credit_card.valid?
+        credit_card.errors[:number].wont_be :blank?
+
+        credit_card = BraintreeRails::CreditCard.new(:number => '4111111111111111')
+        credit_card.valid?
+        credit_card.errors[:number].must_be :blank?
+      end
+
+      it 'should validate length of number' do
+        credit_card = BraintreeRails::CreditCard.new(:number => '1')
+        credit_card.valid?
+        credit_card.errors[:number].wont_be :blank?
+
+        credit_card = BraintreeRails::CreditCard.new(:number => '1' * 20)
+        credit_card.valid?
+        credit_card.errors[:number].wont_be :blank?
+
+        credit_card = BraintreeRails::CreditCard.new(:number => '4111111111111111')
+        credit_card.valid?
+        credit_card.errors[:number].must_be :blank?
+
+        credit_card = BraintreeRails::CreditCard.new(:number => '6208645006512478950')
+        credit_card.valid?
+        credit_card.errors[:number].must_be :blank?
+      end
+
+      it 'should validate numericality of cvv' do
+        credit_card = BraintreeRails::CreditCard.new(:cvv => 'foo')
+        credit_card.valid?
+        credit_card.errors[:cvv].wont_be :blank?
+
+        credit_card = BraintreeRails::CreditCard.new(:cvv => '111')
+        credit_card.valid?
+        credit_card.errors[:cvv].must_be :blank?
+      end
+
+      it 'should validate length of cvv' do
+        credit_card = BraintreeRails::CreditCard.new(:cvv => '1')
+        credit_card.valid?
+        credit_card.errors[:cvv].wont_be :blank?
+
+        credit_card = BraintreeRails::CreditCard.new(:cvv => '1' * 5)
+        credit_card.valid?
+        credit_card.errors[:cvv].wont_be :blank?
+
+        credit_card = BraintreeRails::CreditCard.new(:cvv => '111')
+        credit_card.valid?
+        credit_card.errors[:cvv].must_be :blank?
+
+        credit_card = BraintreeRails::CreditCard.new(:cvv => '1111')
+        credit_card.valid?
+        credit_card.errors[:cvv].must_be :blank?
+      end
+
+      it 'should validate expiration month' do
+        credit_card = BraintreeRails::CreditCard.new(:expiration_month => 0)
+        credit_card.valid?
+        credit_card.errors[:expiration_month].wont_be :blank?
+
+        credit_card = BraintreeRails::CreditCard.new(:expiration_month => 13)
+        credit_card.valid?
+        credit_card.errors[:expiration_month].wont_be :blank?
+
+        credit_card = BraintreeRails::CreditCard.new(:expiration_month => 1.1)
+        credit_card.valid?
+        credit_card.errors[:expiration_month].wont_be :blank?
+
+        credit_card = BraintreeRails::CreditCard.new(:expiration_month => 1)
+        credit_card.valid?
+        credit_card.errors[:expiration_month].must_be :blank?
+
+        credit_card = BraintreeRails::CreditCard.new(:expiration_month => '12')
+        credit_card.valid?
+        credit_card.errors[:expiration_month].must_be :blank?
+      end
+
+      it 'should validate expiration year' do
+        credit_card = BraintreeRails::CreditCard.new(:expiration_year => 1975)
+        credit_card.valid?
+        credit_card.errors[:expiration_year].wont_be :blank?
+
+        credit_card = BraintreeRails::CreditCard.new(:expiration_year => 2201)
+        credit_card.valid?
+        credit_card.errors[:expiration_year].wont_be :blank?
+
+        credit_card = BraintreeRails::CreditCard.new(:expiration_year => 1976.1)
+        credit_card.valid?
+        credit_card.errors[:expiration_year].wont_be :blank?
+
+        credit_card = BraintreeRails::CreditCard.new(:expiration_year => 1976)
+        credit_card.valid?
+        credit_card.errors[:expiration_year].must_be :blank?
+
+        credit_card = BraintreeRails::CreditCard.new(:expiration_year => '2200')
+        credit_card.valid?
+        credit_card.errors[:expiration_year].must_be :blank?
+      end
+
     end
 
-    it 'should validate length of cvv' do
-      credit_card = BraintreeRails::CreditCard.new(:cvv => '1')
+    it 'should validate presence of expiration month' do
+      credit_card = BraintreeRails::CreditCard.new
       credit_card.valid?
-      credit_card.errors[:cvv].wont_be :blank?
+      credit_card.errors[:expiration_month].wont_be :blank?
+    end
 
-      credit_card = BraintreeRails::CreditCard.new(:cvv => '1' * 5)
+    it 'should validate presence of expiration year' do
+      credit_card = BraintreeRails::CreditCard.new
       credit_card.valid?
-      credit_card.errors[:cvv].wont_be :blank?
-
-      credit_card = BraintreeRails::CreditCard.new(:cvv => '111')
-      credit_card.valid?
-      credit_card.errors[:cvv].must_be :blank?
-
-      credit_card = BraintreeRails::CreditCard.new(:cvv => '1111')
-      credit_card.valid?
-      credit_card.errors[:cvv].must_be :blank?
+      credit_card.errors[:expiration_year].wont_be :blank?
     end
 
     it 'should validate length of cardholder_name' do
@@ -202,58 +269,6 @@ describe BraintreeRails::CreditCard do
       credit_card = BraintreeRails::CreditCard.new(:cardholder_name => 'f' * 255)
       credit_card.valid?
       credit_card.errors[:cardholder_name].must_be :blank?
-    end
-
-    it 'should validate expiration month' do
-      credit_card = BraintreeRails::CreditCard.new
-      credit_card.valid?
-      credit_card.errors[:expiration_month].wont_be :blank?
-
-      credit_card = BraintreeRails::CreditCard.new(:expiration_month => 0)
-      credit_card.valid?
-      credit_card.errors[:expiration_month].wont_be :blank?
-
-      credit_card = BraintreeRails::CreditCard.new(:expiration_month => 13)
-      credit_card.valid?
-      credit_card.errors[:expiration_month].wont_be :blank?
-
-      credit_card = BraintreeRails::CreditCard.new(:expiration_month => 1.1)
-      credit_card.valid?
-      credit_card.errors[:expiration_month].wont_be :blank?
-
-      credit_card = BraintreeRails::CreditCard.new(:expiration_month => 1)
-      credit_card.valid?
-      credit_card.errors[:expiration_month].must_be :blank?
-
-      credit_card = BraintreeRails::CreditCard.new(:expiration_month => '12')
-      credit_card.valid?
-      credit_card.errors[:expiration_month].must_be :blank?
-    end
-
-    it 'should validate expiration year' do
-      credit_card = BraintreeRails::CreditCard.new
-      credit_card.valid?
-      credit_card.errors[:expiration_year].wont_be :blank?
-
-      credit_card = BraintreeRails::CreditCard.new(:expiration_year => 1975)
-      credit_card.valid?
-      credit_card.errors[:expiration_year].wont_be :blank?
-
-      credit_card = BraintreeRails::CreditCard.new(:expiration_year => 2201)
-      credit_card.valid?
-      credit_card.errors[:expiration_year].wont_be :blank?
-
-      credit_card = BraintreeRails::CreditCard.new(:expiration_year => 1976.1)
-      credit_card.valid?
-      credit_card.errors[:expiration_year].wont_be :blank?
-
-      credit_card = BraintreeRails::CreditCard.new(:expiration_year => 1976)
-      credit_card.valid?
-      credit_card.errors[:expiration_year].must_be :blank?
-
-      credit_card = BraintreeRails::CreditCard.new(:expiration_year => '2200')
-      credit_card.valid?
-      credit_card.errors[:expiration_year].must_be :blank?
     end
 
     it 'should validate billing_address' do
