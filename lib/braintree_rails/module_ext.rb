@@ -4,10 +4,4 @@ class Module
       define_method(method) {|*args| raise BraintreeRails::NotSupportedApiException}
     end
   end
-
-  def cattr_accessor(*attributes)
-    singleton_class.class_eval do
-      attr_accessor(*attributes)
-    end
-  end
 end

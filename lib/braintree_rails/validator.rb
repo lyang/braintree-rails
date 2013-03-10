@@ -3,7 +3,7 @@ module BraintreeRails
     def self.setup
       model_class.class_eval do
         reset_callbacks(:validate)
-        validator_class::Validations.each do |validation|
+        validator_class::Validations.deep_dup.each do |validation|
           validates(*validation)
         end
       end
