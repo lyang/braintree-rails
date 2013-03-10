@@ -1,16 +1,20 @@
 module BraintreeRails
   class Validator < ActiveModel::Validator
-    def setup(*)
-      validations = self.class::Validations
+    def self.setup
       model_class.class_eval do
-        validations.each do |validation|
+        reset_callbacks(:validate)
+        validator_class::Validations.each do |validation|
           validates(*validation)
         end
       end
     end
 
-    def model_class
-      self.class.name.chomp('Validator').constantize
+    def self.model_class
+      name.chomp('Validator').constantize
+    end
+
+    def setup(*)
+      self.class.setup
     end
 
     def validate(record);end

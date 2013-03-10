@@ -9,7 +9,7 @@ module BraintreeRails
     ]
 
     def setup(*)
-      model_class.class_eval do
+      self.class.model_class.class_eval do
         define_model_callbacks :submit_for_settlement, :refund, :void
       end
       super

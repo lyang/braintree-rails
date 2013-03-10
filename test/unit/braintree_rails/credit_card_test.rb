@@ -293,6 +293,14 @@ describe BraintreeRails::CreditCard do
       credit_card.billing_address.errors[:street_address].wont_be :blank?
       credit_card.billing_address.errors[:postal_code].wont_be :blank?
     end
+
+    it 'should clear encrypted attributes after save' do
+      credit_card = BraintreeRails::CreditCard.find('credit_card_id')
+      credit_card.number = "foo"
+      stub_braintree_request(:put, '/payment_methods/credit_card_id', :body => fixture('credit_card.xml'))
+      credit_card.save
+      credit_card.number.must_be :blank?
+    end
   end
 
   describe 'class methods' do
