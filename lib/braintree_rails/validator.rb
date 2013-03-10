@@ -3,7 +3,6 @@ module BraintreeRails
     def setup(*)
       validations = self.class::Validations
       model_class.class_eval do
-        _validators.clear()
         validations.each do |validation|
           validates(*validation)
         end

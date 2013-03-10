@@ -13,8 +13,7 @@ module BraintreeRails
 
     define_associations(:transactions, :subscriptions, :customer => :customer_id)
 
-    validates_with CreditCardValidator
-
+    after_save :clear_encryped_attributes
 
     def ensure_model(model)
       if Braintree::Transaction::CreditCardDetails === model && model.token.present?
@@ -40,6 +39,13 @@ module BraintreeRails
       super.tap do |attributes|
         attributes[:billing_address].merge!(:options => {:update_existing => true}) if action == :update
         attributes.delete(:expiration_date) if expiration_month.present?
+      end
+    end
+
+    def clear_encryped_attributes
+      return unless Configuration.mode == Configuration::Mode::JS
+      [:number=, :cvv=, :expiration_date=, :expiration_year=, :expiration_month=].each do |encrypted_attribute|
+        self.send(encrypted_attribute, nil)
       end
     end
   end

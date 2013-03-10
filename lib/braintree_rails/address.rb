@@ -10,9 +10,7 @@ module BraintreeRails
 
     define_associations(:customer => :customer_id)
 
-    validates_with AddressValidator
-
-    [:country_name, :country_code_alpha2, :country_code_alpha3].each_with_index do |country_attribute, index|
+    def self.auto_set_country_code_numeric(country_attribute, index)
       define_method("#{country_attribute}=") do |val|
         self.country_code_numeric = Braintree::Address::CountryNames.find{|country_name| country_name[index] == val}.try(:[], 3)
         self.instance_variable_set("@#{country_attribute}", val)
@@ -33,7 +31,9 @@ module BraintreeRails
 
     def destroy
       if persisted?
-        self.class.delete(customer_id, id)
+        run_callbacks :destroy do
+          self.class.delete(customer_id, id)
+        end
       end
       self.persisted = false unless frozen?
       freeze
@@ -41,15 +41,19 @@ module BraintreeRails
 
     protected
     def update
-      with_update_braintree do
+      with_update_braintree(:update) do
         self.class.braintree_model_class.update(self.customer_id, self.id, attributes_for(:update))
       end
     end
 
     def update!
-      with_update_braintree do
+      with_update_braintree(:update) do
         self.class.braintree_model_class.update!(self.customer_id, self.id, attributes_for(:update))
       end
+    end
+
+    [:country_name, :country_code_alpha2, :country_code_alpha3].each_with_index do |country_attribute, index|
+      auto_set_country_code_numeric(country_attribute, index)
     end
   end
 end

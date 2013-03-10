@@ -54,4 +54,9 @@ describe 'Credit Card Integration' do
     credit_card.persisted?.must_equal false
     credit_card.frozen?.must_equal true
   end
+
+  it 'should be able to capture braintree api errors' do
+    customer = BraintreeRails::Customer.create!(:id => 'customer_id', :first_name => 'Brain', :last_name => 'Tree')
+    lambda{customer.credit_cards.create!(credit_card_hash.merge(:number => 'foo'))}.must_raise Braintree::ValidationsFailed
+  end
 end

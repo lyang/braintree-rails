@@ -19,8 +19,6 @@ module BraintreeRails
 
     define_associations(:add_ons, :discounts, :transactions, :plan => :plan_id, :credit_card => :payment_method_token)
 
-    validates_with SubscriptionValidator
-
     def price=(val)
       @price = val.blank? ? nil : val
     end

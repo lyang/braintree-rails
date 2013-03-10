@@ -117,46 +117,38 @@ describe BraintreeRails::Transaction do
       transaction.status.must_equal Braintree::Transaction::Status::Authorized
     end
 
-    it "should be able to submit_for_settlement a transaction" do
-      customer = BraintreeRails::Customer.find('customer_id')
-      credit_card = BraintreeRails::CreditCard.find('credit_card_id')
-      transaction = BraintreeRails::Transaction.new(:amount => '10.00', :customer => customer, :credit_card => credit_card)
-      transaction.save!
+    it "should be able to submit_for_settlement a authorized transaction" do
+      transaction = BraintreeRails::Transaction.find('transactionid')
       stub_braintree_request(:put, "/transactions/#{transaction.id}/submit_for_settlement", :body => fixture('transaction.xml'))
       transaction.submit_for_settlement.must_equal true
+      transaction.status = Braintree::Transaction::Status::Settled
+      transaction.submit_for_settlement.must_equal false
     end
 
-    it "should be able to refund a transaction" do
-      customer = BraintreeRails::Customer.find('customer_id')
-      credit_card = BraintreeRails::CreditCard.find('credit_card_id')
-      transaction = BraintreeRails::Transaction.new(:amount => '10.00', :customer => customer, :credit_card => credit_card)
-      transaction.save!
+    it "should be able to refund a settled transaction" do
+      transaction = BraintreeRails::Transaction.find('transactionid')
+      transaction.status = Braintree::Transaction::Status::Settled
       stub_braintree_request(:post, "/transactions/#{transaction.id}/refund", :body => fixture('transaction.xml'))
       transaction.refund.must_equal true
+      transaction.status = Braintree::Transaction::Status::Authorized
+      transaction.refund.must_equal false
     end
 
-    it "should be able to void a transaction" do
-      customer = BraintreeRails::Customer.find('customer_id')
-      credit_card = BraintreeRails::CreditCard.find('credit_card_id')
-      transaction = BraintreeRails::Transaction.new(:amount => '10.00', :customer => customer, :credit_card => credit_card)
-      transaction.save!
+    it "should be able to void a authorized transaction" do
+      transaction = BraintreeRails::Transaction.find('transactionid')
       stub_braintree_request(:put, "/transactions/#{transaction.id}/void", :body => fixture('transaction.xml'))
       transaction.void.must_equal true
+      transaction.status = Braintree::Transaction::Status::Settled
+      transaction.void.must_equal false
     end
 
     it 'should show errors when trying to submit already voided transaction' do
-      customer = BraintreeRails::Customer.find('customer_id')
-      credit_card = BraintreeRails::CreditCard.find('credit_card_id')
-      transaction = BraintreeRails::Transaction.new(:amount => '10.00', :customer => customer, :credit_card => credit_card)
-      transaction.save!
-      stub_braintree_request(:put, "/transactions/#{transaction.id}/void", :body => fixture('transaction.xml'))
-      transaction.void.must_equal true
-
-      stub_braintree_request(:put, "/transactions/#{transaction.id}/submit_for_settlement", :status => 422, :body => fixture('transaction_error.xml'))
+      transaction = BraintreeRails::Transaction.find('transactionid')
+      transaction.status = Braintree::Transaction::Status::Voided
       transaction.submit_for_settlement.must_equal false
-      transaction.errors[:base].wont_be :blank?
+      transaction.errors[:status].wont_be :blank?
 
-      lambda{transaction.submit_for_settlement!}.must_raise Braintree::ValidationsFailed
+      lambda{transaction.submit_for_settlement!}.must_raise BraintreeRails::RecordInvalid
     end
 
     it 'does not support update or destroy' do

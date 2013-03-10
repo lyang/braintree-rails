@@ -1,4 +1,11 @@
 module BraintreeRails
-  class RecordInvalid < Braintree::BraintreeError; end
-  class NotSupportedApiException < StandardError; end
+  class Error < StandardError; end
+  class NotSupportedApiException < Error; end
+  class RecordInvalid < Braintree::BraintreeError
+    attr_reader :record
+    def initialize(record)
+      @record = record
+      super(@record.errors.full_messages.join(", "))
+    end
+  end
 end

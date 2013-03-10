@@ -79,9 +79,7 @@ describe 'Transaction Integration' do
 
     transaction.void!
     transaction.submit_for_settlement.must_equal false
-    transaction.errors[:base].wont_be :blank?
-
-    lambda{transaction.submit_for_settlement!}.must_raise Braintree::ValidationsFailed
+    transaction.errors[:status].wont_be :blank?
   end
 
   describe BraintreeRails::Transactions do

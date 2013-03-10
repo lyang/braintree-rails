@@ -35,14 +35,18 @@ module BraintreeRails
         !persisted?
       end
 
-      def save
-        create_or_update
+      def save(*)
+        run_callbacks :save do
+          create_or_update
+        end
       rescue RecordInvalid
         false
       end
 
-      def save!
-        create_or_update!
+      def save!(*)
+        run_callbacks :save do
+          create_or_update!
+        end
       end
 
       def update_attributes(attributes)
@@ -57,7 +61,9 @@ module BraintreeRails
 
       def destroy
         if persisted?
-          self.class.delete(id)
+          run_callbacks :destroy do
+            self.class.delete(id)
+          end
         end
         self.persisted = false unless frozen?
         freeze
@@ -77,40 +83,42 @@ module BraintreeRails
       end
 
       def create
-        with_update_braintree do
+        with_update_braintree(:create) do
           self.class.braintree_model_class.create(attributes_for(:create))
         end
       end
 
       def create!
-        with_update_braintree do
+        with_update_braintree(:create) do
           self.class.braintree_model_class.create!(attributes_for(:create))
         end
       end
 
       def update
-        with_update_braintree do
+        with_update_braintree(:update) do
           self.class.braintree_model_class.update(id, attributes_for(:update))
         end
       end
 
       def update!
-        with_update_braintree do
+        with_update_braintree(:update) do
           self.class.braintree_model_class.update!(id, attributes_for(:update))
         end
       end
 
-      def with_update_braintree
-        raise RecordInvalid unless valid?
-        result = yield
-        if result.respond_to?(:success?) && !result.success?
-          add_errors(extract_errors(result))
-          false
-        else
-          new_record = result.respond_to?(self.class.braintree_model_name) ? result.send(self.class.braintree_model_name) : result
-          assign_attributes(extract_values(new_record))
-          self.persisted = true
-          self.__setobj__(new_record)
+      def with_update_braintree(context)
+        raise RecordInvalid.new(self) unless valid?(context)
+        run_callbacks context do
+          result = yield
+          if result.respond_to?(:success?) && !result.success?
+            add_errors(extract_errors(result))
+            false
+          else
+            new_record = result.respond_to?(self.class.braintree_model_name) ? result.send(self.class.braintree_model_name) : result
+            assign_attributes(extract_values(new_record))
+            self.persisted = true
+            self.__setobj__(new_record)
+          end
         end
       end
 
@@ -134,9 +142,13 @@ module BraintreeRails
     end
 
     def self.included(receiver)
-      receiver.class_eval { attr_accessor :persisted }
+      receiver.extend         ActiveModel::Callbacks
       receiver.extend         ClassMethods
       receiver.send :include, InstanceMethods
+      receiver.class_eval do
+        attr_accessor :persisted
+        define_model_callbacks :save, :create, :update, :destroy
+      end
     end
   end
 end

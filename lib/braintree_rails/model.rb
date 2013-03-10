@@ -48,6 +48,7 @@ module BraintreeRails
     def self.included(receiver)
       receiver.send :include, BraintreeRails::Attributes
       receiver.send :include, BraintreeRails::Persistence
+      receiver.send :include, BraintreeRails::Validations
       receiver.extend         ClassMethods
       receiver.send :include, InstanceMethods
     end

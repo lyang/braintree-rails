@@ -20,15 +20,6 @@ module BraintreeRails
 
     define_associations(:add_ons, :discounts, :customer => :customer_details, :credit_card => :credit_card_details, :subscription => :subscription_id)
 
-    validates_with TransactionValidator
-
-    [:submit_for_settlement, :submit_for_settlement!, :refund, :refund!, :void, :void!].each do |method|
-      define_method method do |*args|
-        raise RecordInvalid.new("cannot #{method} transactions not saved") if new_record?
-        !!with_update_braintree {Braintree::Transaction.send(method, *args.unshift(id))}
-      end
-    end
-
     def customer=(val)
       @customer = val && Customer.new(val)
     end
@@ -39,6 +30,36 @@ module BraintreeRails
 
     def type
       @type ||= 'sale'
+    end
+
+    def submit_for_settlement(amount = nil)
+      submit_for_settlement!(amount)
+    rescue RecordInvalid
+      false
+    end
+
+    def submit_for_settlement!(amount = nil)
+      !!with_update_braintree(:submit_for_settlement) {Braintree::Transaction.submit_for_settlement!(id, amount)}
+    end
+
+    def refund(amount = nil)
+      refund!(amount)
+    rescue RecordInvalid
+      false
+    end
+
+    def refund!(amount = nil)
+      !!with_update_braintree(:refund) {Braintree::Transaction.refund!(id, amount)}
+    end
+
+    def void
+      void!
+    rescue RecordInvalid
+      false
+    end
+
+    def void!
+      !!with_update_braintree(:void) {Braintree::Transaction.void!(id)}
     end
 
     protected

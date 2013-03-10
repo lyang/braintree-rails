@@ -11,8 +11,6 @@ module BraintreeRails
 
     define_associations(:addresses, :transactions, :credit_cards)
 
-    validates_with CustomerValidator
-
     def ensure_model(model)
       if Braintree::Transaction::CustomerDetails === model
         super(model.id || extract_values(model))
