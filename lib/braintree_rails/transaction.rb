@@ -20,6 +20,8 @@ module BraintreeRails
 
     define_associations(:add_ons, :discounts, :customer => :customer_details, :credit_card => :credit_card_details, :subscription => :subscription_id)
 
+    after_save :clear_encryped_attributes
+
     def customer=(val)
       @customer = val && Customer.new(val)
     end
@@ -60,6 +62,10 @@ module BraintreeRails
 
     def void!
       !!with_update_braintree(:void) {Braintree::Transaction.void!(id)}
+    end
+
+    def clear_encryped_attributes
+      credit_card.clear_encryped_attributes
     end
 
     protected

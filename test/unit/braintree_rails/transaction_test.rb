@@ -110,6 +110,12 @@ describe BraintreeRails::Transaction do
       transaction.status.must_equal Braintree::Transaction::Status::Authorized
     end
 
+    it 'should clear encrypted attributes after save' do
+      transaction = BraintreeRails::Transaction.new(:amount => '10.00', :credit_card => credit_card_hash)
+      transaction.save.must_equal true
+      transaction.credit_card.number.must_be :blank?
+    end
+
     it 'should use default credit card of customer if credit_card is not specified' do
       customer = BraintreeRails::Customer.find('customer_id')
       transaction = BraintreeRails::Transaction.new(:amount => '10.00', :customer => customer)

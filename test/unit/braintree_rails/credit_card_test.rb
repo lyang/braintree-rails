@@ -140,7 +140,7 @@ describe BraintreeRails::CreditCard do
       end
 
       after do
-        BraintreeRails::Configuration.mode = nil
+        BraintreeRails::Configuration.mode = BraintreeRails::Configuration::Mode::JS
       end
 
       it 'should validate numericality of number' do
