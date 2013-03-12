@@ -301,6 +301,21 @@ describe BraintreeRails::CreditCard do
       credit_card.save
       credit_card.number.must_be :blank?
     end
+
+    it 'should clear encrypted attributes even when save! fails' do
+      credit_card = BraintreeRails::CreditCard.find('credit_card_id')
+      credit_card.number = "foo"
+      stub_braintree_request(:put, '/payment_methods/credit_card_id', :status => 422, :body => fixture('credit_card_validation_error.xml'))
+      lambda {credit_card.save!}.must_raise Braintree::ValidationsFailed
+      credit_card.number.must_be :blank?
+    end
+
+    it 'should clear encrypted attributes' do
+      credit_card = BraintreeRails::CreditCard.find('credit_card_id')
+      credit_card.number = "foo"
+      credit_card.clear_encryped_attributes
+      credit_card.number.must_be :blank?
+    end
   end
 
   describe 'class methods' do

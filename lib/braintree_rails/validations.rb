@@ -4,6 +4,7 @@ module BraintreeRails
       def self.extended(receiver)
         receiver.class_eval do
           include ::ActiveModel::Validations
+          define_model_callbacks :persist
           validates_with validator_class
         end
       end
@@ -15,11 +16,15 @@ module BraintreeRails
 
     module InstanceMethods
       def save(options = {})
-        perform_validations(options) ? super : false
+        run_callbacks :persist do
+          perform_validations(options) ? super : false
+        end
       end
 
       def save!(options = {})
-        perform_validations(options) ? super : raise(RecordInvalid.new(self))
+        run_callbacks :persist do
+          perform_validations(options) ? super : raise(RecordInvalid.new(self))
+        end
       end
 
       def perform_validations(options={})

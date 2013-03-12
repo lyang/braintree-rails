@@ -13,7 +13,7 @@ module BraintreeRails
 
     define_associations(:transactions, :subscriptions, :customer => :customer_id)
 
-    after_save :clear_encryped_attributes
+    around_persist :clear_encryped_attributes
 
     def ensure_model(model)
       if Braintree::Transaction::CreditCardDetails === model && model.token.present?
@@ -43,6 +43,8 @@ module BraintreeRails
     end
 
     def clear_encryped_attributes
+      yield if block_given?
+    ensure
       return unless Configuration.mode == Configuration::Mode::JS
       [:number=, :cvv=, :expiration_date=, :expiration_year=, :expiration_month=].each do |encrypted_attribute|
         self.send(encrypted_attribute, nil)
