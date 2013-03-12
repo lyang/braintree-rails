@@ -13,7 +13,9 @@ module BraintreeRails
 
     def ensure_model(model)
       if Braintree::Transaction::CustomerDetails === model
-        super(model.id || extract_values(model))
+        assign_attributes(extract_values(model))
+        self.persisted = model.id.present?
+        model
       else
         super
       end

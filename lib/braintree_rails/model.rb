@@ -25,7 +25,7 @@ module BraintreeRails
           self.persisted = true
           self.class.braintree_model_class.find(model)
         when self.class.braintree_model_class
-          self.persisted = true
+          self.persisted = model.id.present?
           model
         when Hash
           self.persisted = false

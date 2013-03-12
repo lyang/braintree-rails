@@ -9,10 +9,11 @@ module BraintreeRails
       end
 
       def define_associations(*associations)
-        associations.extract_options!.each do |name, fk|
+        associations.extract_options!.each do |option|
+          name, fk, class_name = extract_from_options(option)
           define_association(name) do |instance|
             key = instance.send(fk)
-            key && association_class(name).new(key)
+            key && association_class(class_name).new(key)
           end
         end
 
@@ -25,6 +26,17 @@ module BraintreeRails
 
       def association_class(name)
         "braintree_rails/#{name}".camelize.constantize
+      end
+
+      def extract_from_options(option)
+        name = class_name = option.shift
+        if option.first.is_a?(Hash)
+          class_name = option.first[:class_name]
+          fk = option.first[:foreign_key]
+        else
+          fk = option.first
+        end
+        [name, fk, class_name]
       end
 
       def define_association(name, &block)

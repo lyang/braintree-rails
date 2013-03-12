@@ -7,7 +7,7 @@ module BraintreeRails
     define_attributes(
       :create => [
         :amount, :billing, :channel, :custom_fields, :customer_id, :descriptor, :merchant_account_id,
-        :options, :order_id, :payment_method_token, :purchase_order_number, :recurring, :shipping, :shipping_address_id,
+        :options, :order_id, :payment_method_token, :purchase_order_number, :recurring, :shipping,
         :tax_amount, :tax_exempt, :type, :venmo_sdk_payment_method_code
       ],
       :readonly => [
@@ -18,7 +18,14 @@ module BraintreeRails
       ]
     )
 
-    define_associations(:add_ons, :discounts, :customer => :customer_details, :credit_card => :credit_card_details, :subscription => :subscription_id)
+    define_associations(
+      :add_ons, :discounts,
+      :customer     => :customer_details,
+      :credit_card  => :credit_card_details,
+      :subscription => :subscription_id,
+      :billing      => {:class_name => 'Address', :foreign_key => :billing_details},
+      :shipping     => {:class_name => 'Address', :foreign_key => :shipping_details}
+    )
 
     around_persist :clear_encryped_attributes
 
@@ -28,6 +35,14 @@ module BraintreeRails
 
     def credit_card=(val)
       @credit_card = val && CreditCard.new(val)
+    end
+
+    def billing=(val)
+      @billing = val && Address.new(val)
+    end
+
+    def shipping=(val)
+      @shipping = val && Address.new(val)
     end
 
     def type
@@ -81,7 +96,7 @@ module BraintreeRails
         if customer.persisted?
           {:customer_id => customer.id}
         else
-          {:customer => customer.attributes_for(:create)}
+          {:customer => customer.attributes_for(:as_association)}
         end
       else
         {}
@@ -93,7 +108,7 @@ module BraintreeRails
         if credit_card.persisted?
           {:payment_method_token => credit_card.token}
         else
-          {:credit_card => credit_card.attributes_for(:create).except(:billing_address)}
+          {:credit_card => credit_card.attributes_for(:as_association)}
         end
       elsif customer.present? && customer.default_credit_card
         {:payment_method_token => customer.default_credit_card.token}

@@ -5,7 +5,7 @@ module BraintreeRails
       :create => [:company, :country_code_numeric, :customer_id, :extended_address, :first_name, :id, :last_name, :locality, :postal_code, :region, :street_address],
       :update => [:company, :country_code_numeric, :extended_address, :first_name, :last_name, :locality, :postal_code, :region, :street_address],
       :readonly => [:country_code_alpha2, :country_code_alpha3, :country_name, :created_at, :updated_at],
-      :as_association => [:company, :country_code_alpha2, :country_code_alpha3, :country_code_numeric, :country_name, :extended_address, :first_name, :last_name, :locality, :postal_code, :region, :street_address]
+      :as_association => [:company, :country_code_numeric, :extended_address, :first_name, :last_name, :locality, :postal_code, :region, :street_address]
     )
 
     define_associations(:customer => :customer_id)
@@ -23,6 +23,16 @@ module BraintreeRails
 
     def self.delete(customer_id, id)
       braintree_model_class.delete(customer_id, id)
+    end
+
+    def ensure_model(model)
+      if Braintree::Transaction::AddressDetails === model
+        assign_attributes(extract_values(model))
+        self.persisted = model.id.present?
+        model
+      else
+        super
+      end
     end
 
     def full_name

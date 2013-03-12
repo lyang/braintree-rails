@@ -47,7 +47,7 @@ describe BraintreeRails::Transaction do
     end
   end
 
-  [:customer, :credit_card].each do |association|
+  [:customer, :credit_card, :billing, :shipping].each do |association|
     describe association do
       it "should load #{association} for persisted transaction" do
         transaction = BraintreeRails::Transaction.new('transactionid')

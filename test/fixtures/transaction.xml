@@ -39,7 +39,7 @@
   <refunded-transaction-id nil="true"></refunded-transaction-id>
   <settlement-batch-id nil="true"></settlement-batch-id>
   <shipping>
-    <id nil="true"></id>
+    <id>address_id</id>
     <first-name nil="true"></first-name>
     <last-name nil="true"></last-name>
     <company nil="true"></company>

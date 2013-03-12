@@ -22,3 +22,21 @@ module Braintree
     end
   end
 end
+
+module Braintree
+  class CreditCard
+    def id
+      token
+    end
+  end
+end
+
+module Braintree
+  class Transaction
+    class CreditCardDetails
+      def id
+        token
+      end
+    end
+  end
+end

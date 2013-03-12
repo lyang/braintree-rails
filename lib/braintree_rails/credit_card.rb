@@ -8,7 +8,7 @@ module BraintreeRails
         :bin, :card_type, :commercial, :country_of_issuance, :created_at, :debit, :durbin_regulated, :expiration_month,
         :expiration_year, :healthcare, :issuing_bank, :last_4, :payroll, :prepaid, :unique_number_identifier, :updated_at
       ],
-      :as_association => [:token, :cardholder_name, :cvv, :expiration_date, :expiration_month, :expiration_year, :number]
+      :as_association => [:cardholder_name, :cvv, :expiration_date, :expiration_month, :expiration_year, :number]
     )
 
     define_associations(:transactions, :subscriptions, :customer => :customer_id)
@@ -16,10 +16,13 @@ module BraintreeRails
     around_persist :clear_encryped_attributes
 
     def ensure_model(model)
-      if Braintree::Transaction::CreditCardDetails === model && model.token.present?
-        model = model.token
+      if Braintree::Transaction::CreditCardDetails === model
+        assign_attributes(extract_values(model))
+        self.persisted = model.id.present?
+        model
+      else
+        super
       end
-      super
     end
 
     def id
