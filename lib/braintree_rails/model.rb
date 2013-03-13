@@ -40,7 +40,13 @@ module BraintreeRails
 
       def add_errors(validation_errors)
         validation_errors.each do |attribute, message|
-          self.errors.add(attribute, message) if attribute.to_s == 'base' || respond_to?(attribute)
+          if attribute.to_s == 'base'
+            Array(message).each do |msg|
+              self.errors.add(attribute, msg)
+            end
+          elsif respond_to?(attribute)
+            self.errors.add(attribute, message)
+          end
         end
       end
     end

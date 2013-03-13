@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <api-error-response>
-  <message>Credit card number is required.</message>
+  <message>Credit card type is not accepted by this merchant account.
+Credit card number is invalid.</message>
   <errors>
     <transaction>
       <credit-card>
         <errors type="array">
           <error>
-            <code>81714</code>
-            <message>Credit card number is required.</message>
+            <code>81715</code>
+            <message>Credit card number is invalid.</message>
             <attribute type="symbol">number</attribute>
           </error>
         </errors>

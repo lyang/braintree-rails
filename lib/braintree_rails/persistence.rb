@@ -128,14 +128,14 @@ module BraintreeRails
 
       def base_errors(result)
         all_messages = result.message.split("\n")
-        base_messages = all_messages - attribute_errors(result).values
-        {'base' => base_messages.join("\n")}
+        base_messages = all_messages - attribute_errors(result).values.map(&:to_s)
+        base_messages.empty? ? {} : {'base' => base_messages}
       end
 
       def attribute_errors(result)
         result.errors.inject({}) do |hash, error|
           next hash if error.attribute.to_s == 'base'
-          hash[error.attribute.to_s] = error.message
+          hash[error.attribute.to_s] = BraintreeRails::ApiError.new(error.message, error.code)
           hash
         end
       end

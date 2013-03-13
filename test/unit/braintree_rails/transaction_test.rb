@@ -169,13 +169,17 @@ describe BraintreeRails::Transaction do
       lambda{transaction.submit_for_settlement!}.must_raise BraintreeRails::RecordInvalid
     end
 
-    it 'should propergate errors to credit card if any' do
+    it 'should propergate api errors to credit card if any' do
       customer = BraintreeRails::Customer.find('customer_id')
       credit_card = BraintreeRails::CreditCard.find('credit_card_id')
       transaction = BraintreeRails::Transaction.new(:amount => '10.00', :customer => customer, :credit_card => credit_card)
       stub_braintree_request(:post, '/transactions', :status => 422, :body => fixture('transaction_error.xml'))
       transaction.save
-      transaction.credit_card.errors.wont_be :blank?
+      transaction.errors[:base].must_equal ["Credit card type is not accepted by this merchant account."]
+      transaction.credit_card.errors.full_messages.must_equal ["Number Credit card number is invalid."]
+      transaction.credit_card.errors[:number].first.code.must_equal "81715"
+      transaction.credit_card.errors[:number].first.message.must_equal "Credit card number is invalid."
+      transaction.credit_card.errors[:number].first.to_s.must_equal "Credit card number is invalid."
     end
 
     it 'does not support update or destroy' do

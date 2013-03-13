@@ -94,7 +94,7 @@ module BraintreeRails
 
     def propergate_errors_to_associations(validation_errors)
       [customer, credit_card, billing, shipping].each do |association|
-        association.add_errors(validation_errors.except(:base)) if association
+        association.add_errors(validation_errors.except('base')) if association
       end
     end
 
