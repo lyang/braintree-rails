@@ -169,6 +169,15 @@ describe BraintreeRails::Transaction do
       lambda{transaction.submit_for_settlement!}.must_raise BraintreeRails::RecordInvalid
     end
 
+    it 'should propergate errors to credit card if any' do
+      customer = BraintreeRails::Customer.find('customer_id')
+      credit_card = BraintreeRails::CreditCard.find('credit_card_id')
+      transaction = BraintreeRails::Transaction.new(:amount => '10.00', :customer => customer, :credit_card => credit_card)
+      stub_braintree_request(:post, '/transactions', :status => 422, :body => fixture('transaction_error.xml'))
+      transaction.save
+      transaction.credit_card.errors.wont_be :blank?
+    end
+
     it 'does not support update or destroy' do
       lambda{BraintreeRails::Transaction.find('transactionid').update_attributes(:amount => 1)}.must_raise BraintreeRails::NotSupportedApiException
       lambda{BraintreeRails::Transaction.find('transactionid').destroy!}.must_raise BraintreeRails::NotSupportedApiException

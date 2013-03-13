@@ -79,6 +79,11 @@ module BraintreeRails
       !!with_update_braintree(:void) {Braintree::Transaction.void!(id)}
     end
 
+    def add_errors(validation_errors)
+      propergate_errors_to_associations(validation_errors)
+      super(validation_errors)
+    end
+
     def clear_encryped_attributes
       yield if block_given?
     ensure
@@ -86,6 +91,12 @@ module BraintreeRails
     end
 
     protected
+
+    def propergate_errors_to_associations(validation_errors)
+      [customer, credit_card, billing, shipping].each do |association|
+        association.add_errors(validation_errors.except(:base)) if association
+      end
+    end
 
     def attributes_for(action)
       super.merge(customer_attributes).merge(credit_card_attributes)

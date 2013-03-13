@@ -1,25 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <api-error-response>
-  <message>Cannot submit for settlement unless status is authorized.</message>
+  <message>Credit card number is required.</message>
   <errors>
     <transaction>
-      <errors type="array">
-        <error>
-          <code>91507</code>
-          <message>Cannot submit for settlement unless status is authorized.</message>
-          <attribute type="symbol">base</attribute>
-        </error>
-      </errors>
+      <credit-card>
+        <errors type="array">
+          <error>
+            <code>81714</code>
+            <message>Credit card number is required.</message>
+            <attribute type="symbol">number</attribute>
+          </error>
+        </errors>
+      </credit-card>
+      <errors type="array"/>
+      <billing>
+        <errors type="array"/>
+      </billing>
     </transaction>
     <errors type="array"/>
   </errors>
   <params>
-    <merchant-id>merchant_id</merchant-id>
-    <action>submit_for_settlement</action>
-    <id>transactionid</id>
     <transaction>
-      <amount nil="true"></amount>
+      <type>sale</type>
+      <billing>
+        <country-code-numeric>840</country-code-numeric>
+        <region>California</region>
+        <first-name>Wall</first-name>
+        <company>Pixar</company>
+        <locality>Junk Montain</locality>
+        <street-address>Junk Rd</street-address>
+        <last-name>E</last-name>
+        <postal-code>12345</postal-code>
+      </billing>
+      <amount>2001</amount>
+      <credit-card>
+        <expiration-month>01</expiration-month>
+        <cardholder-name>Wall-E</cardholder-name>
+        <expiration-year>1976</expiration-year>
+      </credit-card>
     </transaction>
-    <controller>transactions</controller>
   </params>
 </api-error-response>
