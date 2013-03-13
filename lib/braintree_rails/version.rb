@@ -1,3 +1,3 @@
 module BraintreeRails
-  Version = "0.4.5"
+  Version = "1.0.0"
 end
