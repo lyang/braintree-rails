@@ -18,7 +18,7 @@ So here you go: [braintree-rails-example](https://github.com/lyang/braintree-rai
 Live demo on Heroku: [http://braintree-rails-example.herokuapp.com/](http://braintree-rails-example.herokuapp.com/)
 
 ## Documents
-While the complete docs are work in progress, you can check out a demo rails app at [braintree-rails-example](https://github.com/lyang/braintree-rails-example) as a quick start guide.
+While the complete [docs](https://github.com/lyang/braintree-rails/wiki) are work in progress, you can check out a demo rails app at [braintree-rails-example](https://github.com/lyang/braintree-rails-example) as a quick start guide.
 
 ## Todos
 Write documents.
