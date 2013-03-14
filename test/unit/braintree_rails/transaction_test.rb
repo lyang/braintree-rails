@@ -80,6 +80,49 @@ describe BraintreeRails::Transaction do
         transaction.valid?.must_equal false
         transaction.errors[:amount].wont_be :blank?
       end
+
+      [10, 10.0, "10", "10.00"].each do |valid_value|
+        transaction = BraintreeRails::Transaction.new(:amount => valid_value)
+        transaction.valid?
+        transaction.errors[:amount].must_be :blank?
+      end
+    end
+
+    it 'should validate type' do
+      ['refund', 'abc'].each do |invalid_value|
+        transaction = BraintreeRails::Transaction.new(:type => invalid_value)
+        transaction.valid?.must_equal false
+        transaction.errors[:type].wont_be :blank?
+      end
+
+      ['sale', 'credit'].each do |valid_value|
+        transaction = BraintreeRails::Transaction.new(:type => valid_value)
+        transaction.valid?
+        transaction.errors[:type].must_be :blank?
+      end
+    end
+
+    describe 'credit card' do
+      it 'is valid if new credit card with valid billing address' do
+        transaction = BraintreeRails::Transaction.new(:amount => 10, :billing => address_hash, :credit_card => credit_card_hash)
+        transaction.valid?.must_equal true
+
+        transaction = BraintreeRails::Transaction.new(:amount => 10, :credit_card => credit_card_hash)
+        transaction.valid?.must_equal false
+      end
+
+      it 'is valid if credit card is persisted' do
+        transaction = BraintreeRails::Transaction.new(:amount => 10, :credit_card => BraintreeRails::CreditCard.find('credit_card_id'))
+        transaction.valid?.must_equal true
+      end
+
+      it 'is valid if customer has default credit card' do
+        transaction = BraintreeRails::Transaction.new(:amount => 10, :customer => BraintreeRails::Customer.find('customer_id'))
+        transaction.valid?.must_equal true
+
+        transaction = BraintreeRails::Transaction.new(:amount => 10, :customer => customer_hash)
+        transaction.valid?.must_equal false
+      end
     end
   end
 
@@ -104,7 +147,7 @@ describe BraintreeRails::Transaction do
     end
 
     it 'should create a sale transaction from new credit card' do
-      transaction = BraintreeRails::Transaction.new(:amount => '10.00', :credit_card => credit_card_hash)
+      transaction = BraintreeRails::Transaction.new(:amount => '10.00', :billing => address_hash, :credit_card => credit_card_hash)
       transaction.valid?
       transaction.save.must_equal true
       transaction.status.must_equal Braintree::Transaction::Status::Authorized
@@ -117,7 +160,8 @@ describe BraintreeRails::Transaction do
     end
 
     it 'should clear encrypted attributes after save' do
-      transaction = BraintreeRails::Transaction.new(:amount => '10.00', :credit_card => credit_card_hash)
+      transaction = BraintreeRails::Transaction.new(:amount => '10.00', :billing => address_hash, :credit_card => credit_card_hash)
+      transaction.valid?
       transaction.save.must_equal true
       transaction.credit_card.number.must_be :blank?
     end

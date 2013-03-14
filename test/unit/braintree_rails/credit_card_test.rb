@@ -87,27 +87,27 @@ describe BraintreeRails::CreditCard do
   end
 
   describe 'validations' do
-    it 'should validate precence of customer_id if new_record?' do
+    it 'should validate precence of customer_id on create' do
       credit_card = BraintreeRails::CreditCard.new
-      credit_card.valid?
+      credit_card.valid?(:create)
       credit_card.errors[:customer_id].wont_be :blank?
 
       credit_card = BraintreeRails::CreditCard.new(:customer_id => 'foo')
-      credit_card.valid?
+      credit_card.valid?(:create)
       credit_card.errors[:customer_id].must_be :blank?
     end
 
     it 'should validate length of customer_id' do
       credit_card = BraintreeRails::CreditCard.new(:customer_id => 'foo' * 13)
-      credit_card.valid?
+      credit_card.valid?(:create)
       credit_card.errors[:customer_id].wont_be :blank?
 
       credit_card = BraintreeRails::CreditCard.new(:customer_id => 'foo')
-      credit_card.valid?
+      credit_card.valid?(:create)
       credit_card.errors[:customer_id].must_be :blank?
 
       credit_card = BraintreeRails::CreditCard.new(:customer_id => 'foo' * 12)
-      credit_card.valid?
+      credit_card.valid?(:create)
       credit_card.errors[:customer_id].must_be :blank?
     end
 

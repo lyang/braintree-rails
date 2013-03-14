@@ -20,9 +20,27 @@ module BraintreeRails
     end
 
     def must_have_credit_card(transaction)
-      transaction.instance_eval do
-        errors.add(:base, "Either customer or credit card is required.") and return if customer.blank? && credit_card.blank?
-        errors.add(:customer, "does not have a default credit card.") if credit_card.blank? && customer.default_credit_card.blank?
+      if transaction.credit_card.blank?
+        validate_customer_have_default_credit_card(transaction)
+      elsif transaction.credit_card.new_record?
+        validate_new_credit_card(transaction)
+      end
+    end
+
+    def validate_customer_have_default_credit_card(transaction)
+      if transaction.customer.blank?
+        transaction.errors.add(:base, "Either customer or credit card is required.")
+      elsif transaction.customer.default_credit_card.blank?
+        transaction.errors.add(:base, "does not have a default credit card.")
+      end
+    end
+
+    def validate_new_credit_card(transaction)
+      transaction.credit_card.billing_address = transaction.billing
+      if transaction.credit_card.invalid?
+        transaction.credit_card.errors.full_messages.each do |message|
+          transaction.errors.add(:base, message)
+        end
       end
     end
   end

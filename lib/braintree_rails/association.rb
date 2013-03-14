@@ -16,8 +16,8 @@ module BraintreeRails
     end
 
     module InstanceMethods
-      def initialize(collection = [])
-        super(self.collection = collection)
+      def initialize(collection)
+        super(self.collection = (collection || []))
       end
 
       def find(id = nil, &block)
