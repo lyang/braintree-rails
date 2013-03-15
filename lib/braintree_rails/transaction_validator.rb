@@ -16,7 +16,7 @@ module BraintreeRails
     end
 
     def validate(transaction)
-      must_have_credit_card(transaction)
+      must_have_credit_card(transaction) if transaction.new_record?
     end
 
     def must_have_credit_card(transaction)

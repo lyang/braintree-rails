@@ -123,6 +123,11 @@ describe BraintreeRails::Transaction do
         transaction = BraintreeRails::Transaction.new(:amount => 10, :customer => customer_hash)
         transaction.valid?.must_equal false
       end
+
+      it 'should not validate credit card if already persisted' do
+        transaction = BraintreeRails::Transaction.new(OpenStruct.new(:amount => 10, :persisted? => true))
+        transaction.valid?.must_equal true
+      end
     end
   end
 
