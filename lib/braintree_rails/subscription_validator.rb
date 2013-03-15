@@ -1,7 +1,7 @@
 module BraintreeRails
   class SubscriptionValidator < Validator
     Validations = [
-      [:id, :format => {:with => /\A[-_[:alnum:]]*$\z/i},  :exclusion => {:in => %w(all new)}],
+      [:id, :format => {:with => /\A[-_[:alnum:]]*\z/},  :exclusion => {:in => %w(all new)}],
       [:billing_day_of_month, :numericality => { :only_integer => true }, :inclusion => {:in => [*(1..28), 31]}, :allow_nil => true, :if => :new_record?],
       [:number_of_billing_cycles, :numericality => { :only_integer => true, :greater_than_or_equal_to  => 1 }, :allow_nil => true],
       [:payment_method_token, :presence => true, :if => :new_record?],
