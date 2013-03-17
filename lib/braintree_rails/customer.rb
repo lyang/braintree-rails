@@ -4,7 +4,7 @@ module BraintreeRails
 
     define_attributes(
       :create => [:company, :custom_fields, :email, :fax, :first_name, :id, :last_name, :options, :phone, :website],
-      :update => [:company, :custom_fields, :email, :fax, :first_name, :id, :last_name, :options, :phone, :website],
+      :update => [:company, :custom_fields, :email, :fax, :first_name, :last_name, :options, :phone, :website],
       :readonly => [:created_at, :updated_at],
       :as_association => [:id, :company, :email, :fax, :first_name, :last_name, :phone, :website]
     )

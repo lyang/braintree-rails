@@ -285,9 +285,23 @@ describe BraintreeRails::Subscription do
       end
     end
 
-    describe 'destroy' do
-      it 'should cancel subscription when destroy' do
+    describe 'cancel' do
+      before do
         stub_braintree_request(:put, '/subscriptions/subscription_id/cancel', :body => fixture('subscription.xml'))
+      end
+
+      it 'should cancel subscription when Subscription.cancel' do
+        BraintreeRails::Subscription.cancel('subscription_id')
+      end
+      it 'should cancel subscription when delete' do
+        BraintreeRails::Subscription.delete('subscription_id')
+      end
+
+      it 'should cancel subscription when Subscription#cancel' do
+        BraintreeRails::Subscription.new('subscription_id').cancel
+      end
+
+      it 'should cancel subscription when destroy' do
         BraintreeRails::Subscription.new('subscription_id').destroy
       end
     end

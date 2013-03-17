@@ -8,7 +8,7 @@ module BraintreeRails
         :payment_method_token, :plan_id, :price, :trial_duration, :trial_duration_unit, :trial_period, :options, :descriptor
       ],
       :update => [
-        :id, :merchant_account_id, :never_expires, :number_of_billing_cycles,
+        :merchant_account_id, :never_expires, :number_of_billing_cycles,
         :payment_method_token, :plan_id, :price, :options
       ],
       :readonly => [
@@ -18,6 +18,14 @@ module BraintreeRails
     )
 
     define_associations(:add_ons, :discounts, :transactions, :plan => :plan_id, :credit_card => :payment_method_token)
+
+    def self.cancel(id)
+      delete(id)
+    end
+
+    def cancel
+      destroy
+    end
 
     def price=(val)
       @price = val.blank? ? nil : val
