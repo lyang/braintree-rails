@@ -18,10 +18,12 @@ So here you go: [braintree-rails-example](https://github.com/lyang/braintree-rai
 Live demo on Heroku: [http://braintree-rails-example.herokuapp.com/](http://braintree-rails-example.herokuapp.com/)
 
 ## Documents
-While the complete [docs](https://github.com/lyang/braintree-rails/wiki) are work in progress, you can check out a demo rails app at [braintree-rails-example](https://github.com/lyang/braintree-rails-example) as a quick start guide.
+While BraintreeRails should not give you any surprises if you are familiar with `ActiveRecord`, you still can find some helpful descriptions and explanations at [Documents](https://github.com/lyang/braintree-rails/wiki).
+If you still encountered bugs or undesired behaviors, feel free to open an issue with descriptions and reproducible steps.
+Better yet, it will be great if you can open an pull requests with descriptions and tests.
 
 ## Todos
-Write documents.
+Write better documents.
 
 ## Official Braintree ruby client library
 Source code: [braintree_ruby](https://github.com/braintree/braintree_ruby)
