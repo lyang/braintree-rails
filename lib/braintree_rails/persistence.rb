@@ -146,7 +146,7 @@ module BraintreeRails
       receiver.send :include, InstanceMethods
       receiver.class_eval do
         attr_accessor :persisted
-        define_model_callbacks :save, :create, :update, :destroy
+        define_model_callbacks :validate, :save, :create, :update, :destroy
       end
     end
   end

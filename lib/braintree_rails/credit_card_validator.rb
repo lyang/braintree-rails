@@ -3,9 +3,9 @@ module BraintreeRails
     Validations = [
       [:cardholder_name, :length => {:maximum => 255}],
       [:customer_id, :presence => true, :length => {:maximum => 36}, :on => :create],
-      [:number, :presence => true, :if => :new_record?],
+      [:number, :presence => true, :allow_blank => false, :if => :new_record?],
       [:number, :numericality => {:only_integer => true}, :length => {:minimum => 12, :maximum => 19}, 'braintree_rails/luhn_10' => true, :if => Proc.new { Configuration.mode == Configuration::Mode::S2S }],
-      [:cvv, :presence => true, :if => :new_record?],
+      [:cvv, :presence => true, :allow_blank => false, :if => :new_record?],
       [:cvv, :numericality => {:only_integer => true}, :length => {:minimum => 3, :maximum => 4}, :if => Proc.new { Configuration.mode == Configuration::Mode::S2S }],
       [:expiration_month, :presence => true, :if => Proc.new { |credit_card| credit_card.new_record? && credit_card.expiration_date.blank? }],
       [:expiration_year, :presence => true, :if => Proc.new { |credit_card| credit_card.new_record? && credit_card.expiration_date.blank? }],
