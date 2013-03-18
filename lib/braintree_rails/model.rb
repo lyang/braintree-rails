@@ -7,6 +7,7 @@ module BraintreeRails
     module ClassMethods
       def self.extended(receiver)
         receiver.class_eval do
+          attr_reader :raw_object
           extend ::ActiveModel::Naming
           include ::ActiveModel::Validations
           include ::ActiveModel::Conversion
@@ -16,7 +17,7 @@ module BraintreeRails
 
     module InstanceMethods
       def initialize(model = {})
-        super(ensure_model(model))
+        @raw_object = ensure_model(model)
       end
 
       def ensure_model(model)
@@ -48,6 +49,11 @@ module BraintreeRails
             self.errors.add(attribute, message)
           end
         end
+      end
+
+      def ==(other)
+        return false unless other.is_a?(self.class) || other.is_a?(self.class.braintree_model_class)
+        id == other.id
       end
     end
 

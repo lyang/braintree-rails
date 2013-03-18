@@ -1,5 +1,5 @@
 module BraintreeRails
-  class Modification < SimpleDelegator
+  class Modification
     include Model
 
     singleton_class.not_supported_apis(:delete)
@@ -14,6 +14,10 @@ module BraintreeRails
 
     def self.all
       braintree_model_class.all.map{ |modification| new(modification) }
+    end
+
+    def never_expires?
+      never_expires
     end
   end
 end

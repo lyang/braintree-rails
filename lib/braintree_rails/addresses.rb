@@ -4,7 +4,7 @@ module BraintreeRails
 
     def initialize(customer)
       @customer = customer
-      super(customer.__getobj__.addresses)
+      super(customer.raw_object.addresses)
     end
 
     def default_options

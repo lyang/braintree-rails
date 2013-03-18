@@ -1,5 +1,5 @@
 module BraintreeRails
-  class Customer < SimpleDelegator
+  class Customer
     include Model
 
     define_attributes(

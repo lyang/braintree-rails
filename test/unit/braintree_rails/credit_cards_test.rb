@@ -28,12 +28,11 @@ describe BraintreeRails::CreditCards do
       customer = BraintreeRails::Customer.find('customer_id')
       braintree_credit_cards = braintree_customer.credit_cards
       credit_cards = BraintreeRails::CreditCards.new(BraintreeRails::Customer.find('customer_id'))
-      credit_card = credit_cards.build({:first_name => 'foo', :last_name => 'bar'})
+      credit_card = credit_cards.build(:cardholder_name => 'foo bar')
 
       credit_card.persisted?.must_equal false
       credit_card.customer_id.must_equal braintree_customer.id
-      credit_card.first_name.must_equal 'foo'
-      credit_card.last_name.must_equal 'bar'
+      credit_card.cardholder_name.must_equal 'foo bar'
     end
   end
 

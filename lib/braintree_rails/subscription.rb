@@ -1,5 +1,5 @@
 module BraintreeRails
-  class Subscription < SimpleDelegator
+  class Subscription
     include Model
 
     define_attributes(
@@ -29,6 +29,10 @@ module BraintreeRails
 
     def price=(val)
       @price = val.blank? ? nil : val
+    end
+
+    def never_expires?
+      never_expires
     end
   end
 end

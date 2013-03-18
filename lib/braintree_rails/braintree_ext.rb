@@ -20,6 +20,10 @@ module Braintree
     def self.delete(id)
       cancel(id)
     end
+
+    def never_expires
+      @never_expires
+    end
   end
 end
 
@@ -27,6 +31,14 @@ module Braintree
   class CreditCard
     def id
       token
+    end
+
+    def expired
+      @expired
+    end
+
+    def default
+      @default
     end
   end
 end

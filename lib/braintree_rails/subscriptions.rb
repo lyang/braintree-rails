@@ -25,7 +25,7 @@ module BraintreeRails
     protected
     def load!
       self.collection = if @credit_card.present?
-        @credit_card.__getobj__.subscriptions
+        @credit_card.raw_object.subscriptions
       elsif @plan.present?
         Braintree::Subscription.search {|search| search.plan_id.is @plan.id}
       else

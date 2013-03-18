@@ -11,6 +11,7 @@ describe BraintreeRails::AddOn do
       add_on = BraintreeRails::AddOn.new(braintree_add_on)
 
       add_on.persisted?.must_equal true
+      add_on.never_expires?.must_equal braintree_add_on.never_expires?
       BraintreeRails::AddOn.attributes.each do |attribute|
         add_on.send(attribute).must_equal braintree_add_on.send(attribute)
       end

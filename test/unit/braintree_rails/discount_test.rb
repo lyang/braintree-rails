@@ -11,6 +11,7 @@ describe BraintreeRails::Discount do
       discount = BraintreeRails::Discount.new(braintree_discount)
 
       discount.persisted?.must_equal true
+      discount.never_expires?.must_equal braintree_discount.never_expires?
       BraintreeRails::Discount.attributes.each do |attribute|
         discount.send(attribute).must_equal braintree_discount.send(attribute)
       end

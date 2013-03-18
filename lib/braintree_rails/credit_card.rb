@@ -1,17 +1,19 @@
 module BraintreeRails
-  class CreditCard < SimpleDelegator
+  class CreditCard
     include Model
     define_attributes(
       :create => [:billing_address, :cardholder_name, :customer_id, :expiration_date, :expiration_month, :expiration_year, :number, :cvv, :options, :token],
       :update => [:billing_address, :cardholder_name, :expiration_date, :expiration_month, :expiration_year, :options],
       :readonly => [
-        :bin, :card_type, :commercial, :country_of_issuance, :created_at, :debit, :durbin_regulated,
-        :healthcare, :issuing_bank, :last_4, :payroll, :prepaid, :unique_number_identifier, :updated_at
+        :bin, :card_type, :commercial, :country_of_issuance, :created_at, :debit, :durbin_regulated, :default,
+        :expired, :healthcare, :issuing_bank, :last_4, :payroll, :prepaid, :unique_number_identifier, :updated_at
       ],
       :as_association => [:cardholder_name, :cvv, :expiration_date, :expiration_month, :expiration_year, :number]
     )
 
     define_associations(:transactions, :subscriptions, :customer => :customer_id)
+    alias_method :id, :token
+    alias_method :id=, :token=
 
     around_persist :clear_encryped_attributes
 
@@ -25,8 +27,16 @@ module BraintreeRails
       end
     end
 
-    def id
-      token
+    def expired?
+      expired
+    end
+
+    def default?
+      default
+    end
+
+    def masked_number
+      "#{bin}******#{last_4}"
     end
 
     def billing_address=(value)

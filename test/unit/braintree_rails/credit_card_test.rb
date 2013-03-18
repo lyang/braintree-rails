@@ -11,8 +11,11 @@ describe BraintreeRails::CreditCard do
       braintree_credit_card = Braintree::CreditCard.find('credit_card_id')
 
       credit_card.persisted?.must_equal true
+      credit_card.default?.must_equal braintree_credit_card.default?
+      credit_card.expired?.must_equal braintree_credit_card.expired?
+      credit_card.masked_number.must_equal braintree_credit_card.masked_number
       BraintreeRails::CreditCard.attributes.each do |attribute|
-        credit_card.send(attribute).must_equal(braintree_credit_card.send(attribute)) if braintree_credit_card.respond_to?(attribute)
+        braintree_credit_card.send(attribute).must_equal(credit_card.send(attribute)) if braintree_credit_card.respond_to?(attribute)
       end
     end
 
@@ -22,7 +25,7 @@ describe BraintreeRails::CreditCard do
 
       credit_card.persisted?.must_equal true
       BraintreeRails::CreditCard.attributes.each do |attribute|
-        credit_card.send(attribute).must_equal(braintree_credit_card.send(attribute)) if braintree_credit_card.respond_to?(attribute)
+        braintree_credit_card.send(attribute).must_equal(credit_card.send(attribute)) if braintree_credit_card.respond_to?(attribute)
       end
     end
 

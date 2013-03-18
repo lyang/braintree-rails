@@ -1,5 +1,5 @@
 module BraintreeRails
-  class Plan < SimpleDelegator
+  class Plan
     include Model
 
     singleton_class.not_supported_apis(:delete)

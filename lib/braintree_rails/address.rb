@@ -1,5 +1,5 @@
 module BraintreeRails
-  class Address < SimpleDelegator
+  class Address
     include Model
     define_attributes(
       :create => [:company, :country_code_numeric, :customer_id, :extended_address, :first_name, :id, :last_name, :locality, :postal_code, :region, :street_address],

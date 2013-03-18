@@ -11,6 +11,7 @@ describe BraintreeRails::Subscription do
       braintree_subscription = Braintree::Subscription.find('subscription_id')
 
       subscription.persisted?.must_equal true
+      subscription.never_expires?.must_equal braintree_subscription.never_expires?
       BraintreeRails::Subscription.attributes.each do |attribute|
         subscription.send(attribute).must_equal braintree_subscription.send(attribute) if braintree_subscription.respond_to?(attribute)
       end

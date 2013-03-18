@@ -28,7 +28,7 @@ module BraintreeRails
     protected
     def load!
       self.collection = if @subscription.present?
-        @subscription.__getobj__.transactions
+        @subscription.raw_object.transactions
       elsif @credit_card.present?
         Braintree::Transaction.search {|search| search.payment_method_token.is @credit_card.token}
       elsif @customer.present?
