@@ -1,5 +1,7 @@
 # Welcome to braintree-rails [![Build Status](https://secure.travis-ci.org/lyang/braintree-rails.png)](http://travis-ci.org/lyang/braintree-rails) [![Code Climate](https://codeclimate.com/github/lyang/braintree-rails.png)](https://codeclimate.com/github/lyang/braintree-rails)
-braintree-rails is a framework that wraps the official [braintree_ruby](https://github.com/braintree/braintree_ruby) client library and provides ActiveModel compatible models than can be easily fit into an rails app.
+braintree-rails is a framework that wraps the official [braintree_ruby](https://github.com/braintree/braintree_ruby) client library and provides ActiveModel compatible models that can be easily fit into an rails app.
+
+BraintreeRails models have the same CRUD interface, can be used in Rails form helpers and url helpers. In addition, it has built in validations and callbacks. Even more, you can customize those quite easily.
 
 ## Why braintree-rails
 While the official [braintree_ruby](https://github.com/braintree/braintree_ruby) gem is already quite easy to use, it is designed as a general ruby gem with very few dependencies, which is great.
