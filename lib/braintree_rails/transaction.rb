@@ -23,8 +23,8 @@ module BraintreeRails
       :customer     => :customer_details,
       :credit_card  => :credit_card_details,
       :subscription => :subscription_id,
-      :billing      => {:class_name => 'Address', :foreign_key => :billing_details},
-      :shipping     => {:class_name => 'Address', :foreign_key => :shipping_details}
+      :billing      => {:class_name => 'billing_address', :foreign_key => :billing_details},
+      :shipping     => {:class_name => 'shipping_address', :foreign_key => :shipping_details}
     )
 
     around_persist :clear_encryped_attributes
@@ -38,11 +38,11 @@ module BraintreeRails
     end
 
     def billing=(val)
-      @billing = val && Address.new(val)
+      @billing = val && BillingAddress.new(val)
     end
 
     def shipping=(val)
-      @shipping = val && Address.new(val)
+      @shipping = val && ShippingAddress.new(val)
     end
 
     def type

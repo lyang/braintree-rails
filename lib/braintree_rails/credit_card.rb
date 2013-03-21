@@ -40,7 +40,7 @@ module BraintreeRails
     end
 
     def billing_address=(value)
-      @billing_address = value && Address.new(value)
+      @billing_address = value && BillingAddress.new(value)
     end
 
     def add_errors(validation_errors)

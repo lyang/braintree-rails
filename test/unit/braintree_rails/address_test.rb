@@ -116,4 +116,12 @@ describe BraintreeRails::Address do
       address.errors[:postal_code].wont_be :blank?
     end
   end
+
+  [BraintreeRails::BillingAddress, BraintreeRails::ShippingAddress].each do |subclass|
+    describe subclass do
+      it 'should have braintree_model_class to be Braintree::Address' do
+        subclass.braintree_model_class.must_equal Braintree::Address
+      end
+    end
+  end
 end
