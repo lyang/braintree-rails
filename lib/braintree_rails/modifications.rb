@@ -1,6 +1,6 @@
 module BraintreeRails
   class Modifications < SimpleDelegator
-    include Association
+    include CollectionAssociation
     not_supported_apis(:build)
 
     def initialize(parent)

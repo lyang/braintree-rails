@@ -1,6 +1,6 @@
 module BraintreeRails
   class Addresses < SimpleDelegator
-    include Association
+    include CollectionAssociation
 
     def initialize(customer)
       @customer = customer

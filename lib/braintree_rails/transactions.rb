@@ -1,6 +1,6 @@
 module BraintreeRails
   class Transactions < SimpleDelegator
-    include Association
+    include CollectionAssociation
 
     def initialize(belongs_to)
       case belongs_to

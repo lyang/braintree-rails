@@ -1,6 +1,6 @@
 module BraintreeRails
   class CreditCards < SimpleDelegator
-    include Association
+    include CollectionAssociation
 
     def initialize(customer)
       @customer = customer
