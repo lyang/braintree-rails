@@ -4,26 +4,22 @@ describe BraintreeRails::Validator do
   describe "setup" do
     it "should be able to reset all callbacks" do
       begin
-        default_validations = BraintreeRails::CustomerValidator::Validations.deep_dup
         customer = BraintreeRails::Customer.new(:id => '%')
         customer.valid?
         customer.errors[:id].wont_be :blank?
-        BraintreeRails::CustomerValidator::Validations.clear
-        BraintreeRails::CustomerValidator.setup
+
+        BraintreeRails::CustomerValidator.setup {[]}
         customer.valid?.must_equal true
       ensure
-        BraintreeRails::CustomerValidator::Validations.push(*default_validations)
         BraintreeRails::CustomerValidator.setup
       end
     end
 
     it "should be able to add additional validations" do
       begin
-        default_validations = BraintreeRails::CustomerValidator::Validations.deep_dup
-        BraintreeRails::CustomerValidator::Validations.clear
-        validation_on_create = [:id, :length => {:is => 3}, :on => :create]
-        BraintreeRails::CustomerValidator::Validations.push(validation_on_create)
-        BraintreeRails::CustomerValidator.setup
+        BraintreeRails::CustomerValidator.setup do |validations|
+          [[:id, :length => {:is => 3}, :on => :create]]
+        end
 
         customer = BraintreeRails::Customer.new(:id => '%')
         customer.valid?.must_equal true
@@ -31,8 +27,6 @@ describe BraintreeRails::Validator do
         customer.save.must_equal false
         customer.errors[:id].wont_be :blank?
       ensure
-        BraintreeRails::CustomerValidator::Validations.clear
-        BraintreeRails::CustomerValidator::Validations.push(*default_validations)
         BraintreeRails::CustomerValidator.setup
       end
     end
