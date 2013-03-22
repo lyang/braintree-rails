@@ -23,6 +23,10 @@ module BraintreeRails
       delete(id)
     end
 
+    def attributes
+      super.except(:descriptor)
+    end
+
     def cancel
       destroy
     end

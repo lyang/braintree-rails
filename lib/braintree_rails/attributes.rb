@@ -52,17 +52,14 @@ module BraintreeRails
       def attributes
         self.class.attributes.inject({}) do |hash, attribute|
           value = self.send(attribute)
-          hash[attribute] =  value if value.present?
+          hash[attribute] = value if value.present?
+          hash[attribute] = value.attributes_for(:as_association) if value.respond_to?(:attributes_for)
           hash
         end
       end
 
       def attributes_for(action)
-        attributes.slice(*self.class.attributes_for(action)).tap do |hash|
-          hash.each_pair do |key, value|
-            hash[key] = value.attributes_for(:as_association) if value.respond_to?(:attributes_for)
-          end
-        end
+        attributes.slice(*self.class.attributes_for(action))
       end
 
       def assign_attributes(hash)

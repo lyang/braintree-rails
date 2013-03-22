@@ -90,6 +90,10 @@ module BraintreeRails
       credit_card.clear_encryped_attributes if credit_card.present?
     end
 
+    def attributes
+      super.except(:customer_details, :credit_card_details, :billing_details, :shipping_details, :subscription_details, :status_history, :descriptor)
+    end
+
     protected
 
     def propergate_errors_to_associations(validation_errors)
