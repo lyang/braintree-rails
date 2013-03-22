@@ -11,7 +11,10 @@ module BraintreeRails
       :as_association => [:cardholder_name, :cvv, :expiration_date, :expiration_month, :expiration_year, :number]
     )
 
-    define_associations(:transactions, :subscriptions, :customer => :customer_id)
+    has_many   :transactions,    :class => Transactions
+    has_many   :subscriptions,   :class => Subscriptions
+    belongs_to :customer,        :class => Customer,       :foreign_key => :customer_id
+
     alias_method :id, :token
     alias_method :id=, :token=
 

@@ -8,7 +8,7 @@ module BraintreeRails
       :as_association => [:company, :country_code_numeric, :extended_address, :first_name, :last_name, :locality, :postal_code, :region, :street_address]
     )
 
-    define_associations(:customer => :customer_id)
+    belongs_to :customer, :class => Customer, :foreign_key => :customer_id
 
     def self.auto_set_country_code_numeric(country_attribute, index)
       define_method("#{country_attribute}=") do |val|

@@ -18,32 +18,16 @@ module BraintreeRails
       ]
     )
 
-    define_associations(
-      :add_ons, :discounts,
-      :customer     => :customer_details,
-      :credit_card  => :credit_card_details,
-      :subscription => :subscription_id,
-      :billing      => {:class_name => 'billing_address', :foreign_key => :billing_details},
-      :shipping     => {:class_name => 'shipping_address', :foreign_key => :shipping_details}
-    )
+    has_many   :add_ons,      :class => AddOns
+    has_many   :discounts,    :class => Discounts
+    has_one    :billing,      :class => BillingAddress,  :foreign_key => :billing_details
+    has_one    :shipping,     :class => ShippingAddress, :foreign_key => :shipping_details
+    belongs_to :customer,     :class => Customer,        :foreign_key => :customer_details
+    belongs_to :credit_card,  :class => CreditCard,      :foreign_key => :credit_card_details
+    belongs_to :subscription, :class => Subscription,    :foreign_key => :subscription_id
+    belongs_to :plan,         :class => Plan,            :foreign_key => :plan_id
 
     around_persist :clear_encryped_attributes
-
-    def customer=(val)
-      @customer = val && Customer.new(val)
-    end
-
-    def credit_card=(val)
-      @credit_card = val && CreditCard.new(val)
-    end
-
-    def billing=(val)
-      @billing = val && BillingAddress.new(val)
-    end
-
-    def shipping=(val)
-      @shipping = val && ShippingAddress.new(val)
-    end
 
     def type
       @type ||= 'sale'

@@ -17,7 +17,11 @@ module BraintreeRails
       ]
     )
 
-    define_associations(:add_ons, :discounts, :transactions, :plan => :plan_id, :credit_card => :payment_method_token)
+    has_many   :add_ons,      :class => AddOns
+    has_many   :discounts,    :class => Discounts
+    has_many   :transactions, :class => Transactions
+    belongs_to :plan,         :class => Plan,            :foreign_key => :plan_id
+    belongs_to :credit_card,  :class => CreditCard,      :foreign_key => :payment_method_token
 
     def self.cancel(id)
       delete(id)

@@ -9,7 +9,9 @@ module BraintreeRails
       :as_association => [:id, :company, :email, :fax, :first_name, :last_name, :phone, :website]
     )
 
-    define_associations(:addresses, :transactions, :credit_cards)
+    has_many :addresses,    :class => Addresses
+    has_many :transactions, :class => Transactions
+    has_many :credit_cards, :class => CreditCards
 
     def ensure_model(model)
       if Braintree::Transaction::CustomerDetails === model
