@@ -10,7 +10,7 @@ module BraintreeRails
     singleton_class.class_eval do
       delegate :custom_user_agent, :environment, :merchant_id, :public_key, :private_key, :logger, :to => Braintree::Configuration
       delegate :custom_user_agent=, :environment=, :merchant_id=, :public_key=, :private_key=, :logger=, :to => Braintree::Configuration
-      attr_accessor :mode, :require_postal_code, :require_street_address
+      attr_accessor :mode, :require_postal_code, :require_street_address, :client_side_encryption_key
     end
 
     self.custom_user_agent = "braintree-rails-#{Version}"
