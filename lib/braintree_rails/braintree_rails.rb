@@ -1,44 +1,8 @@
 module BraintreeRails
   extend ActiveSupport::Autoload
-
-  autoload :Address
-  autoload :Addresses
-  autoload :AddressValidator
-  autoload :AddOn
-  autoload :AddOns
-  autoload :ApiError
-  autoload :ArrayExt
-  autoload :Association
-  autoload :Attributes
-  autoload :BillingAddress
-  autoload :BillingAddressValidator
-  autoload :CollectionAssociation
-  autoload :Configuration
-  autoload :CreditCard
-  autoload :CreditCards
-  autoload :CreditCardValidator
-  autoload :Customer
-  autoload :CustomerValidator
-  autoload :Discount
-  autoload :Discounts
-  autoload :Luhn10Validator
-  autoload :Model
-  autoload :Modification
-  autoload :Modifications
-  autoload :ModificationValidator
-  autoload :ModuleExt
-  autoload :Persistence
-  autoload :Plan
-  autoload :PlanValidator
-  autoload :ShippingAddress
-  autoload :ShippingAddressValidator
-  autoload :Subscription
-  autoload :Subscriptions
-  autoload :SubscriptionValidator
-  autoload :Transaction
-  autoload :Transactions
-  autoload :TransactionValidator
-  autoload :Validations
-  autoload :Validator
-  autoload :Version
+  Dir.chdir(File.dirname(__FILE__)) do
+    Dir.glob("*.rb").each do |file|
+      autoload file.chomp(".rb").camelize.to_sym
+    end
+  end
 end
