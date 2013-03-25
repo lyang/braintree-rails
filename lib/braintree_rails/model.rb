@@ -62,8 +62,8 @@ module BraintreeRails
       receiver.send :include, BraintreeRails::Association
       receiver.send :include, BraintreeRails::Persistence
       receiver.send :include, BraintreeRails::Validations
-      receiver.extend         ClassMethods
       receiver.send :include, InstanceMethods
+      receiver.extend         ClassMethods
     end
   end
 end

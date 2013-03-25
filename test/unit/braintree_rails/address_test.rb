@@ -48,11 +48,11 @@ describe BraintreeRails::Address do
     end
   end
 
-  describe 'country_code_numeric' do
-    it 'should always convert to country_code_alpha2' do
-      {:country_name => 'United States of America', :country_code_alpha2 => 'US', :country_code_alpha3 => 'USA'}.each_pair do |key, value|
+  describe 'country_name' do
+    it 'should auto set country_name' do
+      {:country_code_alpha2 => 'US', :country_code_alpha3 => 'USA', :country_code_numeric => '840'}.each_pair do |key, value|
         address = BraintreeRails::Address.new(key => value)
-        address.country_code_numeric.must_equal '840'
+        address.country_name.must_equal 'United States of America'
       end
     end
   end

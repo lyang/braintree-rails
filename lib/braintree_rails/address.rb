@@ -2,18 +2,28 @@ module BraintreeRails
   class Address
     include Model
     define_attributes(
-      :create => [:company, :country_code_numeric, :customer_id, :extended_address, :first_name, :id, :last_name, :locality, :postal_code, :region, :street_address],
-      :update => [:company, :country_code_numeric, :extended_address, :first_name, :last_name, :locality, :postal_code, :region, :street_address],
-      :readonly => [:country_code_alpha2, :country_code_alpha3, :country_name, :created_at, :updated_at],
-      :as_association => [:company, :country_code_numeric, :extended_address, :first_name, :last_name, :locality, :postal_code, :region, :street_address]
+      :create => [:company, :country_name, :customer_id, :extended_address, :first_name, :id, :last_name, :locality, :postal_code, :region, :street_address],
+      :update => [:company, :country_name, :extended_address, :first_name, :last_name, :locality, :postal_code, :region, :street_address],
+      :readonly => [:country_code_alpha2, :country_code_alpha3, :country_code_numeric, :created_at, :updated_at],
+      :as_association => [:company, :country_name, :extended_address, :first_name, :last_name, :locality, :postal_code, :region, :street_address]
     )
 
     belongs_to :customer, :class => Customer, :foreign_key => :customer_id
 
-    def self.auto_set_country_code_numeric(country_attribute, index)
-      define_method("#{country_attribute}=") do |val|
-        self.country_code_numeric = Braintree::Address::CountryNames.find{|country_name| country_name[index] == val}.try(:[], 3)
-        self.instance_variable_set("@#{country_attribute}", val)
+    CountryNames = {
+      :country_name => 0,
+      :country_code_alpha2 => 1,
+      :country_code_alpha3 => 2,
+      :country_code_numeric => 3
+    }
+
+    def self.sync_country_name_attributes(country_attribute, index)
+      define_method("#{country_attribute}=") do |value|
+        CountryNames.except(country_attribute).each do |other_attribute, other_index|
+          other_value = Braintree::Address::CountryNames.find{|country_name| country_name[index] == value}.try(:[], other_index)
+          instance_variable_set("@#{other_attribute}", other_value)
+        end
+        instance_variable_set("@#{country_attribute}", value)
       end
     end
 
@@ -62,8 +72,8 @@ module BraintreeRails
       end
     end
 
-    [:country_name, :country_code_alpha2, :country_code_alpha3].each_with_index do |country_attribute, index|
-      auto_set_country_code_numeric(country_attribute, index)
+    CountryNames.each do |attribute, index|
+      sync_country_name_attributes(attribute, index)
     end
   end
 end
