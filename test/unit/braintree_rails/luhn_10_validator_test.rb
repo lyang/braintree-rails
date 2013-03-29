@@ -17,7 +17,7 @@ describe BraintreeRails::Luhn10Validator do
     it 'should fail for invalid numbers' do
       invalid_record = Validatable.new('1234567890123456')
       invalid_record.wont_be :valid?
-      invalid_record.errors[:number].must_include 'failed Luhn 10 validation.'
+      invalid_record.errors[:number].must_include 'failed Luhn 10 validation'
     end
   end
 end

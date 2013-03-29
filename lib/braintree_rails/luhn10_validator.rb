@@ -2,7 +2,7 @@ module BraintreeRails
   class Luhn10Validator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       return unless record.errors[attribute].blank?
-      record.errors.add(attribute, 'failed Luhn 10 validation.') if invalid_luhn_10_number?(value)
+      record.errors.add(attribute, 'failed Luhn 10 validation') if invalid_luhn_10_number?(value)
     end
 
     private

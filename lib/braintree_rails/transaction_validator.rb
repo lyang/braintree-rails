@@ -29,9 +29,9 @@ module BraintreeRails
 
     def validate_customer_have_default_credit_card(transaction)
       if transaction.customer.blank?
-        transaction.errors.add(:base, "Either customer or credit card is required.")
+        transaction.errors.add(:base, "Either customer or credit card is required")
       elsif transaction.customer.default_credit_card.blank?
-        transaction.errors.add(:base, "does not have a default credit card.")
+        transaction.errors.add(:base, "Customer does not have a default credit card")
       end
     end
 

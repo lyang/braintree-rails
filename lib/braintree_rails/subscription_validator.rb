@@ -19,7 +19,7 @@ module BraintreeRails
     def number_of_billing_cycles_must_be_greater_than_current_billing_cycle(subscription)
       subscription.instance_eval do
         if number_of_billing_cycles.present? && current_billing_cycle.present?
-          errors.add(:number_of_billing_cycles, "is too small.") if number_of_billing_cycles < current_billing_cycle
+          errors.add(:number_of_billing_cycles, "is too small") if number_of_billing_cycles < current_billing_cycle
         end
       end
     end
@@ -28,10 +28,10 @@ module BraintreeRails
       subscription.instance_eval do
         begin
           if new_record? && first_billing_date.present?
-            errors.add(:first_billing_date, "cannot be in the past.") if DateTime.parse(first_billing_date.to_s) < Date.today
+            errors.add(:first_billing_date, "cannot be in the past") if DateTime.parse(first_billing_date.to_s) < Date.today
           end
         rescue ArgumentError
-          errors.add(:first_billing_date, "is invalid.")
+          errors.add(:first_billing_date, "is invalid")
         end
       end
     end

@@ -20,8 +20,13 @@ module BraintreeRails
 
     def have_valid_billing_address(credit_card)
       credit_card.instance_eval do
-        errors.add(:billing_address, "is empty.") and return if billing_address.blank?
-        errors.add(:billing_address, "is not valid. #{billing_address.errors.full_messages.join("\n")}") if billing_address.invalid?
+        errors.add(:billing_address, "is empty") and return if billing_address.blank?
+        if billing_address.invalid?
+          errors.add(:billing_address, "is not valid")
+          billing_address.errors.full_messages.each do |message|
+            errors.add(:base, message)
+          end
+        end
       end
     end
 
