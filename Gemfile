@@ -1,5 +1,4 @@
 source 'http://rubygems.org'
-ruby '1.9.3'
 gem 'braintree', '>= 2.16.0'
 gem 'activemodel', '>= 3.0'
 gem 'activesupport', '>= 3.0'
