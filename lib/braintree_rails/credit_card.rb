@@ -3,7 +3,7 @@ module BraintreeRails
     include Model
     define_attributes(
       :create => [:billing_address, :cardholder_name, :customer_id, :expiration_date, :expiration_month, :expiration_year, :number, :cvv, :options, :token],
-      :update => [:billing_address, :cardholder_name, :expiration_date, :expiration_month, :expiration_year, :options],
+      :update => [:billing_address, :cardholder_name, :expiration_date, :expiration_month, :expiration_year, :options, :number, :cvv],
       :readonly => [
         :bin, :card_type, :commercial, :country_of_issuance, :created_at, :debit, :durbin_regulated, :default,
         :expired, :healthcare, :issuing_bank, :last_4, :payroll, :prepaid, :unique_number_identifier, :updated_at
