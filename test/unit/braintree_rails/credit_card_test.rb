@@ -319,6 +319,17 @@ describe BraintreeRails::CreditCard do
       credit_card.clear_encryped_attributes
       credit_card.number.must_be :blank?
     end
+
+    it 'should update expiration_date when required' do
+      credit_card = BraintreeRails::CreditCard.find('credit_card_id')
+      attributes = {
+        :number => '4111111111111111',
+        :cvv => '111',
+        :expiration_date => '02/2020',
+      }
+      credit_card.assign_attributes(attributes)
+      credit_card.attributes_for(:update)[:expiration_date].must_equal '02/2020'
+    end
   end
 
   describe 'class methods' do
