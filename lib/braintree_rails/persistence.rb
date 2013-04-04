@@ -115,8 +115,7 @@ module BraintreeRails
             false
           else
             new_record = result.respond_to?(self.class.braintree_model_name) ? result.send(self.class.braintree_model_name) : result
-            assign_attributes(extract_values(new_record))
-            self.persisted = true
+            init(new_record)
           end
         end
       end

@@ -17,7 +17,7 @@ module BraintreeRails
 
     module InstanceMethods
       def initialize(model = {})
-        @raw_object = ensure_model(model)
+        init(model)
       end
 
       def ensure_model(model)
@@ -54,6 +54,12 @@ module BraintreeRails
       def ==(other)
         return false unless other.is_a?(self.class) || other.is_a?(self.class.braintree_model_class)
         id == other.id
+      end
+
+      private
+
+      def init(model)
+        @raw_object = ensure_model(model)
       end
     end
 
