@@ -53,8 +53,9 @@ module BraintreeRails
 
     def attributes_for(action)
       super.tap do |attributes|
-        attributes[:billing_address].merge!(:options => {:update_existing => true}) if action == :update
-        attributes.delete(:expiration_date) if expiration_month.present?
+        if attributes[:billing_address] && action == :update
+          attributes[:billing_address].merge!(:options => {:update_existing => true})
+        end
       end
     end
 
@@ -62,7 +63,7 @@ module BraintreeRails
       yield if block_given?
     ensure
       return unless Configuration.mode == Configuration::Mode::JS
-      [:number=, :cvv=, :expiration_date=, :expiration_year=, :expiration_month=].each do |encrypted_attribute|
+      [:number=, :cvv=].each do |encrypted_attribute|
         self.send(encrypted_attribute, nil)
       end
     end

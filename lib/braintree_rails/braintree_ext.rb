@@ -40,6 +40,14 @@ module Braintree
     def default
       @default
     end
+
+    def number
+      nil
+    end
+
+    def cvv
+      nil
+    end
   end
 end
 
