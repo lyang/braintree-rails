@@ -14,13 +14,15 @@ module BraintreeRails
         self.class.attributes.inject({}) do |hash, attribute|
           value = self.send(attribute)
           hash[attribute] = value if value.present?
-          hash[attribute] = value.attributes_for(:as_association) if value.respond_to?(:attributes_for) && value.changed?
+          hash[attribute] = value.attributes_for(:as_association) if value.respond_to?(:attributes_for)
           hash
         end
       end
 
       def attributes_for(action)
-        attributes.slice(*self.class.attributes_for(action)).slice(*changed)
+        attributes_for_action = attributes.slice(*self.class.attributes_for(action))
+        attributes_for_action.slice!(*changed) unless action == :as_association
+        attributes_for_action
       end
 
       def assign_attributes(hash)
@@ -37,14 +39,19 @@ module BraintreeRails
       end
 
       def changed
-        return attributes.keys if new_record?
-        attributes.keys.select do |attribute|
-          attributes[attribute] != raw_object.send(attribute)
-        end
+        new_record? ? changed_for_new_record : changed_for_persisted
       end
 
-      def changed?
-        changed.any?
+      def changed_for_new_record
+        attributes.map do |attribute, value|
+          attribute if value.present?
+        end.compact
+      end
+
+      def changed_for_persisted
+        attributes.map do |attribute, value|
+          attribute if value != raw_object.send(attribute)
+        end.compact
       end
     end
 
