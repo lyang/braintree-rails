@@ -12,6 +12,6 @@
   * Adding customer validations has a better and simpler way now.
 
 ### Bug Fixes
-  * Fixed a bug where updating `expiration_date` on a vaulted card is not ignored.
+  * Fixed a bug where updating `expiration_date` on a vaulted card is ignored.
 
-## v1.0.0 (daf2b80), Mon Mar 18 09:17:27 2013 -0700
+## v1.0.0 (daf2b80), Mar 18 2013
