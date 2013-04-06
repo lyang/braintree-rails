@@ -12,9 +12,9 @@ module BraintreeRails
     module InstanceMethods
       def attributes
         self.class.attributes.inject({}) do |hash, attribute|
-          value = self.send(attribute)
-          hash[attribute] = value if value.present?
-          hash[attribute] = value.attributes_for(:as_association) if value.respond_to?(:attributes_for)
+          if (value = self.send(attribute)).present?
+            hash[attribute] = value.respond_to?(:attributes_for) ? value.attributes_for(:as_association) : value
+          end
           hash
         end
       end

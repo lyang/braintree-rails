@@ -12,6 +12,10 @@ module Braintree
       return false unless other.is_a?(Descriptor)
       name == other.name && phone == other.phone
     end
+
+    def attributes_for(action)
+      {:name => name, :phone => phone}
+    end
   end
 end
 

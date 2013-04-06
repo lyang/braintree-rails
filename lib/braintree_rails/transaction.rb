@@ -75,7 +75,7 @@ module BraintreeRails
     end
 
     def attributes
-      super.except(:customer_details, :credit_card_details, :billing_details, :shipping_details, :subscription_details, :status_history, :descriptor)
+      super.except(:customer_details, :credit_card_details, :billing_details, :shipping_details, :subscription_details, :status_history)
     end
 
     protected
