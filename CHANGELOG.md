@@ -1,4 +1,5 @@
 ## Unreleased (master)
+## v1.1.0 (13033d9), Apr 12 2013
 ### Enhancements
   * `BraintreeRails` and its submodules are now eager loadable.
   * `BraintreeRails::CreditCard`'s `number` and `cvv` are now updatable.
