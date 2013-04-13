@@ -7,7 +7,7 @@ Braintree::Configuration.environment = :sandbox
 Braintree::Configuration.merchant_id = 'merchant_id'
 Braintree::Configuration.public_key = 'public_key'
 Braintree::Configuration.private_key = 'private_key'
-Braintree::Configuration.logger = Logger.new(File.join(ROOT_PATH, 'log/braintree_test.log'))
+Braintree::Configuration.logger = Logger.new('/dev/null').tap { |logger| logger.level = Logger::INFO }
 BraintreeBaseUri = "https://#{Braintree::Configuration.public_key}:#{Braintree::Configuration.private_key}@#{Braintree::Configuration.environment}.braintreegateway.com/merchants/#{Braintree::Configuration.merchant_id}"
 
 module TestHelper
