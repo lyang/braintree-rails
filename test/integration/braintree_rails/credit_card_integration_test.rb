@@ -40,7 +40,7 @@ describe 'Credit Card Integration' do
     customer = BraintreeRails::Customer.create!(:id => 'customer_id', :first_name => 'Brain', :last_name => 'Tree')
     credit_card = customer.credit_cards.create!(credit_card_hash)
 
-    credit_card.update_attributes!(:cardholder_name => 'Foo Bar', :billing_address => address_hash.merge(:postal_code => '56789'))
+    credit_card.update_attributes!(:cardholder_name => 'Foo Bar', :number => '4111111111111111', :options => {:verify_card => true}, :billing_address => address_hash.merge(:postal_code => '56789'))
     braintree_credit_card = Braintree::CreditCard.find(credit_card.id)
     braintree_credit_card.cardholder_name.must_equal 'Foo Bar'
     braintree_credit_card.billing_address.postal_code.must_equal '56789'

@@ -50,7 +50,7 @@ module BraintreeRails
 
       def changed_for_persisted
         attributes.map do |attribute, value|
-          attribute if value != raw_object.send(attribute)
+          attribute if !raw_object.respond_to?(attribute) || value != raw_object.send(attribute)
         end.compact
       end
     end
