@@ -1,4 +1,7 @@
 ## Unreleased (master)
+### Bug Fixes
+  * Fixed a bug where updating a vaulted card with `:options => {:verify_card => true}` is not working.
+
 ## v1.1.0 (13033d9), Apr 12 2013
 ### Enhancements
   * `BraintreeRails` and its submodules are now eager loadable.
