@@ -10,7 +10,7 @@ describe 'Transaction Integration' do
     braintree_customer = Braintree::Customer.create!(customer_hash.merge(:credit_card => credit_card_hash))
     customer = BraintreeRails::Customer.new(braintree_customer)
 
-    transaction = BraintreeRails::Transaction.create!(:customer => customer, :amount => rand(1..5))
+    transaction = BraintreeRails::Transaction.create!(:customer => customer, :amount => (1..5).to_a.sample)
     transaction.persisted?.must_equal true
     transaction.status.must_equal Braintree::Transaction::Status::Authorized
 
@@ -26,7 +26,7 @@ describe 'Transaction Integration' do
     customer = BraintreeRails::Customer.new(braintree_customer)
     credit_card = customer.credit_cards.first
 
-    transaction = BraintreeRails::Transaction.create!(:customer => customer, :amount => rand(1..5), :credit_card => credit_card)
+    transaction = BraintreeRails::Transaction.create!(:customer => customer, :amount => (1..5).to_a.sample, :credit_card => credit_card)
     transaction.persisted?.must_equal true
     transaction.status.must_equal Braintree::Transaction::Status::Authorized
 
@@ -42,7 +42,7 @@ describe 'Transaction Integration' do
     braintree_customer = Braintree::Customer.create!(customer_hash.merge(:credit_card => credit_card_hash))
     customer = BraintreeRails::Customer.new(braintree_customer)
     credit_card = customer.credit_cards.first
-    transaction = BraintreeRails::Transaction.create!(:amount => rand(1..10), :customer => customer)
+    transaction = BraintreeRails::Transaction.create!(:amount => (1..10).to_a.sample, :customer => customer)
 
     customer.transactions.length.must_equal 1
     customer.transactions.each do |t|
@@ -58,13 +58,13 @@ describe 'Transaction Integration' do
     credit_card2 = customer.credit_cards.create!(credit_card_hash.merge(:token => 'card_2'))
     customer.credit_cards.size.must_equal 2
 
-    transaction1 = BraintreeRails::Transaction.create!(:amount => rand(1..10), :customer => customer, :credit_card => credit_card1)
-    transaction2 = BraintreeRails::Transaction.create!(:amount => rand(1..10), :customer => customer, :credit_card => credit_card2)
+    transaction1 = BraintreeRails::Transaction.create!(:amount => (1..10).to_a.sample, :customer => customer, :credit_card => credit_card1)
+    transaction2 = BraintreeRails::Transaction.create!(:amount => (1..10).to_a.sample, :customer => customer, :credit_card => credit_card2)
     customer.transactions.size.must_equal 2
   end
 
   it 'should be able to create a one time transaction' do
-    transaction = BraintreeRails::Transaction.create!(:amount => rand(1..10), :billing => address_hash, :customer => customer_hash, :credit_card => credit_card_hash)
+    transaction = BraintreeRails::Transaction.create!(:amount => (1..10).to_a.sample, :billing => address_hash, :customer => customer_hash, :credit_card => credit_card_hash)
     transaction.persisted?.must_equal true
     transaction.id.wont_be :blank?
     transaction.customer.wont_be :blank?
@@ -75,7 +75,7 @@ describe 'Transaction Integration' do
     braintree_customer = Braintree::Customer.create!(customer_hash.merge(:credit_card => credit_card_hash))
     customer = BraintreeRails::Customer.new(braintree_customer)
     credit_card = customer.credit_cards.first
-    transaction = BraintreeRails::Transaction.create!(:amount => rand(1..10), :customer => customer)
+    transaction = BraintreeRails::Transaction.create!(:amount => (1..10).to_a.sample, :customer => customer)
 
     transaction.void!
     transaction.submit_for_settlement.must_equal false
@@ -89,7 +89,7 @@ describe 'Transaction Integration' do
         customer = BraintreeRails::Customer.new(braintree_customer)
         credit_card = customer.default_credit_card
 
-        transaction = BraintreeRails::Transactions.new(customer).create!(:amount => rand(1..10))
+        transaction = BraintreeRails::Transactions.new(customer).create!(:amount => (1..10).to_a.sample)
         transaction.customer.must_equal customer
         transaction.credit_card.must_equal credit_card
       end
@@ -99,7 +99,7 @@ describe 'Transaction Integration' do
         customer = BraintreeRails::Customer.new(braintree_customer)
         credit_card = customer.default_credit_card
 
-        transaction = BraintreeRails::Transactions.new(credit_card).create!(:amount => rand(1..10))
+        transaction = BraintreeRails::Transactions.new(credit_card).create!(:amount => (1..10).to_a.sample)
         transaction.credit_card.must_equal credit_card
       end
     end

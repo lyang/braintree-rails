@@ -25,8 +25,8 @@ module TestHelper
       :first_name => 'Brain',
       :last_name => 'Tree',
       :company => 'Braintree',
-      :street_address => "#{rand(1000..9999)} Crane Avenue",
-      :extended_address => "Suite #{rand(100..999)}",
+      :street_address => "#{(1000..9999).to_a.sample} Crane Avenue",
+      :extended_address => "Suite #{(100..999).to_a.sample}",
       :locality => 'Menlo Park',
       :region => 'California',
       :postal_code => ("00001".."99999").to_a.shuffle.first,
@@ -48,8 +48,8 @@ module TestHelper
 
   def customer_hash
     {
-      :first_name => "Brain#{rand(1..100)}",
-      :last_name => "Tree#{rand(1..100)}"
+      :first_name => "Brain#{(1..100).to_a.sample}",
+      :last_name => "Tree#{(1..100).to_a.sample}"
     }
   end
 
