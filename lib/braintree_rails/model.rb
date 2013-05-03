@@ -59,6 +59,7 @@ module BraintreeRails
       private
 
       def init(model)
+        self.class.associations.each {|association| instance_variable_set("@#{association}", nil)}
         @raw_object = ensure_model(model)
       end
     end

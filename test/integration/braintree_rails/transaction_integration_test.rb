@@ -103,5 +103,17 @@ describe 'Transaction Integration' do
         transaction.credit_card.must_equal credit_card
       end
     end
+
+    describe '#reload' do
+      it "should reload the collection" do
+        customer = BraintreeRails::Customer.create!(customer_hash.merge(:credit_card => credit_card_hash))
+        credit_card = customer.credit_cards.create!(credit_card_hash.merge(:token => 'card_1'))
+        transactions = customer.transactions
+        transactions.must_be :empty?
+
+        transaction = BraintreeRails::Transaction.create!(:amount => (1..10).to_a.sample, :customer => customer, :credit_card => credit_card)
+        transactions.reload.size.must_equal 1
+      end
+    end
   end
 end

@@ -27,6 +27,7 @@ module BraintreeRails
 
     protected
     def load!
+      return if loaded
       self.collection = if @subscription.present?
         @subscription.raw_object.transactions
       elsif @credit_card.present?

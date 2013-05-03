@@ -45,6 +45,12 @@ module BraintreeRails
         self.loaded = true
         __setobj__(collection.map{|model| model_class.new(model)})
       end
+
+      def reload
+        self.loaded = false
+        self.load!
+        self
+      end
     end
 
     def self.included(receiver)

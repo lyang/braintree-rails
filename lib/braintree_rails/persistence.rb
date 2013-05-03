@@ -35,6 +35,11 @@ module BraintreeRails
         !persisted?
       end
 
+      def reload
+        init(self.class.braintree_model_class.find(id))
+        self
+      end
+
       def save(*)
         run_callbacks :save do
           create_or_update

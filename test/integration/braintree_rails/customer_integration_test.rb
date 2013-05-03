@@ -46,4 +46,17 @@ describe 'Customer Integration' do
     customer.persisted?.must_equal false
     customer.frozen?.must_equal true
   end
+
+  it "should be able to reload the customer attributes" do
+    customer = BraintreeRails::Customer.create!(:first_name => 'Brain', :last_name => 'Tree')
+    customer.first_name = 'new name'
+    customer.reload.first_name.must_equal 'Brain'
+  end
+
+  it "should be able to reload associations" do
+    customer = BraintreeRails::Customer.create!(:first_name => 'Brain', :last_name => 'Tree')
+    customer.credit_cards.must_be :empty?
+    Braintree::CreditCard.create(credit_card_hash.merge(:customer_id => customer.id))
+    customer.reload.credit_cards.size.must_equal 1
+  end
 end

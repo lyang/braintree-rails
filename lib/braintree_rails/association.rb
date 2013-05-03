@@ -1,11 +1,22 @@
 module BraintreeRails
   module Association
     module ClassMethods
+      def self.extended(receiver)
+        receiver.singleton_class.send(:attr_accessor, :associations)
+        receiver.associations = []
+      end
+
+      def inherited(subclass)
+        subclass.associations = self.associations
+      end
+
       def has_many(name, options)
+        associations << name
         define_association_reader(name, options.merge(:foreign_key => :presence))
       end
 
       def belongs_to(name, options)
+        associations << name
         define_association_reader(name, options)
         define_association_writer(name, options)
       end
