@@ -1,6 +1,7 @@
 ## Unreleased (master)
 ### Enhancements
   * Make all tests run in ruby 1.9.2
+  * Adding `reload` method for all models
 
 ### Bug Fixes
   * Fixed a bug where updating a vaulted card with `:options => {:verify_card => true}` is not working.
