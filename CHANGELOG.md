@@ -1,5 +1,9 @@
 ## Unreleased (master)
 
+## v1.2.1 (370fab4), Jul 01 2013
+### Enhancements
+  * Make all tests run in Rails 4.0
+
 ## v1.2.0 (e993a65), May 31 2013
 ### Enhancements
   * Make all tests run in ruby 1.9.2
