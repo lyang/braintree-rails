@@ -1,5 +1,9 @@
 ## Unreleased (master)
 
+## v1.2.2 (370fab4), Oct 14 2013
+### Bug Fixes
+  * Fixed gemspec to only package necessary files to reduce the gem file size
+
 ## v1.2.1 (370fab4), Jul 01 2013
 ### Enhancements
   * Make all tests run in Rails 4.0
