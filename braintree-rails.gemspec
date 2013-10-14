@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.author      = 'Lin Yang'
   spec.email       = 'github@linyang.me'
   spec.license     = 'MIT'
-  spec.files       = Dir['**/*']
+  spec.files       = `git ls-files`.split($/)
   spec.test_files  = Dir['test/**']
   spec.homepage    = 'https://github.com/lyang/braintree-rails'
   spec.required_ruby_version = '>= 1.9.2'
