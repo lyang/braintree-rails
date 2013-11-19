@@ -22,6 +22,12 @@ describe 'Customer Integration' do
     braintree_customer.last_name.must_equal 'Tree'
   end
 
+  it 'should be able to create new customer with a credit card' do
+    customer = BraintreeRails::Customer.create(:first_name => 'Brain', :last_name => 'Tree', :credit_card => credit_card_hash)
+    braintree_customer = Braintree::Customer.find(customer.id)
+    braintree_customer.credit_cards.count.must_equal 1
+  end
+
   it 'should be able to update existing customer' do
     customer = BraintreeRails::Customer.create!(:first_name => 'Brain', :last_name => 'Tree')
     customer.update_attributes!(:first_name => 'Foo', :last_name => 'Bar')
@@ -29,6 +35,14 @@ describe 'Customer Integration' do
     braintree_customer = Braintree::Customer.find(customer.id)
     braintree_customer.first_name.must_equal 'Foo'
     braintree_customer.last_name.must_equal 'Bar'
+  end
+
+  it 'should be able to update existing customer with new credit card' do
+    customer = BraintreeRails::Customer.create(:first_name => 'Brain', :last_name => 'Tree', :credit_card => credit_card_hash)
+    customer.update_attributes!(:first_name => 'Foo', :last_name => 'Bar', :credit_card => credit_card_hash.merge(:cardholder_name => "FooBar"))
+
+    braintree_customer = Braintree::Customer.find(customer.id)
+    braintree_customer.credit_cards.first.cardholder_name.must_equal "FooBar"
   end
 
   it 'should be able to destroy existing customer' do

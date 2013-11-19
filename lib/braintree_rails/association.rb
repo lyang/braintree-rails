@@ -27,11 +27,11 @@ module BraintreeRails
 
       def define_association_reader(name, options)
         define_method(name) do
-          value = instance_variable_get("@#{name}")
-          return value if value.present?
-          value = self.send(options[:foreign_key])
-          value &&= options[:class].new(value)
-          instance_variable_set("@#{name}", value)
+          if value = instance_variable_get("@#{name}")
+            return value
+          elsif options[:foreign_key] && value = send(options[:foreign_key])
+            instance_variable_set("@#{name}", options[:class].new(value))
+          end
         end
       end
 

@@ -14,6 +14,7 @@ module BraintreeRails
     has_many   :transactions,    :class => Transactions
     has_many   :subscriptions,   :class => Subscriptions
     belongs_to :customer,        :class => Customer,       :foreign_key => :customer_id
+    has_one    :billing_address, :class => BillingAddress
 
     alias_method :id, :token
     alias_method :id=, :token=
@@ -40,10 +41,6 @@ module BraintreeRails
 
     def masked_number
       "#{bin}******#{last_4}"
-    end
-
-    def billing_address=(value)
-      @billing_address = value && BillingAddress.new(value)
     end
 
     def add_errors(validation_errors)

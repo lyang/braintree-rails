@@ -123,6 +123,18 @@ describe BraintreeRails::Customer do
         customer.errors[attribute].wont_be :blank?
       end
     end
+
+    describe 'credit_card' do
+      it 'is valid if new credit card is valid' do
+        customer = BraintreeRails::Customer.new(:credit_card => credit_card_hash)
+        customer.valid?.must_equal true
+      end
+
+      it 'is not valid if new credit card is invalid' do
+        customer = BraintreeRails::Customer.new(:credit_card => credit_card_hash.except(:number))
+        customer.valid?.must_equal false
+      end
+    end
   end
 
   describe 'persistence' do

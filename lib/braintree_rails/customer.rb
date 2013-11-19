@@ -12,6 +12,7 @@ module BraintreeRails
     has_many :addresses,    :class => Addresses
     has_many :transactions, :class => Transactions
     has_many :credit_cards, :class => CreditCards
+    has_one  :credit_card,  :class => CreditCard
 
     def ensure_model(model)
       if Braintree::Transaction::CustomerDetails === model
@@ -27,8 +28,21 @@ module BraintreeRails
       "#{first_name} #{last_name}".strip
     end
 
+    def add_errors(validation_errors)
+      credit_card.add_errors(validation_errors.except(:base)) if credit_card
+      super(validation_errors)
+    end
+
+    def attributes_for(action)
+      super.merge(credit_card_attributes(action))
+    end
+
     def default_credit_card
       credit_cards.find(&:default?)
+    end
+
+    def credit_card_attributes(action)
+      credit_card.present? ? {:credit_card => credit_card.attributes_for(action).except(:customer_id, :token)} : {}
     end
   end
 end
