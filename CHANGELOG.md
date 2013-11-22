@@ -1,8 +1,10 @@
 ## Unreleased (master)
-
+### Enhancements
+  * Customer create/update now accepts an optional :credit_card params.
+  
 ## v1.2.2 (370fab4), Oct 14 2013
 ### Bug Fixes
-  * Fixed gemspec to only package necessary files to reduce the gem file size
+  * Fixed gemspec to only package necessary files to reduce the gem file size. (Thanks, @ivankocienski)
 
 ## v1.2.1 (370fab4), Jul 01 2013
 ### Enhancements
