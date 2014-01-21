@@ -20,6 +20,7 @@ module BraintreeRails
     alias_method :id=, :token=
 
     around_persist :clear_encryped_attributes
+    before_update :normalize_expiration_date, :if => :expiry_date_changed?
 
     def ensure_model(model)
       if Braintree::Transaction::CreditCardDetails === model
@@ -63,6 +64,15 @@ module BraintreeRails
       [:number=, :cvv=].each do |encrypted_attribute|
         self.send(encrypted_attribute, nil)
       end
+    end
+
+    def normalize_expiration_date
+      self.expiration_date = [self.expiration_month, self.expiration_year].join("/")
+      self.expiration_month = self.expiration_year = nil
+    end
+
+    def expiry_date_changed?
+      changed.include?(:expiration_month) || changed.include?(:expiration_year)
     end
   end
 end
