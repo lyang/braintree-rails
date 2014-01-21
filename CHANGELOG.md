@@ -1,11 +1,13 @@
 ## Unreleased (master)
+
+## v1.2.3 (a9f5bf4), Jan 21 2014
 ### Enhancements
   * Customer create/update now accepts an optional :credit_card params.
 
 ### Bug Fixes
   * Fixed a bug where it failed to update credit card expiry date when only expiration year changed. (Thanks, @vedanova)
   
-## v1.2.2 (370fab4), Oct 14 2013
+## v1.2.2 (dc21ba6), Oct 14 2013
 ### Bug Fixes
   * Fixed gemspec to only package necessary files to reduce the gem file size. (Thanks, @ivankocienski)
 
