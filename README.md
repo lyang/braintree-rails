@@ -38,3 +38,7 @@ Write better documents.
 Source code: [braintree_ruby](https://github.com/braintree/braintree_ruby)
 
 Guides: [Ruby Client Library](https://www.braintreepayments.com/docs/ruby)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/lyang/braintree-rails/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
