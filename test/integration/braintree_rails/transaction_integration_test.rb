@@ -54,8 +54,8 @@ describe 'Transaction Integration' do
   it "should be able to load all transactions for a given customer" do
     braintree_customer = Braintree::Customer.create!(customer_hash)
     customer = BraintreeRails::Customer.new(braintree_customer)
-    credit_card1 = customer.credit_cards.create!(credit_card_hash.merge(:token => 'card_1'))
-    credit_card2 = customer.credit_cards.create!(credit_card_hash.merge(:token => 'card_2'))
+    credit_card1 = customer.credit_cards.create!(credit_card_hash.merge(:token => nil))
+    credit_card2 = customer.credit_cards.create!(credit_card_hash.merge(:token => nil))
     customer.credit_cards.size.must_equal 2
 
     transaction1 = BraintreeRails::Transaction.create!(:amount => (1..10).to_a.sample, :customer => customer, :credit_card => credit_card1)
