@@ -1,6 +1,13 @@
 language: ruby
 rvm:
-  - "1.9.2"
-  - "1.9.3"
-  - "2.0.0"
-  - "jruby"
+- 1.9.2
+- 1.9.3
+- 2.0.0
+- 2.1.0
+- jruby
+env:
+  global:
+  - secure: KV6QO8+zlfSlnZW9LhmDAeTUqnbdGu7axYyI0qAFjfHdROKTV/BaF8ZvOcX3CsveBjmEMLroIUu8G/pBUWJCQ/XC+TrEafhLQUHF8bo1xZdOJmMkjBiKsl3tu9ys2St3Oc2WIbo7YL7SeOuMlDG6xemIxs0H9kZjFxfqPBqS8Ew=
+  - secure: NVDIEcg9Yj87cbv9YZ294mPZx6ousZerha78jUJtVAMXnbhb/Lg8BrZFK5y8aiExc/LMKfdw28FdhcSkq002OxaUdA8Zcwr7ZjsGsKHasu2Dr2FzdzZgLXOedingZ1FyuzhqW40Q/aM0GgO0WGn+z2P9KLXRx7fxHg/R0QhIB+g=
+  - secure: r7NPGCo5yN6uXz6Zosov/x4iHpMMTq2mRTKhtfczEsu39L0S4+egsvbPf1bjobFWOgNu9fzCublphl/pXFf3Hv1JQfizS0escCMq9z0PUBJ2x1JzEZGqz5os2NqSCdoTRR3P7hzFNKCTF+JZJklvGxyKwev8kP3gcAtxb4GQypg=
+  - secure: mXj8rHJcSlLDseru8FsbcCVNHUTpdxG9PNxLqIvfn4SQnROrMYtd4IFuEGQn/wuzatsgFisB6uGpEqs6m0wUCPrMfShyN8ZnNPbF0qTvnq0uQemAIaoK2BSjPExWod6uNTe0sEg1Z+dX+SNfkkOruHXJ9t/ERsK52er1qodYJiE=
