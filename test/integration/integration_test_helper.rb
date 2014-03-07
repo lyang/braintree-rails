@@ -7,7 +7,7 @@ if File.exist?(config) && auth = YAML.load_file(config)
   BraintreeRails::Configuration.private_key = auth['private_key']
   BraintreeRails::Configuration.default_merchant_account_id = auth['default_merchant_account_id']
   # BraintreeRails::Configuration.logger = Logger.new('log/braintree.log')
-elsif ENV["TRAVIS_SECURE_ENV_VARS"] == "true"
+elsif ENV["TRAVIS_SECURE_ENV_VARS"] == "true" && ENV["TRAVIS_RUBY_VERSION"] == "2.0.0"
   BraintreeRails::Configuration.environment = :sandbox
   BraintreeRails::Configuration.merchant_id = ENV['merchant_id']
   BraintreeRails::Configuration.public_key = ENV['public_key']
