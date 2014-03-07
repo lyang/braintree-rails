@@ -1,7 +1,7 @@
 [Braintree::Plan, Braintree::Modification].each do |model|
   model.class_eval do
    def self.find(id)
-     all.find {|plan| plan.id == id}
+     all.find {|model| model.id == id}
    end
   end
 end
@@ -61,6 +61,32 @@ module Braintree
       def id
         token
       end
+    end
+  end
+end
+
+module Braintree
+  class MerchantAccount
+    alias_method :individual, :individual_details
+    alias_method :business, :business_details
+    alias_method :funding, :funding_details
+
+    class IndividualDetails
+      attr_reader :id
+      alias_method :address, :address_details
+    end
+
+    class BusinessDetails
+      attr_reader :id
+      alias_method :address, :address_details
+    end
+
+    class FundingDetails
+      attr_reader :id
+    end
+
+    class AddressDetails
+      attr_reader :id
     end
   end
 end

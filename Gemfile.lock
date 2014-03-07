@@ -9,7 +9,7 @@ GEM
       multi_json (~> 1.0)
     addressable (2.3.4)
     ansi (1.4.3)
-    braintree (2.22.0)
+    braintree (2.28.0)
       builder (>= 2.0.0)
     builder (3.0.4)
     crack (0.3.2)

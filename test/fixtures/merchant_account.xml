@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<merchant-account>
+  <status>active</status>
+  <id>default_merchant_account_id</id>
+  <currency-iso-code>USD</currency-iso-code>
+  <sub-merchant-account type="boolean">false</sub-merchant-account>
+</merchant-account>

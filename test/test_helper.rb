@@ -3,12 +3,13 @@ require File.expand_path(File.join(File.dirname(__FILE__), '../lib/test_env'))
 TEST_PATH = File.expand_path(File.dirname(__FILE__))
 FIXTURE_PATH = File.join(TEST_PATH, 'fixtures')
 
-Braintree::Configuration.environment = :sandbox
-Braintree::Configuration.merchant_id = 'merchant_id'
-Braintree::Configuration.public_key = 'public_key'
-Braintree::Configuration.private_key = 'private_key'
-Braintree::Configuration.logger = Logger.new('/dev/null').tap { |logger| logger.level = Logger::INFO }
-BraintreeBaseUri = "https://#{Braintree::Configuration.public_key}:#{Braintree::Configuration.private_key}@#{Braintree::Configuration.environment}.braintreegateway.com/merchants/#{Braintree::Configuration.merchant_id}"
+BraintreeRails::Configuration.environment = :sandbox
+BraintreeRails::Configuration.merchant_id = 'merchant_id'
+BraintreeRails::Configuration.public_key = 'public_key'
+BraintreeRails::Configuration.private_key = 'private_key'
+BraintreeRails::Configuration.default_merchant_account_id = 'default_merchant_account_id'
+BraintreeRails::Configuration.logger = Logger.new('/dev/null').tap { |logger| logger.level = Logger::INFO }
+BraintreeBaseUri = "https://#{Braintree::Configuration.public_key}:#{Braintree::Configuration.private_key}@api.#{Braintree::Configuration.environment}.braintreegateway.com/merchants/#{Braintree::Configuration.merchant_id}"
 
 module TestHelper
   def fixture(name)
@@ -28,7 +29,7 @@ module TestHelper
       :street_address => "#{(1000..9999).to_a.sample} Crane Avenue",
       :extended_address => "Suite #{(100..999).to_a.sample}",
       :locality => 'Menlo Park',
-      :region => 'California',
+      :region => 'CA',
       :postal_code => ("00001".."99999").to_a.shuffle.first,
       :country_name => 'United States of America'
     }
@@ -60,6 +61,16 @@ module TestHelper
       :payment_method_token => 'credit_card_id',
       :first_billing_date => Date.tomorrow,
       :price => ''
+    }
+  end
+
+  def merchant_account_hash
+    {
+      :master_merchant_account_id => BraintreeRails::Configuration.default_merchant_account_id,
+      :tos_accepted => true,
+      :individual => {:first_name => "Brain", :last_name => "Tree", :email => "braintree-rails@exameple.com", :date_of_birth => "2014-01-01", :address => address_hash},
+      :funding => {:destination => Braintree::MerchantAccount::FundingDestination::Email, :email => "braintree-rails@exameple.com"},
+      :business => {:legal_name => "braintree-rails", :dba_name => "braintree-rails", :tax_id => "98-7654321"},
     }
   end
 end
