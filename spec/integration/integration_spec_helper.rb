@@ -1,4 +1,6 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '../spec_helper'))
+SimpleCov.command_name "spec:integration"
+
 config = File.join(SPEC_PATH, 'config/braintree_auth.yml')
 if File.exist?(config) && auth = YAML.load_file(config)
   BraintreeRails::Configuration.environment = :sandbox

@@ -23,4 +23,4 @@ tags
 .ruby-version
 .ruby-gemset
 .rvmrc
-test/config/braintree_auth.yml
+spec/config/braintree_auth.yml
