@@ -1,4 +1,4 @@
-# [![Build Status](https://secure.travis-ci.org/lyang/braintree-rails.png)](http://travis-ci.org/lyang/braintree-rails) [![Code Climate](https://codeclimate.com/github/lyang/braintree-rails.png)](https://codeclimate.com/github/lyang/braintree-rails) [![Gem Version](https://badge.fury.io/rb/braintree-rails.png)](http://badge.fury.io/rb/braintree-rails) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/lyang/braintree-rails/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+# [![Build Status](https://secure.travis-ci.org/lyang/braintree-rails.png)](http://travis-ci.org/lyang/braintree-rails) [![Code Climate](https://codeclimate.com/github/lyang/braintree-rails.png)](https://codeclimate.com/github/lyang/braintree-rails) [![Gem Version](https://badge.fury.io/rb/braintree-rails.png)](http://badge.fury.io/rb/braintree-rails) [![Coverage Status](https://coveralls.io/repos/lyang/braintree-rails/badge.png?branch=master)](https://coveralls.io/r/lyang/braintree-rails?branch=master)
 braintree-rails is a framework that wraps the official [braintree_ruby](https://github.com/braintree/braintree_ruby) client library and provides ActiveModel compatible models that can be easily fit into an rails app.
 
 BraintreeRails models have the same CRUD interface, can be used in Rails form helpers and url helpers. In addition, it has built in validations and callbacks. Even more, you can customize those quite easily.
@@ -38,7 +38,3 @@ Write better documents.
 Source code: [braintree_ruby](https://github.com/braintree/braintree_ruby)
 
 Guides: [Ruby Client Library](https://www.braintreepayments.com/docs/ruby)
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/lyang/braintree-rails/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
