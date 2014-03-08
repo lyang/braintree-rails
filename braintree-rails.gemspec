@@ -9,15 +9,14 @@ Gem::Specification.new do |spec|
   spec.email       = 'github@linyang.me'
   spec.license     = 'MIT'
   spec.files       = `git ls-files`.split($/)
-  spec.test_files  = Dir['test/**']
+  spec.test_files  = Dir['spec/**']
   spec.homepage    = 'https://github.com/lyang/braintree-rails'
   spec.required_ruby_version = '>= 1.9.2'
   spec.add_runtime_dependency 'braintree', '>= 2.28.0'
   spec.add_runtime_dependency 'activemodel', '>= 3.0'
   spec.add_runtime_dependency 'activesupport', '>= 3.0'
   spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'minitest'
+  spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'webmock'
-  spec.add_development_dependency 'turn'
-  spec.add_development_dependency 'simplecov'
+  spec.add_development_dependency 'coveralls'
 end

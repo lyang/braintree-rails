@@ -20,5 +20,7 @@ doc/
 *.DS_Store
 *.tag*
 tags
+.ruby-version
+.ruby-gemset
 .rvmrc
 test/config/braintree_auth.yml
