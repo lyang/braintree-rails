@@ -1,5 +1,7 @@
 ## Unreleased (master)
-
+### Enhancements
+  * Added Braintree Marketplace related models
+  
 ## v1.2.3 (a9f5bf4), Jan 21 2014
 ### Enhancements
   * Customer create/update now accepts an optional :credit_card params.
