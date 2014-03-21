@@ -13,6 +13,11 @@ describe 'MerchantAccount Integration' do
     merchant_account.should be_persisted
   end
 
+  it 'does not consider merchant account persisted if rejected by Braintree' do
+    merchant_account = BraintreeRails::MerchantAccount.create(merchant_account_hash.merge(:tos_accepted => 'false'))
+    merchant_account.should_not be_persisted
+  end
+
   it 'sets validation errors properly to its associations' do
     merchant_account = BraintreeRails::MerchantAccount.create(merchant_account_hash.merge(:individual => {}, :funding => {}, :business => {:legal_name => "foo"}))
     merchant_account.should_not be_persisted

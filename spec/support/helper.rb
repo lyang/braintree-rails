@@ -55,9 +55,43 @@ module Helper
     {
       :master_merchant_account_id => BraintreeRails::Configuration.default_merchant_account_id,
       :tos_accepted => true,
-      :individual => {:first_name => "Brain", :last_name => "Tree", :email => "braintree-rails@exameple.com", :date_of_birth => "2014-01-01", :address => address_hash},
-      :funding => {:destination => Braintree::MerchantAccount::FundingDestination::Email, :email => "braintree-rails@exameple.com"},
-      :business => {:legal_name => "braintree-rails", :dba_name => "braintree-rails", :tax_id => "98-7654321"},
+      :individual => individual_details_hash,
+      :funding => funding_details_hash,
+      :business => business_details_hash,
+    }
+  end
+
+  def individual_details_hash
+    {
+      :first_name => "Brain",
+      :last_name => "Tree",
+      :email => "braintree-rails@exameple.com",
+      :date_of_birth => "2014-01-01",
+      :address => address_details_hash
+    }
+  end
+
+  def business_details_hash
+    {
+      :legal_name => "braintree-rails",
+      :dba_name => "braintree-rails",
+      :tax_id => "98-7654321"
+    }
+  end
+
+  def funding_details_hash
+    {
+      :destination => Braintree::MerchantAccount::FundingDestination::Email,
+      :email => "braintree-rails@exameple.com"
+    }
+  end
+
+  def address_details_hash
+    {
+      :street_address => "#{(1000..9999).to_a.sample} Crane Avenue",
+      :locality => 'Menlo Park',
+      :region => 'CA',
+      :postal_code => ("00001".."99999").to_a.shuffle.first,
     }
   end
 end
