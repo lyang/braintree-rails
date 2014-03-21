@@ -10,18 +10,5 @@ module BraintreeRails
         validate_association(merchant_account, association_name)
       end
     end
-
-    def validate_association(merchant_account, name)
-      merchant_account.instance_eval do
-        association = merchant_account.send(name)
-        return unless association.present?
-        if association.invalid?
-          errors.add(name, "is invalid")
-          association.errors.full_messages.each do |message|
-            errors.add(:base, message)
-          end
-        end
-      end
-    end
   end
 end

@@ -6,18 +6,7 @@ module BraintreeRails
     ]
 
     def validate(customer)
-      validate_credit_card(customer) if customer.credit_card.present?
-    end
-
-    def validate_credit_card(customer)
-      customer.instance_eval do
-        if credit_card.invalid?
-          errors.add(:credit_card, "is invalid")
-          credit_card.errors.full_messages.each do |message|
-            errors.add(:base, message)
-          end
-        end
-      end
+      validate_association(customer, :credit_card)
     end
   end
 end

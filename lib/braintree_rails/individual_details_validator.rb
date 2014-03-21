@@ -5,18 +5,7 @@ module BraintreeRails
     ]
 
     def validate(individual)
-      validate_address(individual) if individual.address.present?
-    end
-
-    def validate_address(individual)
-      individual.instance_eval do
-        if address.invalid?
-          errors.add(:address, "is invalid")
-          address.errors.full_messages.each do |message|
-            errors.add(:base, message)
-          end
-        end
-      end
+      validate_association(individual, :address)
     end
   end
 end

@@ -33,5 +33,18 @@ module BraintreeRails
 
     def validate(record)
     end
+
+    def validate_association(record, name)
+      record.instance_eval do
+        association = record.send(name)
+        return unless association.present?
+        if association.invalid?
+          errors.add(name, "is invalid")
+          association.errors.full_messages.each do |message|
+            errors.add(:base, message)
+          end
+        end
+      end
+    end
   end
 end

@@ -37,11 +37,7 @@ module BraintreeRails
 
     def validate_new_credit_card(transaction)
       transaction.credit_card.billing_address = transaction.billing
-      if transaction.credit_card.invalid?
-        transaction.credit_card.errors.full_messages.each do |message|
-          transaction.errors.add(:base, message)
-        end
-      end
+      validate_association(transaction, :credit_card)
     end
   end
 end

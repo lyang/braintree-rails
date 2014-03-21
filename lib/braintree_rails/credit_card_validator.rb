@@ -12,26 +12,11 @@ module BraintreeRails
       [:expiration_date, :presence => true, :if => Proc.new { |credit_card| credit_card.new_record? && credit_card.expiration_month.blank? }],
       [:expiration_month, :numericality => { :only_integer => true, :greater_than_or_equal_to => 1, :less_than_or_equal_to => 12 }, :if => Proc.new { Configuration.mode == Configuration::Mode::S2S }],
       [:expiration_year, :numericality => { :only_integer => true, :greater_than_or_equal_to => 1976, :less_than_or_equal_to => 2200 }, :if => Proc.new { Configuration.mode == Configuration::Mode::S2S }],
+      [:billing_address, :presence => true, :if => Proc.new {Configuration.require_postal_code || Configuration.require_street_address}],
     ]
 
     def validate(credit_card)
-      has_valid_billing_address(credit_card) if validate_billing_address?
-    end
-
-    def has_valid_billing_address(credit_card)
-      credit_card.instance_eval do
-        errors.add(:billing_address, "is empty") and return if billing_address.blank?
-        if billing_address.invalid?
-          errors.add(:billing_address, "is invalid")
-          billing_address.errors.full_messages.each do |message|
-            errors.add(:base, message)
-          end
-        end
-      end
-    end
-
-    def validate_billing_address?
-      Configuration.require_postal_code || Configuration.require_street_address
+      validate_association(credit_card, :billing_address)
     end
   end
 end
