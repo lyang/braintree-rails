@@ -8,7 +8,7 @@ module BraintreeRails
       :create => [
         :amount, :billing, :channel, :custom_fields, :customer_id, :descriptor, :merchant_account_id,
         :options, :order_id, :payment_method_token, :purchase_order_number, :recurring, :shipping,
-        :tax_amount, :tax_exempt, :type, :venmo_sdk_payment_method_code
+        :tax_amount, :tax_exempt, :type, :venmo_sdk_payment_method_code, :device_data
       ],
       :readonly => [
         :avs_error_response_code, :avs_postal_code_response_code, :avs_street_address_response_code, :billing_details,

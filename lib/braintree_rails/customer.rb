@@ -3,8 +3,8 @@ module BraintreeRails
     include Model
 
     define_attributes(
-      :create => [:company, :custom_fields, :email, :fax, :first_name, :id, :last_name, :options, :phone, :website, :credit_card],
-      :update => [:company, :custom_fields, :email, :fax, :first_name, :last_name, :options, :phone, :website, :credit_card],
+      :create => [:company, :custom_fields, :email, :fax, :first_name, :id, :last_name, :options, :phone, :website, :credit_card, :device_data],
+      :update => [:company, :custom_fields, :email, :fax, :first_name, :last_name, :options, :phone, :website, :credit_card, :device_data],
       :readonly => [:created_at, :updated_at],
       :as_association => [:id, :company, :email, :fax, :first_name, :last_name, :phone, :website]
     )
