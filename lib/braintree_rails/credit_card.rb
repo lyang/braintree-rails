@@ -11,10 +11,10 @@ module BraintreeRails
       :as_association => [:cardholder_name, :cvv, :expiration_date, :expiration_month, :expiration_year, :number]
     )
 
-    has_many   :transactions,    :class => Transactions
-    has_many   :subscriptions,   :class => Subscriptions
-    belongs_to :customer,        :class => Customer,       :foreign_key => :customer_id
-    has_one    :billing_address, :class => BillingAddress
+    has_many   :transactions,    :class_name => "BraintreeRails::Transactions"
+    has_many   :subscriptions,   :class_name => "BraintreeRails::Subscriptions"
+    belongs_to :customer,        :class_name => "BraintreeRails::Customer",       :foreign_key => :customer_id
+    has_one    :billing_address, :class_name => "BraintreeRails::BillingAddress"
 
     alias_method :id, :token
     alias_method :id=, :token=

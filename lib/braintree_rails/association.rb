@@ -30,14 +30,14 @@ module BraintreeRails
           if value = instance_variable_get("@#{name}")
             return value
           elsif options[:foreign_key] && value = send(options[:foreign_key])
-            instance_variable_set("@#{name}", options[:class].new(value))
+            instance_variable_set("@#{name}", options[:class_name].constantize.new(value))
           end
         end
       end
 
       def define_association_writer(name, options)
         define_method("#{name}=") do |value|
-          value &&= options[:class].new(value)
+          value &&= options[:class_name].constantize.new(value)
           instance_variable_set("@#{name}", value)
         end
       end

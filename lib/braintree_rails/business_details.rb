@@ -7,7 +7,7 @@ module BraintreeRails
 
     define_attributes(:as_association => [:dba_name, :legal_name, :tax_id, :address])
 
-    has_one :address, :class => AddressDetails
+    has_one :address, :class_name => "BraintreeRails::AddressDetails"
 
     def self.braintree_model_name
       "merchant_account/#{name.demodulize.underscore}"

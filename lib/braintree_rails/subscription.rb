@@ -17,11 +17,11 @@ module BraintreeRails
       ]
     )
 
-    has_many   :add_ons,      :class => AddOns
-    has_many   :discounts,    :class => Discounts
-    has_many   :transactions, :class => Transactions
-    belongs_to :plan,         :class => Plan,            :foreign_key => :plan_id
-    belongs_to :credit_card,  :class => CreditCard,      :foreign_key => :payment_method_token
+    has_many   :add_ons,      :class_name => "BraintreeRails::AddOns"
+    has_many   :discounts,    :class_name => "BraintreeRails::Discounts"
+    has_many   :transactions, :class_name => "BraintreeRails::Transactions"
+    belongs_to :plan,         :class_name => "BraintreeRails::Plan",            :foreign_key => :plan_id
+    belongs_to :credit_card,  :class_name => "BraintreeRails::CreditCard",      :foreign_key => :payment_method_token
 
     def self.cancel(id)
       delete(id)

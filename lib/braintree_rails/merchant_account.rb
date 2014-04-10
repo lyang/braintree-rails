@@ -11,10 +11,10 @@ module BraintreeRails
       :readonly => [:status, :created_at, :updated_at]
     )
 
-    belongs_to :master_merchant_account, :class => MerchantAccount
-    has_one :individual, :class => IndividualDetails
-    has_one :business, :class => BusinessDetails
-    has_one :funding, :class => FundingDetails
+    belongs_to :master_merchant_account, :class_name => "BraintreeRails::MerchantAccount"
+    has_one :individual, :class_name => "BraintreeRails::IndividualDetails"
+    has_one :business, :class_name => "BraintreeRails::BusinessDetails"
+    has_one :funding, :class_name => "BraintreeRails::FundingDetails"
 
     # Need to reload to populate association values as there's an inconsistency in the API
     after_create :reload, :if => :persisted?

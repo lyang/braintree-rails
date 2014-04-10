@@ -11,9 +11,9 @@ module BraintreeRails
         :number_of_billing_cycles, :price, :trial_duration, :trial_duration_unit, :trial_period, :updated_at
       ]
     )
-    has_many :add_ons,       :class => AddOns
-    has_many :discounts,     :class => Discounts
-    has_many :subscriptions, :class => Subscriptions
+    has_many :add_ons,       :class_name => "BraintreeRails::AddOns"
+    has_many :discounts,     :class_name => "BraintreeRails::Discounts"
+    has_many :subscriptions, :class_name => "BraintreeRails::Subscriptions"
 
     def self.all
       braintree_model_class.all.map{ |plan| new(plan) }

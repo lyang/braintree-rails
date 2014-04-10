@@ -8,7 +8,7 @@ module BraintreeRails
       :as_association => [:company, :country_name, :extended_address, :first_name, :last_name, :locality, :postal_code, :region, :street_address]
     )
 
-    belongs_to :customer, :class => Customer, :foreign_key => :customer_id
+    belongs_to :customer, :class_name => "BraintreeRails::Customer", :foreign_key => :customer_id
 
     CountryNames = {
       :country_name => 0,

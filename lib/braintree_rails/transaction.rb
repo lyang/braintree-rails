@@ -18,14 +18,14 @@ module BraintreeRails
       ]
     )
 
-    has_many   :add_ons,      :class => AddOns
-    has_many   :discounts,    :class => Discounts
-    has_one    :billing,      :class => BillingAddress,  :foreign_key => :billing_details
-    has_one    :shipping,     :class => ShippingAddress, :foreign_key => :shipping_details
-    belongs_to :customer,     :class => Customer,        :foreign_key => :customer_details
-    belongs_to :credit_card,  :class => CreditCard,      :foreign_key => :credit_card_details
-    belongs_to :subscription, :class => Subscription,    :foreign_key => :subscription_id
-    belongs_to :plan,         :class => Plan,            :foreign_key => :plan_id
+    has_many   :add_ons,      :class_name => "BraintreeRails::AddOns"
+    has_many   :discounts,    :class_name => "BraintreeRails::Discounts"
+    has_one    :billing,      :class_name => "BraintreeRails::BillingAddress",  :foreign_key => :billing_details
+    has_one    :shipping,     :class_name => "BraintreeRails::ShippingAddress", :foreign_key => :shipping_details
+    belongs_to :customer,     :class_name => "BraintreeRails::Customer",        :foreign_key => :customer_details
+    belongs_to :credit_card,  :class_name => "BraintreeRails::CreditCard",      :foreign_key => :credit_card_details
+    belongs_to :subscription, :class_name => "BraintreeRails::Subscription",    :foreign_key => :subscription_id
+    belongs_to :plan,         :class_name => "BraintreeRails::Plan",            :foreign_key => :plan_id
 
     around_persist :clear_encryped_attributes
 
