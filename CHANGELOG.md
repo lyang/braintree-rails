@@ -1,6 +1,10 @@
 ## Unreleased (master)
 ### Enhancements
   * Added Braintree Marketplace related models
+  * Allow device_data to be passed through for Fraud tools integration
+
+### Bug Fixes
+  * Fixed a bug where it failed to load some models under some circumstances. (Thanks, @mbhnyc and @tmak)
   
 ## v1.2.3 (a9f5bf4), Jan 21 2014
 ### Enhancements
