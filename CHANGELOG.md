@@ -1,4 +1,6 @@
 ## Unreleased (master)
+
+## v1.3.0 (74bd8df), Apr 18 2014
 ### Enhancements
   * Added Braintree Marketplace related models
   * Allow device_data to be passed through for Fraud tools integration
