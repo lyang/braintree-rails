@@ -6,7 +6,7 @@ module BraintreeRails
 
     define_attributes(
       :create => [
-        :amount, :billing, :channel, :custom_fields, :customer_id, :descriptor, :merchant_account_id,
+        :amount, :billing, :channel, :custom_fields, :customer_id, :descriptor, :merchant_account_id, :service_fee_amount,
         :options, :order_id, :payment_method_token, :purchase_order_number, :recurring, :shipping,
         :tax_amount, :tax_exempt, :type, :venmo_sdk_payment_method_code, :device_data
       ],
