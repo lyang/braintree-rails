@@ -4,8 +4,22 @@ module Helper
   end
 
   def stub_braintree_request(method, path, response)
-    response = response.reverse_merge(:headers => {'Content-Type' => ['application/xml', 'charset=utf-8'], 'Content-Encoding' => 'gzip'})
-    stub_request(method, BraintreeBaseUri+path).to_return(response)
+    configuration = Braintree::Configuration.instantiate
+    request_header = {
+      :headers => {
+        'Accept'=>'application/xml',
+        'Accept-Encoding'=>'gzip',
+        'User-Agent'=> configuration.user_agent,
+        'X-Apiversion'=> configuration.api_version
+      }
+    }
+    response_header = {
+      :headers => {
+        'Content-Type' => ['application/xml', 'charset=utf-8'],
+        'Content-Encoding' => 'gzip'
+      }
+    }
+    stub_request(method, BraintreeBaseUri+path).with(request_header).to_return(response.reverse_merge(response_header))
   end
 
   def address_hash

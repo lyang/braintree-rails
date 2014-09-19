@@ -11,12 +11,12 @@ describe BraintreeRails::AddOns do
       braintree_add_ons = braintree_plan.add_ons
       add_ons = BraintreeRails::AddOns.new(BraintreeRails::Plan.find('plan_id'))
 
-      add_ons.size.should == braintree_add_ons.size
+      expect(add_ons.size).to eq(braintree_add_ons.size)
 
       braintree_add_ons.each do |braintree_add_on|
         add_on = add_ons.find(braintree_add_on.id)
         BraintreeRails::AddOn.attributes.each do |attribute|
-          add_on.send(attribute).should == braintree_add_on.send(attribute)
+          expect(add_on.send(attribute)).to eq(braintree_add_on.send(attribute))
         end
       end
     end

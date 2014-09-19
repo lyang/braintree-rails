@@ -1,4 +1,5 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '../spec_helper'))
+require 'yaml'
 SimpleCov.command_name "spec:integration"
 
 config = File.join(SPEC_PATH, 'config/braintree_auth.yml')

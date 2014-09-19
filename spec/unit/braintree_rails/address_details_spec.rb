@@ -5,8 +5,8 @@ describe BraintreeRails::AddressDetails do
     [:street_address, :locality, :region, :postal_code].each do |attribute|
       it "requires #{attribute}" do
         address = BraintreeRails::AddressDetails.new(address_details_hash.merge(attribute => nil))
-        address.should be_invalid
-        address.errors[attribute].should == ["can't be blank"]
+        expect(address).to be_invalid
+        expect(address.errors[attribute]).to eq(["can't be blank"])
       end
     end
   end

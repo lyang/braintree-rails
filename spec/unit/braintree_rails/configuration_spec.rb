@@ -6,8 +6,8 @@ describe BraintreeRails::Configuration do
       begin
         old_value = Braintree::Configuration.send(config)
         BraintreeRails::Configuration.send("#{config}=", "foo")
-        Braintree::Configuration.send(config).should == "foo"
-        BraintreeRails::Configuration.send(config).should == "foo"
+        expect(Braintree::Configuration.send(config)).to eq("foo")
+        expect(BraintreeRails::Configuration.send(config)).to eq("foo")
       ensure
         BraintreeRails::Configuration.send("#{config}=", old_value)
       end
@@ -16,11 +16,11 @@ describe BraintreeRails::Configuration do
 
   it "should delegate environment to Braintree::Configuration" do
     BraintreeRails::Configuration.environment = :sandbox
-    Braintree::Configuration.environment.should == :sandbox
-    BraintreeRails::Configuration.environment.should == :sandbox
+    expect(Braintree::Configuration.environment).to eq(:sandbox)
+    expect(BraintreeRails::Configuration.environment).to eq(:sandbox)
   end
 
   it "should set custom_user_agent to braintree-rails-#{BraintreeRails::Version}" do
-    Braintree::Configuration.instantiate.user_agent.should include "braintree-rails-#{BraintreeRails::Version}"
+    expect(Braintree::Configuration.instantiate.user_agent).to include "braintree-rails-#{BraintreeRails::Version}"
   end
 end

@@ -11,14 +11,14 @@ describe 'Transaction Integration' do
     customer = BraintreeRails::Customer.new(braintree_customer)
 
     transaction = BraintreeRails::Transaction.create!(:customer => customer, :amount => (1..5).to_a.sample)
-    transaction.should be_persisted
-    transaction.status.should == Braintree::Transaction::Status::Authorized
+    expect(transaction).to be_persisted
+    expect(transaction.status).to eq(Braintree::Transaction::Status::Authorized)
 
     transaction.submit_for_settlement!
-    transaction.status.should == Braintree::Transaction::Status::SubmittedForSettlement
+    expect(transaction.status).to eq(Braintree::Transaction::Status::SubmittedForSettlement)
 
     transaction.void!
-    transaction.status.should == Braintree::Transaction::Status::Voided
+    expect(transaction.status).to eq(Braintree::Transaction::Status::Voided)
   end
 
   it 'should be able to create, submit, void transactions for a customer with a credit_card' do
@@ -27,14 +27,14 @@ describe 'Transaction Integration' do
     credit_card = customer.credit_cards.first
 
     transaction = BraintreeRails::Transaction.create!(:customer => customer, :amount => (1..5).to_a.sample, :credit_card => credit_card)
-    transaction.should be_persisted
-    transaction.status.should == Braintree::Transaction::Status::Authorized
+    expect(transaction).to be_persisted
+    expect(transaction.status).to eq(Braintree::Transaction::Status::Authorized)
 
     transaction.submit_for_settlement!
-    transaction.status.should == Braintree::Transaction::Status::SubmittedForSettlement
+    expect(transaction.status).to eq(Braintree::Transaction::Status::SubmittedForSettlement)
 
     transaction.void!
-    transaction.status.should == Braintree::Transaction::Status::Voided
+    expect(transaction.status).to eq(Braintree::Transaction::Status::Voided)
   end
 
 
@@ -44,11 +44,11 @@ describe 'Transaction Integration' do
     credit_card = customer.credit_cards.first
     transaction = BraintreeRails::Transaction.create!(:amount => (1..10).to_a.sample, :customer => customer)
 
-    customer.transactions.length.should == 1
+    expect(customer.transactions.length).to eq(1)
     customer.transactions.each do |t|
-     t.should == transaction
+     expect(t).to eq(transaction)
     end
-    credit_card.transactions.count.should == 1
+    expect(credit_card.transactions.count).to eq(1)
   end
 
   it "should be able to load all transactions for a given customer" do
@@ -56,19 +56,19 @@ describe 'Transaction Integration' do
     customer = BraintreeRails::Customer.new(braintree_customer)
     credit_card1 = customer.credit_cards.create!(credit_card_hash.merge(:token => nil))
     credit_card2 = customer.credit_cards.create!(credit_card_hash.merge(:token => nil))
-    customer.credit_cards.size.should == 2
+    expect(customer.credit_cards.size).to eq(2)
 
     transaction1 = BraintreeRails::Transaction.create!(:amount => (1..10).to_a.sample, :customer => customer, :credit_card => credit_card1)
     transaction2 = BraintreeRails::Transaction.create!(:amount => (1..10).to_a.sample, :customer => customer, :credit_card => credit_card2)
-    customer.transactions.size.should == 2
+    expect(customer.transactions.size).to eq(2)
   end
 
   it 'should be able to create a one time transaction' do
     transaction = BraintreeRails::Transaction.create!(:amount => (1..10).to_a.sample, :billing => address_hash, :customer => customer_hash, :credit_card => credit_card_hash)
-    transaction.should be_persisted
-    transaction.id.should_not be_blank
-    transaction.customer.should_not be_blank
-    transaction.credit_card.should_not be_blank
+    expect(transaction).to be_persisted
+    expect(transaction.id).to_not be_blank
+    expect(transaction.customer).to_not be_blank
+    expect(transaction.credit_card).to_not be_blank
   end
 
   it 'should be able to capture braintree api errors' do
@@ -78,8 +78,8 @@ describe 'Transaction Integration' do
     transaction = BraintreeRails::Transaction.create!(:amount => (1..10).to_a.sample, :customer => customer)
 
     transaction.void!
-    transaction.submit_for_settlement.should be_false
-    transaction.errors[:status].should_not be_blank
+    expect(transaction.submit_for_settlement).to eq(false)
+    expect(transaction.errors[:status]).to_not be_blank
   end
 
   describe BraintreeRails::Transactions do
@@ -90,8 +90,8 @@ describe 'Transaction Integration' do
         credit_card = customer.default_credit_card
 
         transaction = BraintreeRails::Transactions.new(customer).create!(:amount => (1..10).to_a.sample)
-        transaction.customer.should == customer
-        transaction.credit_card.should == credit_card
+        expect(transaction.customer).to eq(customer)
+        expect(transaction.credit_card).to eq(credit_card)
       end
 
       it 'can use default credit_card to build new record' do
@@ -100,7 +100,7 @@ describe 'Transaction Integration' do
         credit_card = customer.default_credit_card
 
         transaction = BraintreeRails::Transactions.new(credit_card).create!(:amount => (1..10).to_a.sample)
-        transaction.credit_card.should == credit_card
+        expect(transaction.credit_card).to eq(credit_card)
       end
     end
 
@@ -109,10 +109,10 @@ describe 'Transaction Integration' do
         customer = BraintreeRails::Customer.create!(customer_hash.merge(:credit_card => credit_card_hash))
         credit_card = customer.credit_cards.create!(credit_card_hash.merge(:token => 'card_1'))
         transactions = customer.transactions
-        transactions.should be_empty
+        expect(transactions).to be_empty
 
         transaction = BraintreeRails::Transaction.create!(:amount => (1..10).to_a.sample, :customer => customer, :credit_card => credit_card)
-        transactions.reload.size.should == 1
+        expect(transactions.reload.size).to eq(1)
       end
     end
   end

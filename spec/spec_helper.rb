@@ -1,4 +1,5 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '../lib/test_env'))
+I18n.enforce_available_locales = false
 
 SPEC_PATH = File.expand_path(File.dirname(__FILE__))
 FIXTURE_PATH = File.join(SPEC_PATH, 'fixtures')

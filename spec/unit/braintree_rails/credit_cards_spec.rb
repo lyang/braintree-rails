@@ -11,14 +11,14 @@ describe BraintreeRails::CreditCards do
       braintree_credit_cards = braintree_customer.credit_cards
       credit_cards = BraintreeRails::CreditCards.new(BraintreeRails::Customer.find('customer_id'))
 
-      credit_cards.size.should == braintree_credit_cards.size
+      expect(credit_cards.size).to eq(braintree_credit_cards.size)
 
       braintree_credit_cards.each do |braintree_credit_card|
         credit_card = credit_cards.find(braintree_credit_card.token)
         BraintreeRails::CreditCard.attributes.each do |attribute|
           next if BraintreeRails::CreditCard.associations.include?(attribute)
           if braintree_credit_card.respond_to?(attribute)
-            credit_card.send(attribute).should == braintree_credit_card.send(attribute)
+            expect(credit_card.send(attribute)).to eq(braintree_credit_card.send(attribute))
           end
         end
       end
@@ -33,9 +33,9 @@ describe BraintreeRails::CreditCards do
       credit_cards = BraintreeRails::CreditCards.new(BraintreeRails::Customer.find('customer_id'))
       credit_card = credit_cards.build(:cardholder_name => 'foo bar')
 
-      credit_card.should_not be_persisted
-      credit_card.customer_id.should == braintree_customer.id
-      credit_card.cardholder_name.should == 'foo bar'
+      expect(credit_card).to_not be_persisted
+      expect(credit_card.customer_id).to eq(braintree_customer.id)
+      expect(credit_card.cardholder_name).to eq('foo bar')
     end
   end
 
@@ -45,19 +45,19 @@ describe BraintreeRails::CreditCards do
 
       customer = BraintreeRails::Customer.find('customer_id')
       credit_card = customer.credit_cards.create(credit_card_hash)
-      credit_card.should be_persisted
-      customer.credit_cards.should include(credit_card)
+      expect(credit_card).to be_persisted
+      expect(customer.credit_cards).to include(credit_card)
     end
 
     it 'should not add credit card to collection if creation failed' do
       stub_braintree_request(:post, '/payment_methods', :body => fixture('credit_card_validation_error.xml'))
 
       customer = BraintreeRails::Customer.find('customer_id')
-      customer.credit_cards.size.should == 2
+      expect(customer.credit_cards.size).to eq(2)
 
       credit_card = customer.credit_cards.create(credit_card_hash)
-      credit_card.should_not be_persisted
-      customer.credit_cards.size.should == 2
+      expect(credit_card).to_not be_persisted
+      expect(customer.credit_cards.size).to eq(2)
     end
   end
 end

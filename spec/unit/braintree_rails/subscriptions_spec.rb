@@ -16,7 +16,7 @@ describe BraintreeRails::Subscriptions do
 
       subscriptions = BraintreeRails::Subscriptions.new(BraintreeRails::Plan.new('plan_id'))
 
-      subscriptions.map(&:id).sort.should == braintree_subscriptions.map(&:id).sort
+      expect(subscriptions.map(&:id).sort).to eq(braintree_subscriptions.map(&:id).sort)
     end
 
     it 'should load all subscriptions' do
@@ -25,7 +25,7 @@ describe BraintreeRails::Subscriptions do
 
       braintree_subscriptions = Braintree::Subscription.search
       subscriptions = BraintreeRails::Subscriptions.new(nil)
-      subscriptions.map(&:id).sort.should == braintree_subscriptions.map(&:id).sort
+      expect(subscriptions.map(&:id).sort).to eq(braintree_subscriptions.map(&:id).sort)
     end
   end
 
@@ -33,7 +33,7 @@ describe BraintreeRails::Subscriptions do
     it 'has no default options when loading all' do
       subscriptions = BraintreeRails::Subscriptions.new(nil)
       subscription = subscriptions.build
-      subscription.attributes.values.compact.should be_empty
+      expect(subscription.attributes.values.compact).to be_empty
     end
   end
 end

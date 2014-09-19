@@ -13,7 +13,7 @@ describe 'Address Integration' do
     braintree_address = braintree_customer.addresses.first
 
     attributes.each do |key, value|
-      braintree_address.send(key).should == value
+      expect(braintree_address.send(key)).to eq(value)
     end
   end
 
@@ -24,14 +24,14 @@ describe 'Address Integration' do
 
     braintree_customer = Braintree::Customer.find(customer.id)
     braintree_address = braintree_customer.addresses.first
-    braintree_address.first_name.should == 'Foo'
+    expect(braintree_address.first_name).to eq('Foo')
 
     address.last_name = 'Bar'
     address.save!
 
     braintree_customer = Braintree::Customer.find(customer.id)
     braintree_address = braintree_customer.addresses.first
-    braintree_address.last_name.should == 'Bar'
+    expect(braintree_address.last_name).to eq('Bar')
   end
 
   it 'should be able to destroy existing address' do
@@ -39,8 +39,8 @@ describe 'Address Integration' do
     address = customer.addresses.create!(address_hash)
     address.destroy
     expect { Braintree::Address.find(customer.id, address.id) }.to raise_error(Braintree::NotFoundError)
-    address.should_not be_persisted
-    address.should be_frozen
+    expect(address).to_not be_persisted
+    expect(address).to be_frozen
 
     address = customer.addresses.create!(address_hash)
     BraintreeRails::Address.delete(customer.id, address.id)

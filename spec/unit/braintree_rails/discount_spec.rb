@@ -10,10 +10,10 @@ describe BraintreeRails::Discount do
       braintree_discount = Braintree::Discount.all.find { |d| d.id == 'discount_id' }
       discount = BraintreeRails::Discount.new(braintree_discount)
 
-      discount.should be_persisted
-      discount.never_expires?.should == braintree_discount.never_expires?
+      expect(discount).to be_persisted
+      expect(discount.never_expires?).to eq(braintree_discount.never_expires?)
       BraintreeRails::Discount.attributes.each do |attribute|
-        discount.send(attribute).should == braintree_discount.send(attribute)
+        expect(discount.send(attribute)).to eq(braintree_discount.send(attribute))
       end
     end
 
@@ -21,9 +21,9 @@ describe BraintreeRails::Discount do
       braintree_discount = Braintree::Discount.all.find { |d| d.id == 'discount_id' }
       discount = BraintreeRails::Discount.new('discount_id')
 
-      discount.should be_persisted
+      expect(discount).to be_persisted
       BraintreeRails::Discount.attributes.each do |attribute|
-        discount.send(attribute).should == braintree_discount.send(attribute)
+        expect(discount.send(attribute)).to eq(braintree_discount.send(attribute))
       end
     end
 
@@ -31,9 +31,9 @@ describe BraintreeRails::Discount do
       braintree_discount = Braintree::Discount.all.find { |d| d.id == 'discount_id' }
       discount = BraintreeRails::Discount.find('discount_id')
 
-      discount.should be_persisted
+      expect(discount).to be_persisted
       BraintreeRails::Discount.attributes.each do |attribute|
-        discount.send(attribute).should == braintree_discount.send(attribute)
+        expect(discount.send(attribute)).to eq(braintree_discount.send(attribute))
       end
     end
   end
@@ -43,8 +43,8 @@ describe BraintreeRails::Discount do
       braintree_discounts = Braintree::Discount.all
       discounts = BraintreeRails::Discount.all
 
-      discounts.should respond_to(:each)
-      discounts.size.should == braintree_discounts.size
+      expect(discounts).to respond_to(:each)
+      expect(discounts.size).to eq(braintree_discounts.size)
     end
   end
 end

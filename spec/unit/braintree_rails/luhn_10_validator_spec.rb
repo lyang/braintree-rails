@@ -8,16 +8,16 @@ describe BraintreeRails::Luhn10Validator do
 
   describe 'valid numbers' do
     it 'should pass for valid numbers' do
-      Validatable.new(4111111111111111).should be_valid
-      Validatable.new('5454545454545454').should be_valid
+      expect(Validatable.new(4111111111111111)).to be_valid
+      expect(Validatable.new('5454545454545454')).to be_valid
     end
   end
 
   describe 'invalid numbers' do
     it 'should fail for invalid numbers' do
       invalid_record = Validatable.new('1234567890123456')
-      invalid_record.should_not be_valid
-      invalid_record.errors[:number].should include 'failed Luhn 10 validation'
+      expect(invalid_record).to_not be_valid
+      expect(invalid_record.errors[:number]).to include 'failed Luhn 10 validation'
     end
   end
 end

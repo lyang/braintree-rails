@@ -11,12 +11,12 @@ describe BraintreeRails::Addresses do
       braintree_addresses = braintree_customer.addresses
       addresses = BraintreeRails::Addresses.new(BraintreeRails::Customer.find('customer_id'))
 
-      addresses.size.should == braintree_addresses.size
+      expect(addresses.size).to eq(braintree_addresses.size)
 
       braintree_addresses.each do |braintree_address|
         address = addresses.find(braintree_address.id)
         BraintreeRails::Address.attributes.each do |attribute|
-          address.send(attribute).should == braintree_address.send(attribute)
+          expect(address.send(attribute)).to eq(braintree_address.send(attribute))
         end
       end
     end
@@ -29,10 +29,10 @@ describe BraintreeRails::Addresses do
       addresses = BraintreeRails::Addresses.new(BraintreeRails::Customer.find('customer_id'))
       address = addresses.build({:first_name => 'foo', :last_name => 'bar'})
 
-      address.should_not be_persisted
-      address.customer_id.should == braintree_customer.id
-      address.first_name.should == 'foo'
-      address.last_name.should == 'bar'
+      expect(address).to_not be_persisted
+      expect(address.customer_id).to eq(braintree_customer.id)
+      expect(address.first_name).to eq('foo')
+      expect(address.last_name).to eq('bar')
     end
   end
 end

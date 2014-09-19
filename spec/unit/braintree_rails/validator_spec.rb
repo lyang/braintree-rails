@@ -6,10 +6,10 @@ describe BraintreeRails::Validator do
       begin
         customer = BraintreeRails::Customer.new(:id => '%')
         customer.valid?
-        customer.errors[:id].should_not be_blank
+        expect(customer.errors[:id]).to_not be_blank
 
         BraintreeRails::CustomerValidator.setup {[]}
-        customer.should be_valid
+        expect(customer).to be_valid
       ensure
         BraintreeRails::CustomerValidator.setup
       end
@@ -22,10 +22,10 @@ describe BraintreeRails::Validator do
         end
 
         customer = BraintreeRails::Customer.new(:id => '%')
-        customer.should be_valid
-        customer.valid?(:create).should be_false
-        customer.save.should be_false
-        customer.errors[:id].should_not be_blank
+        expect(customer).to be_valid
+        expect(customer.valid?(:create)).to eq(false)
+        expect(customer.save).to eq(false)
+        expect(customer.errors[:id]).to_not be_blank
       ensure
         BraintreeRails::CustomerValidator.setup
       end

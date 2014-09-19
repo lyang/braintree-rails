@@ -10,9 +10,9 @@ describe BraintreeRails::Address do
       braintree_address = Braintree::Customer.find('customer_id').addresses.first
       address = BraintreeRails::Address.new(braintree_address)
 
-      address.should be_persisted
+      expect(address).to be_persisted
       BraintreeRails::Address.attributes.each do |attribute|
-        address.send(attribute).should == braintree_address.send(attribute)
+        expect(address.send(attribute)).to eq(braintree_address.send(attribute))
       end
     end
 
@@ -22,29 +22,29 @@ describe BraintreeRails::Address do
       braintree_address = braintree_customer.addresses.first
       address = BraintreeRails::Address.find('customer_id', braintree_address.id)
 
-      address.should be_persisted
+      expect(address).to be_persisted
       BraintreeRails::Address.attributes.each do |attribute|
-        address.send(attribute).should == braintree_address.send(attribute)
+        expect(address.send(attribute)).to eq(braintree_address.send(attribute))
       end
     end
 
     it 'should extract values from hash' do
       address = BraintreeRails::Address.new(:id => 'new_id')
 
-      address.should_not be_persisted
-      address.id.should == 'new_id'
+      expect(address).to_not be_persisted
+      expect(address.id).to eq('new_id')
     end
 
     it 'should try to extract value from other types' do
       address = BraintreeRails::Address.new(OpenStruct.new(:id => 'foobar', :first_name => 'Foo', :last_name => 'Bar', :persisted? => true))
 
-      address.should be_persisted
-      address.id.should == 'foobar'
-      address.first_name.should == 'Foo'
-      address.last_name.should == 'Bar'
+      expect(address).to be_persisted
+      expect(address.id).to eq('foobar')
+      expect(address.first_name).to eq('Foo')
+      expect(address.last_name).to eq('Bar')
 
       address = BraintreeRails::Address.new(Object.new)
-      address.should_not be_persisted
+      expect(address).to_not be_persisted
     end
   end
 
@@ -52,7 +52,7 @@ describe BraintreeRails::Address do
     it 'should auto set country_name' do
       {:country_code_alpha2 => 'US', :country_code_alpha3 => 'USA', :country_code_numeric => '840'}.each_pair do |key, value|
         address = BraintreeRails::Address.new(key => value)
-        address.country_name.should == 'United States of America'
+        expect(address.country_name).to eq('United States of America')
       end
     end
   end
@@ -61,19 +61,19 @@ describe BraintreeRails::Address do
     it 'should load customer for persisted address' do
       stub_braintree_request(:get, '/customers/customer_id', :body => fixture('customer.xml'))
       address = BraintreeRails::Customer.new('customer_id').addresses.first
-      address.customer.should be_persisted
-      address.customer.id.should == 'customer_id'
+      expect(address.customer).to be_persisted
+      expect(address.customer.id).to eq('customer_id')
     end
   end
 
   describe 'full_name' do
     it 'should combine first_name and last_name to form full_name' do
-      BraintreeRails::Address.new(:first_name => "Foo", :last_name => 'Bar').full_name.should == "Foo Bar"
+      expect(BraintreeRails::Address.new(:first_name => "Foo", :last_name => 'Bar').full_name).to eq("Foo Bar")
     end
 
     it 'should not have extra spaces when first_name or last_name is missing' do
-      BraintreeRails::Address.new(:first_name => "Foo").full_name.should == 'Foo'
-      BraintreeRails::Address.new(:last_name => 'Bar').full_name.should == 'Bar'
+      expect(BraintreeRails::Address.new(:first_name => "Foo").full_name).to eq('Foo')
+      expect(BraintreeRails::Address.new(:last_name => 'Bar').full_name).to eq('Bar')
     end
   end
 
@@ -82,15 +82,15 @@ describe BraintreeRails::Address do
       it "should validate length of #{attribute}" do
         address = BraintreeRails::Address.new(attribute => 'f')
         address.valid?
-        address.errors[attribute].should be_blank
+        expect(address.errors[attribute]).to be_blank
 
         address = BraintreeRails::Address.new(attribute => 'f' * 255)
         address.valid?
-        address.errors[attribute].should be_blank
+        expect(address.errors[attribute]).to be_blank
 
         address = BraintreeRails::Address.new(attribute => 'foo' * 256)
         address.valid?
-        address.errors[attribute].should_not be_blank
+        expect(address.errors[attribute]).to_not be_blank
       end
     end
 
@@ -98,29 +98,29 @@ describe BraintreeRails::Address do
       it "should validate presence of #{attribute}" do
         address = BraintreeRails::Address.new(attribute => 'foo')
         address.valid?
-        address.errors[attribute].should be_blank
+        expect(address.errors[attribute]).to be_blank
 
         address = BraintreeRails::Address.new
         address.valid?
-        address.errors[attribute].should_not be_blank
+        expect(address.errors[attribute]).to_not be_blank
       end
     end
 
     it 'should validate format of postal_code' do
       address = BraintreeRails::Address.new({:postal_code => 'CA 94025'})
       address.valid?
-      address.errors[:postal_code].should be_blank
+      expect(address.errors[:postal_code]).to be_blank
 
       address = BraintreeRails::Address.new({:postal_code => '%$'})
       address.valid?
-      address.errors[:postal_code].should_not be_blank
+      expect(address.errors[:postal_code]).to_not be_blank
     end
   end
 
   [BraintreeRails::BillingAddress, BraintreeRails::ShippingAddress].each do |subclass|
     describe subclass do
       it 'should have braintree_model_class to be Braintree::Address' do
-        subclass.braintree_model_class.should == Braintree::Address
+        expect(subclass.braintree_model_class).to eq(Braintree::Address)
       end
     end
   end

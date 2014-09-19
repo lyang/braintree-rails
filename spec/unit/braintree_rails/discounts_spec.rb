@@ -11,12 +11,12 @@ describe BraintreeRails::Discounts do
       braintree_discounts = braintree_plan.discounts
       discounts = BraintreeRails::Discounts.new(BraintreeRails::Plan.find('plan_id'))
 
-      discounts.size.should == braintree_discounts.size
+      expect(discounts.size).to eq(braintree_discounts.size)
 
       braintree_discounts.each do |braintree_discount|
         discount = discounts.find(braintree_discount.id)
         BraintreeRails::Discount.attributes.each do |attribute|
-          discount.send(attribute).should == braintree_discount.send(attribute)
+          expect(discount.send(attribute)).to eq(braintree_discount.send(attribute))
         end
       end
     end
