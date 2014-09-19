@@ -27,7 +27,7 @@ module BraintreeRails
       name.chomp('Validator').constantize
     end
 
-    def setup(*)
+    def initialize(*)
       self.class.setup
     end
 
