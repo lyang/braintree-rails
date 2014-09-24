@@ -1,4 +1,9 @@
 ## Unreleased (master)
+### Enhancements
+  * Added `service_fee_amount` to `BraintreeRails::Transaction`. (Thanks, @KELiON)
+
+### Bug Fixes
+  * Fixed deprecation warnings about validator setup. (Thanks, @JWesorick)
 
 ## v1.3.0 (74bd8df), Apr 18 2014
 ### Enhancements
