@@ -37,4 +37,3 @@ describe BraintreeRails::Subscriptions do
     end
   end
 end
-

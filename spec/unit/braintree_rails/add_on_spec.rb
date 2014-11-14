@@ -48,4 +48,3 @@ describe BraintreeRails::AddOn do
     end
   end
 end
-

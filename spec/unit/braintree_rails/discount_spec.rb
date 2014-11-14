@@ -48,4 +48,3 @@ describe BraintreeRails::Discount do
     end
   end
 end
-
