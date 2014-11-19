@@ -218,17 +218,29 @@ describe BraintreeRails::Transaction do
       expect {transaction.submit_for_settlement!}.to raise_error(BraintreeRails::RecordInvalid)
     end
 
-    it 'should propergate api errors to credit card if any' do
+    it 'should propergate api errors to associations if any' do
       customer = BraintreeRails::Customer.find('customer_id')
       credit_card = BraintreeRails::CreditCard.find('credit_card_id')
-      transaction = BraintreeRails::Transaction.new(:amount => '10.00', :customer => customer, :credit_card => credit_card)
+      transaction = BraintreeRails::Transaction.new(:amount => '10.00', :customer => customer, :credit_card => credit_card, :billing => address_hash, :shipping => address_hash)
       stub_braintree_request(:post, '/transactions', :status => 422, :body => fixture('transaction_error.xml'))
       transaction.save
-      expect(transaction.errors[:base]).to eq(["Credit card type is not accepted by this merchant account."])
-      expect(transaction.credit_card.errors.full_messages).to eq(["Number Credit card number is invalid."])
-      expect(transaction.credit_card.errors[:number].first.code).to eq("81715")
-      expect(transaction.credit_card.errors[:number].first.message).to eq("Credit card number is invalid.")
-      expect(transaction.credit_card.errors[:number].first.to_s).to eq("Credit card number is invalid.")
+      expect(transaction.credit_card.errors[:base][0].code).to eq("81725")
+      expect(transaction.credit_card.errors[:base][0].message).to eq("Credit card must include number, payment_method_nonce, or venmo_sdk_payment_method_code.")
+      expect(transaction.credit_card.errors[:base][0].to_s).to eq("Credit card must include number, payment_method_nonce, or venmo_sdk_payment_method_code.")
+
+      expect(transaction.errors[:merchant_account_id].first.code).to eq('91577')
+      expect(transaction.errors[:merchant_account_id].first.message).to eq("Merchant account does not support payment instrument.")
+      expect(transaction.errors[:merchant_account_id].first.to_s).to eq("Merchant account does not support payment instrument.")
+
+      credit_card_errors = [
+        "Number Credit card type is not accepted by this merchant account.",
+        "Number Credit card number is required.",
+        "Credit card must include number, payment_method_nonce, or venmo_sdk_payment_method_code."
+      ]
+      expect(transaction.credit_card.errors.full_messages.map(&:to_s)).to eq(credit_card_errors)
+
+      expect(transaction.billing.errors.full_messages.map(&:to_s)).to eq(["Postal code Postal code may contain no more than 9 letter or number characters."])
+      expect(transaction.shipping.errors.full_messages.map(&:to_s)).to eq(["Postal code Postal code may contain no more than 9 letter or number characters."])
     end
 
     it 'does not support update or destroy' do

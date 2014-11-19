@@ -29,7 +29,7 @@ module BraintreeRails
     end
 
     def add_errors(validation_errors)
-      credit_card.add_errors(validation_errors.except(:base)) if credit_card
+      credit_card.add_errors(extract_errors(validation_errors)) if credit_card
       super(validation_errors)
     end
 

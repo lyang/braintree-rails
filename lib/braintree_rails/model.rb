@@ -40,15 +40,13 @@ module BraintreeRails
       end
 
       def add_errors(validation_errors)
-        validation_errors.each do |attribute, error|
-          if attribute.to_s == 'base'
-            Array(error).each do |message|
-              self.errors.add(attribute, message)
-            end
-          elsif respond_to?(attribute)
-            self.errors.add(attribute, error.code.to_sym, message:error)
-          end
+        Array(extract_errors(validation_errors)).each do |error|
+          self.errors.add(error.attribute.to_sym, error.code.to_sym, message:BraintreeRails::ApiError.new(error.message, error.code))
         end
+      end
+
+      def extract_errors(validation_errors)
+        validation_errors.for(self.class.braintree_model_name.to_sym)
       end
 
       def ==(other)

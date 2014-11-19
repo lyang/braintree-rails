@@ -1,44 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <api-error-response>
-  <message>Credit card type is not accepted by this merchant account.
-Credit card number is invalid.</message>
   <errors>
+    <errors type="array"/>
     <transaction>
+      <errors type="array">
+        <error>
+          <code>91577</code>
+          <attribute type="symbol">merchant_account_id</attribute>
+          <message>Merchant account does not support payment instrument.</message>
+        </error>
+      </errors>
+      <billing>
+        <errors type="array">
+          <error>
+            <code>81809</code>
+            <attribute type="symbol">postal_code</attribute>
+            <message>Postal code may contain no more than 9 letter or number characters.</message>
+          </error>
+        </errors>
+      </billing>
+      <shipping>
+        <errors type="array">
+          <error>
+            <code>81809</code>
+            <attribute type="symbol">postal_code</attribute>
+            <message>Postal code may contain no more than 9 letter or number characters.</message>
+          </error>
+        </errors>
+      </shipping>
       <credit-card>
         <errors type="array">
           <error>
-            <code>81715</code>
-            <message>Credit card number is invalid.</message>
+            <code>81703</code>
             <attribute type="symbol">number</attribute>
+            <message>Credit card type is not accepted by this merchant account.</message>
+          </error>
+          <error>
+            <code>81714</code>
+            <attribute type="symbol">number</attribute>
+            <message>Credit card number is required.</message>
+          </error>
+          <error>
+            <code>81725</code>
+            <attribute type="symbol">base</attribute>
+            <message>Credit card must include number, payment_method_nonce, or venmo_sdk_payment_method_code.</message>
           </error>
         </errors>
       </credit-card>
-      <errors type="array"/>
-      <billing>
-        <errors type="array"/>
-      </billing>
     </transaction>
-    <errors type="array"/>
   </errors>
   <params>
     <transaction>
-      <type>sale</type>
+      <device-session-id>66866b285afd0d816de617983444f13d</device-session-id>
+      <fraud-merchant-id>600000</fraud-merchant-id>
+      <amount>7</amount>
       <billing>
-        <country-code-numeric>840</country-code-numeric>
+        <company>BraintreeRails</company>
+        <country-name>United States of America</country-name>
+        <first-name>Braintree</first-name>
+        <last-name>Rails</last-name>
+        <locality>San Francisco</locality>
+        <postal-code>1234567890</postal-code>
         <region>California</region>
-        <first-name>Wall</first-name>
-        <company>Pixar</company>
-        <locality>Junk Montain</locality>
-        <street-address>Junk Rd</street-address>
-        <last-name>E</last-name>
-        <postal-code>12345</postal-code>
+        <street-address>185 Berry St</street-address>
       </billing>
-      <amount>2001</amount>
+      <shipping>
+        <company>BraintreeRails</company>
+        <country-name>United States of America</country-name>
+        <first-name>Braintree</first-name>
+        <last-name>Rails</last-name>
+        <locality>San Francisco</locality>
+        <postal-code>0123456789</postal-code>
+        <region>California</region>
+        <street-address>185 Berry St</street-address>
+      </shipping>
+      <type>sale</type>
       <credit-card>
         <expiration-month>01</expiration-month>
-        <cardholder-name>Wall-E</cardholder-name>
         <expiration-year>1976</expiration-year>
       </credit-card>
     </transaction>
   </params>
+  <message>Merchant account does not support payment instrument.
+Credit card type is not accepted by this merchant account.
+Credit card number is required.
+Credit card must include number, payment_method_nonce, or venmo_sdk_payment_method_code.
+Postal code may contain no more than 9 letter or number characters.</message>
 </api-error-response>

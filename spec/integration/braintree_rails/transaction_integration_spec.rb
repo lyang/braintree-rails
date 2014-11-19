@@ -6,7 +6,6 @@ describe 'Transaction Integration' do
   end
 
   it 'should be able to create, submit, void transactions for a customer' do
-
     braintree_customer = Braintree::Customer.create!(customer_hash.merge(:credit_card => credit_card_hash))
     customer = BraintreeRails::Customer.new(braintree_customer)
 

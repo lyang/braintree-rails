@@ -20,9 +20,13 @@ module BraintreeRails
     after_create :reload, :if => :persisted?
 
     def add_errors(validation_errors)
+      propergate_errors_to_associations(extract_errors(validation_errors))
+      super(validation_errors)
+    end
+
+    def propergate_errors_to_associations(validation_errors)
       [individual, business, funding].each do |association|
-        association.add_errors(validation_errors.except(:base)) if association
-        super(validation_errors)
+        association.add_errors(validation_errors) if association
       end
     end
 

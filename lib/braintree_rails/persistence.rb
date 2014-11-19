@@ -116,30 +116,12 @@ module BraintreeRails
         run_callbacks context do
           result = yield
           if result.respond_to?(:success?) && !result.success?
-            add_errors(extract_errors(result))
+            add_errors(result.errors)
             false
           else
             new_record = result.respond_to?(self.class.braintree_model_name) ? result.send(self.class.braintree_model_name) : result
             init(new_record)
           end
-        end
-      end
-
-      def extract_errors(result)
-        base_errors(result).merge(attribute_errors(result))
-      end
-
-      def base_errors(result)
-        all_messages = result.message.split("\n")
-        base_messages = all_messages - attribute_errors(result).values.map(&:to_s)
-        base_messages.empty? ? {} : {'base' => base_messages}
-      end
-
-      def attribute_errors(result)
-        result.errors.inject({}) do |hash, error|
-          next hash if error.attribute.to_s == 'base'
-          hash[error.attribute.to_s] = BraintreeRails::ApiError.new(error.message, error.code)
-          hash
         end
       end
     end

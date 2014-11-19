@@ -45,7 +45,7 @@ module BraintreeRails
     end
 
     def add_errors(validation_errors)
-      billing_address.add_errors(validation_errors.except(:base)) if billing_address
+      billing_address.add_errors(extract_errors(validation_errors)) if billing_address
       super(validation_errors)
     end
 
