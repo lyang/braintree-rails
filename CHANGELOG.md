@@ -1,4 +1,6 @@
 ## Unreleased (master)
+
+## v1.4.0 (0830c14), Dec 12 2014
 ### Enhancements
   * Added `service_fee_amount` to `BraintreeRails::Transaction`. (Thanks, @KELiON)
   * Enhanced validation error parsing so that they can be customized/i18n-ed
