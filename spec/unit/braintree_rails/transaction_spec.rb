@@ -218,7 +218,7 @@ describe BraintreeRails::Transaction do
       expect {transaction.submit_for_settlement!}.to raise_error(BraintreeRails::RecordInvalid)
     end
 
-    it 'should propergate api errors to associations if any' do
+    it 'should propagate api errors to associations if any' do
       customer = BraintreeRails::Customer.find('customer_id')
       credit_card = BraintreeRails::CreditCard.find('credit_card_id')
       transaction = BraintreeRails::Transaction.new(:amount => '10.00', :customer => customer, :credit_card => credit_card, :billing => address_hash, :shipping => address_hash)
