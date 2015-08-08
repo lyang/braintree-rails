@@ -14,7 +14,7 @@ module BraintreeRails
     end
 
     def add_errors(validation_errors)
-      address.add_errors(validation_errors) if address
+      address.add_errors(extract_errors(validation_errors)) if address
       super(validation_errors)
     end
 
@@ -24,6 +24,10 @@ module BraintreeRails
 
     def address_attributes
       address.present? ? {:address => address.attributes_for(:as_association)} : {}
+    end
+
+    def extract_errors(errors)
+      errors.for(:business)
     end
   end
 end

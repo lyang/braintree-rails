@@ -13,5 +13,9 @@ module BraintreeRails
     def self.braintree_model_name
       "merchant_account/#{name.demodulize.underscore}"
     end
+
+    def extract_errors(errors)
+      errors.for(:funding)
+    end
   end
 end

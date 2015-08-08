@@ -65,12 +65,12 @@ module Helper
     }
   end
 
-  def merchant_account_hash
+  def merchant_account_hash(kind = :email)
     {
       :master_merchant_account_id => BraintreeRails::Configuration.default_merchant_account_id,
       :tos_accepted => true,
       :individual => individual_details_hash,
-      :funding => funding_details_hash,
+      :funding => send("#{kind.to_s}_funding_details_hash"),
       :business => business_details_hash,
     }
   end
@@ -93,10 +93,20 @@ module Helper
     }
   end
 
-  def funding_details_hash
+  def email_funding_details_hash
     {
       :destination => Braintree::MerchantAccount::FundingDestination::Email,
       :email => "braintree-rails@exameple.com"
+    }
+  end
+
+  def bank_funding_details_hash
+    {
+      :destination => Braintree::MerchantAccount::FundingDestination::Bank,
+      :email => "braintree-rails@example.com",
+      :mobile_phone => '2015551212',
+      :account_number => '1234567890',
+      :routing_number => '071101307'
     }
   end
 
