@@ -8,8 +8,13 @@ describe 'MerchantAccount Integration' do
     expect(merchant_account.status).to eq(braintree_merchant_account.status)
   end
 
-  it 'can create sub merchant account' do
-    merchant_account = BraintreeRails::MerchantAccount.create(merchant_account_hash)
+  it 'can create sub merchant account paid via email' do
+    merchant_account = BraintreeRails::MerchantAccount.create(merchant_account_hash(:email))
+    expect(merchant_account).to be_persisted
+  end
+
+  it 'can create sub merchant account paid via bank account' do
+    merchant_account = BraintreeRails::MerchantAccount.create(merchant_account_hash(:bank))
     expect(merchant_account).to be_persisted
   end
 
@@ -18,12 +23,26 @@ describe 'MerchantAccount Integration' do
     expect(merchant_account).to_not be_persisted
   end
 
-  it 'sets validation errors properly to its associations' do
+  it 'sets internal validation errors properly to its associations' do
     merchant_account = BraintreeRails::MerchantAccount.create(merchant_account_hash.merge(:individual => {}, :funding => {}, :business => {:legal_name => "foo"}))
     expect(merchant_account).to_not be_persisted
     expect(merchant_account.individual.errors).to_not be_empty
     expect(merchant_account.funding.errors).to_not be_empty
     expect(merchant_account.business.errors).to_not be_empty
+  end
+
+  it 'sets validation errors reported by Braintree properly to its associations' do
+    mah = merchant_account_hash(:bank)
+    mah[:funding][:routing_number]='22222222' #invalid routing number
+    mah[:individual][:address][:postal_code] = '1234' #invalid postal code
+    mah[:individual][:ssn]='111-11-111' #invalid ssn
+    mah[:business][:tax_id]='1' #invlaid tax id
+    merchant_account = BraintreeRails::MerchantAccount.create(mah)
+    expect(merchant_account).to_not be_persisted
+    expect(merchant_account.funding.errors).to_not be_empty
+    expect(merchant_account.business.errors).to_not be_empty
+    expect(merchant_account.individual.errors).to_not be_empty
+    expect(merchant_account.individual.address.errors).to_not be_empty
   end
 
   it 'can update the submerchant account' do

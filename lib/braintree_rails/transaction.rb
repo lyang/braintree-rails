@@ -64,7 +64,7 @@ module BraintreeRails
     end
 
     def add_errors(validation_errors)
-      propergate_errors_to_associations(extract_errors(validation_errors))
+      propagate_errors_to_associations(extract_errors(validation_errors))
       super(validation_errors)
     end
 
@@ -80,7 +80,7 @@ module BraintreeRails
 
     protected
 
-    def propergate_errors_to_associations(errors)
+    def propagate_errors_to_associations(errors)
       [customer, credit_card, billing, shipping].each do |association|
         association.add_errors(errors) if association
       end
