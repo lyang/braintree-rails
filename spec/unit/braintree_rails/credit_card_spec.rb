@@ -14,6 +14,7 @@ describe BraintreeRails::CreditCard do
       expect(credit_card.default?).to eq(braintree_credit_card.default?)
       expect(credit_card.expired?).to eq(braintree_credit_card.expired?)
       expect(credit_card.masked_number).to eq(braintree_credit_card.masked_number)
+      expect(credit_card.image_url).to eq(braintree_credit_card.image_url)
       BraintreeRails::CreditCard.attributes.each do |attribute|
         next if BraintreeRails::CreditCard.associations.include?(attribute)
         if braintree_credit_card.respond_to?(attribute)

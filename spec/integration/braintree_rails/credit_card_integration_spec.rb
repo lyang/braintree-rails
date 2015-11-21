@@ -29,6 +29,7 @@ describe 'Credit Card Integration' do
     attributes.except(:number, :cvv, :billing_address).each do |key, value|
       expect(braintree_credit_card.send(key)).to eq(value)
     end
+    expect(credit_card.image_url).to eq(braintree_credit_card.image_url)
 
     braintree_address = braintree_credit_card.billing_address
     attributes[:billing_address].each do |key, value|
