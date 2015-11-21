@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api-error-response>
+  <errors>
+    <errors type="array"/>
+  </errors>
+  <params>
+    <transaction>
+      <amount>5001</amount>
+      <type>sale</type>
+      <customer-id>59769877</customer-id>
+      <payment-method-token>credit_card_id</payment-method-token>
+    </transaction>
+  </params>
+  <message>Gateway Rejected: application_incomplete</message>
+  <transaction>
+    <id>d2d9dt</id>
+    <status>gateway_rejected</status>
+    <type>sale</type>
+    <currency-iso-code>USD</currency-iso-code>
+    <amount>5001.00</amount>
+    <merchant-account-id>77ny4mqgjq4syjmr</merchant-account-id>
+    <order-id nil="true"/>
+    <created-at type="datetime">2015-11-21T22:23:51Z</created-at>
+    <updated-at type="datetime">2015-11-21T22:23:51Z</updated-at>
+    <customer>
+      <id>59769877</id>
+      <first-name>Brain47</first-name>
+      <last-name>Tree17</last-name>
+      <company nil="true"/>
+      <email nil="true"/>
+      <website nil="true"/>
+      <phone nil="true"/>
+      <fax nil="true"/>
+    </customer>
+    <billing>
+      <id>ff</id>
+      <first-name>Brain</first-name>
+      <last-name>Tree</last-name>
+      <company>Braintree</company>
+      <street-address>8711 Crane Avenue</street-address>
+      <extended-address>Suite 629</extended-address>
+      <locality>Menlo Park</locality>
+      <region>CA</region>
+      <postal-code>82875</postal-code>
+      <country-name>United States of America</country-name>
+      <country-code-alpha2>US</country-code-alpha2>
+      <country-code-alpha3>USA</country-code-alpha3>
+      <country-code-numeric>840</country-code-numeric>
+    </billing>
+    <refund-id nil="true"/>
+    <refund-ids type="array"/>
+    <refunded-transaction-id nil="true"/>
+    <partial-settlement-transaction-ids type="array"/>
+    <authorized-transaction-id nil="true"/>
+    <settlement-batch-id nil="true"/>
+    <shipping>
+      <id nil="true"/>
+      <first-name nil="true"/>
+      <last-name nil="true"/>
+      <company nil="true"/>
+      <street-address nil="true"/>
+      <extended-address nil="true"/>
+      <locality nil="true"/>
+      <region nil="true"/>
+      <postal-code nil="true"/>
+      <country-name nil="true"/>
+      <country-code-alpha2 nil="true"/>
+      <country-code-alpha3 nil="true"/>
+      <country-code-numeric nil="true"/>
+    </shipping>
+    <custom-fields/>
+    <avs-error-response-code nil="true"/>
+    <avs-postal-code-response-code nil="true"/>
+    <avs-street-address-response-code nil="true"/>
+    <cvv-response-code nil="true"/>
+    <gateway-rejection-reason>application_incomplete</gateway-rejection-reason>
+    <processor-authorization-code nil="true"/>
+    <processor-response-code></processor-response-code>
+    <processor-response-text>Unknown ()</processor-response-text>
+    <additional-processor-response nil="true"/>
+    <voice-referral-number nil="true"/>
+    <purchase-order-number nil="true"/>
+    <tax-amount nil="true"/>
+    <tax-exempt type="boolean">false</tax-exempt>
+    <credit-card>
+      <token>credit_card_id</token>
+      <bin>400011</bin>
+      <last-4>1115</last-4>
+      <card-type>Visa</card-type>
+      <expiration-month>11</expiration-month>
+      <expiration-year>2017</expiration-year>
+      <customer-location>US</customer-location>
+      <cardholder-name>Brain Tree</cardholder-name>
+      <image-url>https://assets.braintreegateway.com/payment_method_logo/visa.png?environment=sandbox</image-url>
+      <prepaid>Unknown</prepaid>
+      <healthcare>Unknown</healthcare>
+      <debit>Unknown</debit>
+      <durbin-regulated>Unknown</durbin-regulated>
+      <commercial>Unknown</commercial>
+      <payroll>Unknown</payroll>
+      <issuing-bank>Unknown</issuing-bank>
+      <country-of-issuance>Unknown</country-of-issuance>
+      <product-id>Unknown</product-id>
+      <unique-number-identifier>26f8b913bb2a574089777f07d48cc590</unique-number-identifier>
+      <venmo-sdk type="boolean">false</venmo-sdk>
+    </credit-card>
+    <status-history type="array">
+      <status-event>
+        <timestamp type="datetime">2015-11-21T22:23:51Z</timestamp>
+        <status>gateway_rejected</status>
+        <amount>5001.00</amount>
+        <user>braintree-rails-integration-test</user>
+        <transaction-source>api</transaction-source>
+      </status-event>
+    </status-history>
+    <plan-id nil="true"/>
+    <subscription-id nil="true"/>
+    <subscription>
+      <billing-period-end-date nil="true"/>
+      <billing-period-start-date nil="true"/>
+    </subscription>
+    <add-ons type="array"/>
+    <discounts type="array"/>
+    <descriptor>
+      <name nil="true"/>
+      <phone nil="true"/>
+      <url nil="true"/>
+    </descriptor>
+    <recurring type="boolean">false</recurring>
+    <channel nil="true"/>
+    <service-fee-amount nil="true"/>
+    <escrow-status nil="true"/>
+    <disbursement-details>
+      <disbursement-date nil="true"/>
+      <settlement-amount nil="true"/>
+      <settlement-currency-iso-code nil="true"/>
+      <settlement-currency-exchange-rate nil="true"/>
+      <funds-held nil="true"/>
+      <success nil="true"/>
+    </disbursement-details>
+    <disputes type="array"/>
+    <payment-instrument-type>credit_card</payment-instrument-type>
+    <processor-settlement-response-code></processor-settlement-response-code>
+    <processor-settlement-response-text></processor-settlement-response-text>
+    <three-d-secure-info nil="true"/>
+  </transaction>
+</api-error-response>

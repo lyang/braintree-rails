@@ -243,6 +243,14 @@ describe BraintreeRails::Transaction do
       expect(transaction.shipping.errors.full_messages.map(&:to_s)).to eq(["Postal code Postal code may contain no more than 9 letter or number characters."])
     end
 
+    it 'should be able to handle gateway rejected transactions' do
+      customer = BraintreeRails::Customer.find('customer_id')
+      credit_card = BraintreeRails::CreditCard.find('credit_card_id')
+      transaction = BraintreeRails::Transaction.new(:amount => '10.00', :customer => customer, :credit_card => credit_card, :billing => address_hash, :shipping => address_hash)
+      stub_braintree_request(:post, '/transactions', :status => 422, :body => fixture('gateway_rejected.xml'))
+      expect {transaction.save}.to_not raise_error
+    end
+
     it 'does not support update or destroy' do
       expect {BraintreeRails::Transaction.find('transactionid').update_attributes(:amount => 1)}.to raise_error(BraintreeRails::NotSupportedApiException)
       expect {BraintreeRails::Transaction.find('transactionid').destroy!}.to raise_error(BraintreeRails::NotSupportedApiException)

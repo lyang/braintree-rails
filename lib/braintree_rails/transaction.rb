@@ -82,7 +82,7 @@ module BraintreeRails
 
     def propagate_errors_to_associations(errors)
       [customer, credit_card, billing, shipping].each do |association|
-        association.add_errors(errors) if association
+        association.add_errors(errors) if association && errors
       end
     end
 

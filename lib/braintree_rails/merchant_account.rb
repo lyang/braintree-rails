@@ -26,7 +26,7 @@ module BraintreeRails
 
     def propagate_errors_to_associations(validation_errors)
       [individual, business, funding].each do |association|
-        association.add_errors(validation_errors) if association
+        association.add_errors(validation_errors) if association && errors
       end
     end
 
