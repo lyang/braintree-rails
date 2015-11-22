@@ -42,7 +42,8 @@ describe 'Customer Integration' do
     customer.update_attributes!(:first_name => 'Foo', :last_name => 'Bar', :credit_card => credit_card_hash.merge(:cardholder_name => "FooBar"))
 
     braintree_customer = Braintree::Customer.find(customer.id)
-    expect(braintree_customer.credit_cards.first.cardholder_name).to eq("FooBar")
+    expect(braintree_customer.credit_cards.size).to eq(2)
+    expect(braintree_customer.credit_cards.map(&:cardholder_name)).to include("FooBar")
   end
 
   it 'should be able to destroy existing customer' do
