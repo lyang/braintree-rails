@@ -1,4 +1,10 @@
 ## Unreleased (master)
+### Enhancements
+  * Added image_url to credit card readonly attributes. (Thanks, @maxkaplan)
+
+### Bug Fixes
+  * Fix propagation of braintree reported errors to associations in merchant accounts. (Thanks, @twalpole)
+  * Do not raise exception on gateway rejected transactions. (Thanks, @murtyk)
 
 ## v1.4.0 (0830c14), Dec 12 2014
 ### Enhancements
