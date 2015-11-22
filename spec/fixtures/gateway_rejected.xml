@@ -7,23 +7,23 @@
     <transaction>
       <amount>5001</amount>
       <type>sale</type>
-      <customer-id>59769877</customer-id>
+      <customer-id>customer_id</customer-id>
       <payment-method-token>credit_card_id</payment-method-token>
     </transaction>
   </params>
   <message>Gateway Rejected: application_incomplete</message>
   <transaction>
-    <id>d2d9dt</id>
+    <id>transactionid</id>
     <status>gateway_rejected</status>
     <type>sale</type>
     <currency-iso-code>USD</currency-iso-code>
     <amount>5001.00</amount>
-    <merchant-account-id>77ny4mqgjq4syjmr</merchant-account-id>
+    <merchant-account-id>merchant_id</merchant-account-id>
     <order-id nil="true"/>
     <created-at type="datetime">2015-11-21T22:23:51Z</created-at>
     <updated-at type="datetime">2015-11-21T22:23:51Z</updated-at>
     <customer>
-      <id>59769877</id>
+      <id>customer_id</id>
       <first-name>Brain47</first-name>
       <last-name>Tree17</last-name>
       <company nil="true"/>

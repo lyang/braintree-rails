@@ -249,6 +249,8 @@ describe BraintreeRails::Transaction do
       transaction = BraintreeRails::Transaction.new(:amount => '10.00', :customer => customer, :credit_card => credit_card, :billing => address_hash, :shipping => address_hash)
       stub_braintree_request(:post, '/transactions', :status => 422, :body => fixture('gateway_rejected.xml'))
       expect {transaction.save}.to_not raise_error
+      expect(transaction.status).to eq(Braintree::Transaction::Status::GatewayRejected)
+      expect(transaction.gateway_rejection_reason).to eq("application_incomplete")
     end
 
     it 'does not support update or destroy' do

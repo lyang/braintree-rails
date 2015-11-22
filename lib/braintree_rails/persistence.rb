@@ -114,13 +114,17 @@ module BraintreeRails
       def with_update_braintree(context)
         raise RecordInvalid.new(self) unless valid?(context)
         run_callbacks context do
-          result = yield
-          if result.respond_to?(:success?) && !result.success?
+          case result = yield
+          when Braintree::ErrorResult
+            if result.respond_to?(self.class.braintree_model_name) && result.send(self.class.braintree_model_name)
+              init(result.send(self.class.braintree_model_name))
+            end
             add_errors(result.errors)
             false
+          when Braintree::SuccessfulResult
+            init(result.send(self.class.braintree_model_name))
           else
-            new_record = result.respond_to?(self.class.braintree_model_name) ? result.send(self.class.braintree_model_name) : result
-            init(new_record)
+            init(result)
           end
         end
       end

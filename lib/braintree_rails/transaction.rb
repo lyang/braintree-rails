@@ -13,8 +13,8 @@ module BraintreeRails
       :readonly => [
         :avs_error_response_code, :avs_postal_code_response_code, :avs_street_address_response_code, :billing_details,
         :channel, :created_at, :credit_card, :credit_card_details, :currency_iso_code, :customer, :customer_details,
-        :cvv_response_code, :id, :plan_id, :purchase_order_number, :refund_ids, :refunded_transaction_id, :settlement_batch_id,
-        :shipping_details, :status, :status_history, :subscription_details, :updated_at
+        :cvv_response_code, :gateway_rejection_reason, :id, :plan_id, :purchase_order_number, :refund_ids, :refunded_transaction_id,
+        :settlement_batch_id, :shipping_details, :status, :status_history, :subscription_details, :updated_at
       ]
     )
 
