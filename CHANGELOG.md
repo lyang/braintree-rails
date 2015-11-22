@@ -1,4 +1,6 @@
 ## Unreleased (master)
+
+## v1.4.1 (0b214d3), Nov 21 2015
 ### Enhancements
   * Added image_url to credit card readonly attributes. (Thanks, @maxkaplan)
 
