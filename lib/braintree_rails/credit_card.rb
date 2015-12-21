@@ -1,6 +1,7 @@
 module BraintreeRails
   class CreditCard
     include Model
+
     define_attributes(
       :create => [:billing_address, :cardholder_name, :customer_id, :expiration_date, :expiration_month, :expiration_year, :number, :cvv, :options, :token, :device_data],
       :update => [:billing_address, :cardholder_name, :expiration_date, :expiration_month, :expiration_year, :options, :number, :cvv, :device_data],
