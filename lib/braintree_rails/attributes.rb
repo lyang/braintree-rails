@@ -1,6 +1,6 @@
 if ActiveModel.version.to_s.start_with? '5'
   require 'active_model/serializers/xml'
-  require 'active_model-serializers'
+  require 'activemodel-serializers-xml'
 end
 
 module BraintreeRails
