@@ -6,6 +6,7 @@ module Helper
   def stub_braintree_request(method, path, response)
     configuration = Braintree::Configuration.instantiate
     request_header = {
+      :basic_auth => [BraintreeRails::Configuration.public_key, BraintreeRails::Configuration.private_key],
       :headers => {
         'Accept'=>'application/xml',
         'Accept-Encoding'=>'gzip',
