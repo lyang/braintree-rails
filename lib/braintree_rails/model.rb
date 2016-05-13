@@ -21,6 +21,8 @@ module BraintreeRails
       end
 
       def ensure_model(model)
+        model = model.to_h if model.respond_to? :permitted?
+
         model = case model
         when String
           self.persisted = true

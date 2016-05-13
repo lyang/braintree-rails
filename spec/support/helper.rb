@@ -6,6 +6,7 @@ module Helper
   def stub_braintree_request(method, path, response)
     configuration = Braintree::Configuration.instantiate
     request_header = {
+      :basic_auth => [BraintreeRails::Configuration.public_key, BraintreeRails::Configuration.private_key],
       :headers => {
         'Accept'=>'application/xml',
         'Accept-Encoding'=>'gzip',
@@ -39,7 +40,9 @@ module Helper
   def credit_card_hash
     {
       :token => 'credit_card_id',
-      :number => (Braintree::Test::CreditCardNumbers::All - Braintree::Test::CreditCardNumbers::AmExes).shuffle.first,
+      :number => (Braintree::Test::CreditCardNumbers::All -
+                  Braintree::Test::CreditCardNumbers::AmExes -
+                  Braintree::Test::CreditCardNumbers::AmexPayWithPoints::All).shuffle.first,
       :cvv => ("100".."999").to_a.shuffle.first,
       :cardholder_name => 'Brain Tree',
       :expiration_month => ("01".."12").to_a.shuffle.first,

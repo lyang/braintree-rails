@@ -10,7 +10,7 @@ BraintreeRails::Configuration.public_key = 'public_key'
 BraintreeRails::Configuration.private_key = 'private_key'
 BraintreeRails::Configuration.default_merchant_account_id = 'default_merchant_account_id'
 BraintreeRails::Configuration.logger = Logger.new('/dev/null').tap { |logger| logger.level = Logger::INFO }
-BraintreeBaseUri = "https://#{Braintree::Configuration.public_key}:#{Braintree::Configuration.private_key}@api.#{Braintree::Configuration.environment}.braintreegateway.com/merchants/#{Braintree::Configuration.merchant_id}"
+BraintreeBaseUri = "https://api.#{Braintree::Configuration.environment}.braintreegateway.com/merchants/#{Braintree::Configuration.merchant_id}"
 
 Dir[File.join(SPEC_PATH, "support/**/*.rb")].each { |f| require f }
 RSpec.configure do |config|
