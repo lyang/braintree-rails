@@ -19,4 +19,6 @@ matrix:
   include:
     - rvm: 2.2.2
       gemfile: gemfiles/Gemfile.rails-5.0
+    - rvm: 2.4.1
+      gemfile: gemfilres/Gemfilre.rails-5.1
 
