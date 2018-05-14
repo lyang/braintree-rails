@@ -2,13 +2,7 @@ language: ruby
 cache: bundler
 script: bundle exec rake ci:travis
 rvm:
-- 1.9.3
-- 2.0.0
-- 2.1.0
-- 2.1.1
-- 2.1.2
-- jruby-19mode
-- 2.2.4
+  - 2.2.4
 env:
   global:
   - secure: KV6QO8+zlfSlnZW9LhmDAeTUqnbdGu7axYyI0qAFjfHdROKTV/BaF8ZvOcX3CsveBjmEMLroIUu8G/pBUWJCQ/XC+TrEafhLQUHF8bo1xZdOJmMkjBiKsl3tu9ys2St3Oc2WIbo7YL7SeOuMlDG6xemIxs0H9kZjFxfqPBqS8Ew=
@@ -26,3 +20,4 @@ matrix:
 
 before_install:
   - gem update --system
+  - gem install bundler
