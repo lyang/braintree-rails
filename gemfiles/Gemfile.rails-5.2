@@ -1,0 +1,18 @@
+source 'https://rubygems.org'
+
+gemspec path: ".."
+
+gem 'braintree', '>= 2.28.0'
+gem 'activemodel', github: 'rails/rails', branch: '5-2-stable'
+gem 'activesupport', github: 'rails/rails', branch: '5-2-stable'
+gem 'activerecord', github: 'rails/rails', branch: '5-2-stable'
+
+gem 'activemodel-serializers-xml', '~> 1.0.1'
+
+group :test do
+  gem 'rake'
+  gem 'rspec'
+  gem 'webmock'
+  gem 'pry'
+  gem 'coveralls', require: false
+end
